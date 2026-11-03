@@ -2,14 +2,16 @@ const API_BASE = '/api';
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
 
   const headers = {
-    'Content-Type': 'application/json',
+    ...(!isFormData && { 'Content-Type': 'application/json' }),
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   };
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
+    credentials: 'same-origin',
     ...options,
     headers,
   });

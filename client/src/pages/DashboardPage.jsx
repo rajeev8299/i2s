@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../services/api';
 import {
   Users, Briefcase, Receipt, Shield, TrendingUp, CheckCircle2,
-  Clock, ArrowRight, Building, UserCheck, AlertTriangle, CheckSquare, Bell, AlertCircle
+  Clock, ArrowRight, Building, UserCheck, AlertTriangle, CheckSquare, Bell, AlertCircle,
+  Calendar, Check, X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -21,20 +22,34 @@ export const DashboardPage = () => {
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentTasks, setRecentTasks] = useState([]);
   const [recentNotices, setRecentNotices] = useState([]);
+  const [leaveRequests, setLeaveRequests] = useState([]);
+  const [actionLoadingId, setActionLoadingId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
+    // Revalidation interval for real-time leave updates on Admin dashboard
+    const interval = setInterval(() => {
+      if (user?.role === 'ADMIN') {
+        apiFetch('/hr/leave')
+          .then(res => {
+            if (res.success) setLeaveRequests(res.leaveRequests || []);
+          })
+          .catch(() => {});
+      }
+    }, 10000);
+    return () => clearInterval(interval);
   }, [user]);
 
   const loadData = async () => {
     try {
-      const [projData, taskData, uData, cData, nData] = await Promise.all([
+      const [projData, taskData, uData, cData, nData, lData] = await Promise.all([
         apiFetch('/projects').catch(() => ({ projects: [] })),
         apiFetch('/projects/tasks').catch(() => ({ tasks: [] })),
         ['SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'].includes(user?.role) ? apiFetch('/users').catch(() => ({ users: [] })) : { users: [] },
         ['SUPER_ADMIN', 'ADMIN', 'ACCOUNTS_MANAGER'].includes(user?.role) ? apiFetch('/clients').catch(() => ({ clients: [] })) : { clients: [] },
         user?.role !== 'CLIENT' ? apiFetch('/notifications/my-notices').catch(() => ({ notices: [] })) : { notices: [] },
+        user?.role === 'ADMIN' ? apiFetch('/hr/leave').catch(() => ({ leaveRequests: [] })) : { leaveRequests: [] },
       ]);
 
       const projects = projData.projects || [];
@@ -42,6 +57,7 @@ export const DashboardPage = () => {
       const usersList = uData.users || [];
       const clientsList = cData.clients || [];
       const noticesList = nData.notices || [];
+      const leaveList = lData.leaveRequests || [];
 
       setStats({
         activeProjects: projects.length,
@@ -56,10 +72,34 @@ export const DashboardPage = () => {
       setRecentUsers(usersList.slice(0, 5));
       setRecentTasks(tasks.slice(0, 5));
       setRecentNotices(noticesList.slice(0, 3));
+      setLeaveRequests(leaveList);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAdminLeaveDecision = async (id, status) => {
+    try {
+      setActionLoadingId(id);
+      const res = await apiFetch(`/hr/leave/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      });
+      if (res.success && res.leaveRequest) {
+        setLeaveRequests(prev =>
+          prev.map(r => (r.id === id ? { ...r, ...res.leaveRequest } : r))
+        );
+      } else {
+        // Fallback refresh
+        const refreshed = await apiFetch('/hr/leave');
+        if (refreshed.success) setLeaveRequests(refreshed.leaveRequests || []);
+      }
+    } catch (err) {
+      alert(err.message || 'Failed to update leave request status.');
+    } finally {
+      setActionLoadingId(null);
     }
   };
 
@@ -137,6 +177,117 @@ export const DashboardPage = () => {
         {/* Notices & Announcements Section */}
         {renderNoticesWidget()}
 
+        {/* Dynamic Leave Requests Section (Admin Panel Only — Visible only when leave records exist) */}
+        {user?.role === 'ADMIN' && leaveRequests.length > 0 && (
+          <div className="ref-card" style={{ padding: '1.25rem 1.5rem', marginBottom: '1.75rem', borderLeft: '4px solid #F59E0B' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <Calendar size={20} color="#D97706" />
+                <div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--dark-navy)', margin: 0 }}>
+                    Employee Leave Requests
+                  </h3>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    {leaveRequests.filter(l => l.status === 'PENDING').length > 0 ? (
+                      <span style={{ color: '#D97706', fontWeight: 700 }}>
+                        {leaveRequests.filter(l => l.status === 'PENDING').length} Pending Review
+                      </span>
+                    ) : (
+                      <span>All requests processed</span>
+                    )}
+                    {' • '}Direct Admin Approval Authority
+                  </div>
+                </div>
+              </div>
+              <Link to="/app/hr/leave" className="btn-secondary" style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem' }}>
+                View Full Leave Portal &rarr;
+              </Link>
+            </div>
+
+            <div className="data-table-container">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Applicant</th>
+                    <th>Type</th>
+                    <th>Dates</th>
+                    <th>Days</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Admin Decision</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...leaveRequests]
+                    .sort((a, b) => {
+                      if (a.status === 'PENDING' && b.status !== 'PENDING') return -1;
+                      if (a.status !== 'PENDING' && b.status === 'PENDING') return 1;
+                      return new Date(b.createdAt) - new Date(a.createdAt);
+                    })
+                    .slice(0, 5)
+                    .map((l) => (
+                      <tr key={l.id}>
+                        <td>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>
+                            {l.user?.firstName} {l.user?.lastName}
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                            {l.user?.employeeProfile?.employeeCode ? `${l.user.employeeProfile.employeeCode} • ` : ''}{l.user?.role}
+                          </div>
+                        </td>
+                        <td>
+                          <span className="badge badge-info">{l.leaveType}</span>
+                        </td>
+                        <td>
+                          <div style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                            {new Date(l.startDate).toLocaleDateString()} &rarr; {new Date(l.endDate).toLocaleDateString()}
+                          </div>
+                        </td>
+                        <td style={{ fontWeight: 700 }}>{l.daysCount} d</td>
+                        <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {l.reason || 'Personal leave'}
+                        </td>
+                        <td>
+                          <span className={`badge ${l.status === 'APPROVED' ? 'badge-success' : l.status === 'REJECTED' ? 'badge-danger' : 'badge-warning'}`}>
+                            {l.status}
+                          </span>
+                        </td>
+                        <td>
+                          {l.status === 'PENDING' ? (
+                            <div style={{ display: 'flex', gap: '0.35rem' }}>
+                              <button
+                                onClick={() => handleAdminLeaveDecision(l.id, 'APPROVED')}
+                                disabled={actionLoadingId === l.id}
+                                className="btn-primary"
+                                style={{ padding: '0.25rem 0.55rem', fontSize: '0.75rem', background: '#16A34A', borderColor: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+                                title="Approve Leave Request"
+                              >
+                                <Check size={13} /> {actionLoadingId === l.id ? '...' : 'Approve'}
+                              </button>
+                              <button
+                                onClick={() => handleAdminLeaveDecision(l.id, 'REJECTED')}
+                                disabled={actionLoadingId === l.id}
+                                className="btn-secondary"
+                                style={{ padding: '0.25rem 0.55rem', fontSize: '0.75rem', color: '#DC2626', borderColor: '#DC2626', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+                                title="Reject Leave Request"
+                              >
+                                <X size={13} /> {actionLoadingId === l.id ? '...' : 'Reject'}
+                              </button>
+                            </div>
+                          ) : (
+                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                              Processed
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {/* Metric Cards Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
           <div className="ref-card">
@@ -193,7 +344,7 @@ export const DashboardPage = () => {
         </div>
 
         {/* Charts & Breakdown Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
           <div className="ref-card">
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '1rem' }}>User Growth & Role Distribution</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>

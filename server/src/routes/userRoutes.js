@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import prisma from '../config/db.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 import { logAudit } from '../services/auditService.js';
+import { sendWelcomeEmail } from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -35,6 +36,7 @@ router.get('/', authenticate, authorize('SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'), a
         lastName: true,
         role: true,
         phone: true,
+        avatarUrl: true,
         isActive: true,
         temporaryClientId: true,
         approvalStatus: true,
@@ -49,7 +51,41 @@ router.get('/', authenticate, authorize('SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'), a
       orderBy: { createdAt: 'desc' },
     });
 
-    res.json({ success: true, users });
+    // Retrieve welcome email status from AuditLog for approval tracking
+    const userIds = users.map((u) => u.id);
+    const emailAuditLogs = await prisma.auditLog.findMany({
+      where: {
+        entity: 'User',
+        entityId: { in: userIds },
+        action: { in: ['WELCOME_EMAIL_SENT', 'WELCOME_EMAIL_FAILED'] },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const emailStatusMap = {};
+    for (const log of emailAuditLogs) {
+      if (!emailStatusMap[log.entityId]) {
+        let parsed = {};
+        try {
+          parsed = typeof log.details === 'string' ? JSON.parse(log.details) : (log.details || {});
+        } catch (e) {}
+
+        emailStatusMap[log.entityId] = {
+          status: log.action === 'WELCOME_EMAIL_SENT' ? 'SENT' : 'FAILED',
+          messageId: parsed.messageId,
+          sentAt: parsed.sentAt || log.createdAt,
+          error: parsed.error,
+          isSimulated: parsed.isSimulated,
+        };
+      }
+    }
+
+    const enhancedUsers = users.map((u) => ({
+      ...u,
+      welcomeEmailStatus: emailStatusMap[u.id] || null,
+    }));
+
+    res.json({ success: true, users: enhancedUsers });
   } catch (err) {
     next(err);
   }
@@ -244,10 +280,88 @@ router.patch('/:id/approval', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), a
       ipAddress: req.ip,
     });
 
+    let emailResult = null;
+
+    // Send welcome email ONLY after approval & department assignment are successfully committed to the database
+    if (isApproved) {
+      try {
+        // Resolve department name from database
+        let resolvedDeptName = 'External / Client Portal';
+        if (assignedRole !== 'CLIENT') {
+          const empProfile = await prisma.employeeProfile.findUnique({
+            where: { userId: id },
+            include: { department: true },
+          });
+          resolvedDeptName = empProfile?.department?.name || 'General Operations';
+        }
+
+        emailResult = await sendWelcomeEmail({
+          userId: targetUser.id,
+          userName: `${targetUser.firstName} ${targetUser.lastName}`,
+          userEmail: targetUser.email,
+          departmentName: resolvedDeptName,
+          assignedRole,
+          adminId: req.user.id,
+        });
+      } catch (emailErr) {
+        console.error('Non-blocking welcome email dispatch error:', emailErr.message);
+        emailResult = { success: false, error: emailErr.message, status: 'FAILED' };
+      }
+    }
+
     res.json({
       success: true,
       message: `Account has been ${isApproved ? `approved and assigned role ${assignedRole}` : 'rejected'}.`,
       user: updatedUser,
+      emailDelivery: emailResult,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/users/:id/retry-welcome-email - Authorized Admin action to retry a failed welcome email
+router.patch('/:id/retry-welcome-email', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        employeeProfile: { include: { department: true } },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found.' });
+    }
+
+    if (user.approvalStatus !== 'APPROVED') {
+      return res.status(400).json({
+        success: false,
+        error: 'Welcome emails can only be sent to approved accounts.',
+      });
+    }
+
+    const departmentName = user.role === 'CLIENT'
+      ? 'External / Client Portal'
+      : (user.employeeProfile?.department?.name || 'General Operations');
+
+    const emailResult = await sendWelcomeEmail({
+      userId: user.id,
+      userName: `${user.firstName} ${user.lastName}`,
+      userEmail: user.email,
+      departmentName,
+      assignedRole: user.role,
+      adminId: req.user.id,
+    });
+
+    res.json({
+      success: true,
+      message: emailResult.success
+        ? 'Welcome email sent successfully.'
+        : `Email delivery failed: ${emailResult.error}`,
+      emailDelivery: emailResult,
     });
   } catch (err) {
     next(err);

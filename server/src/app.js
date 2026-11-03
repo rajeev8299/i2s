@@ -18,6 +18,8 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import dailyReportRoutes from './routes/dailyReportRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import videoRoutes from './routes/videoRoutes.js';
 
 dotenv.config();
 
@@ -75,6 +77,8 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/reports', dailyReportRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/videos', videoRoutes);
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -82,6 +86,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientDistPath = path.resolve(__dirname, '../../client/dist');
+const uploadsPath = path.resolve(__dirname, '../uploads');
+
+// Serve uploaded user media securely
+app.use('/uploads', express.static(uploadsPath));
 
 // Serve React production build static assets
 app.use(express.static(clientDistPath));

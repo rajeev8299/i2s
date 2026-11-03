@@ -141,6 +141,37 @@ export const ProjectsPage = () => {
                 </div>
               </div>
 
+              {/* Assignment Details (Assigned By & Assigned Members) */}
+              {p.members && p.members.length > 0 && (
+                <div style={{ marginBottom: '1rem', background: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)', padding: '0.65rem 0.85rem' }}>
+                  <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--dark-navy)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Users size={12} /> Assigned Team ({p.members.length})
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    {p.members.slice(0, 3).map((m) => (
+                      <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>
+                          {m.user?.firstName} {m.user?.lastName}
+                          <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: '4px' }}>
+                            ({m.roleTitle || 'Member'})
+                          </span>
+                        </span>
+                        {m.assignedBy && (
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                            by <strong>{m.assignedBy.firstName} {m.assignedBy.lastName}</strong>
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                    {p.members.length > 3 && (
+                      <div style={{ fontSize: '0.72rem', color: 'var(--primary-blue)', fontWeight: 600 }}>
+                        + {p.members.length - 3} more assigned members
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.85rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>
                   Due: <strong>{new Date(p.deadline).toISOString().slice(0, 10)}</strong>

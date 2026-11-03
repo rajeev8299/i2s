@@ -5,7 +5,8 @@ import { apiFetch } from '../services/api';
 import {
   LayoutDashboard, Users, Briefcase, CheckSquare, Receipt,
   UserCheck, Bell, Shield, LogOut, ChevronDown, Check, Building,
-  Search, BarChart3, CreditCard, DollarSign, Calendar, Clock, FileCheck, ShoppingBag
+  Search, BarChart3, CreditCard, DollarSign, Calendar, Clock, FileCheck, ShoppingBag,
+  Video, Menu, X, FolderKanban
 } from 'lucide-react';
 
 export const DashboardLayout = () => {
@@ -15,12 +16,35 @@ export const DashboardLayout = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  const [leaveCount, setLeaveCount] = useState(0);
+  const [pendingLeaveCount, setPendingLeaveCount] = useState(0);
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 15000);
+    if (user?.role === 'ADMIN') {
+      fetchAdminLeaves();
+    }
+    const interval = setInterval(() => {
+      fetchNotifications();
+      if (user?.role === 'ADMIN') {
+        fetchAdminLeaves();
+      }
+    }, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user]);
+
+  const fetchAdminLeaves = async () => {
+    try {
+      const data = await apiFetch('/hr/leave');
+      if (data.success) {
+        const list = data.leaveRequests || [];
+        setLeaveCount(list.length);
+        setPendingLeaveCount(list.filter(l => l.status === 'PENDING').length);
+      }
+    } catch (e) {}
+  };
 
   const fetchNotifications = async () => {
     try {
@@ -48,49 +72,87 @@ export const DashboardLayout = () => {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-app)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-app)', position: 'relative' }}>
+      {/* Mobile Backdrop */}
+      {mobileSidebarOpen && (
+        <div
+          onClick={() => setMobileSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(17, 17, 17, 0.65)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 40,
+            display: 'block',
+          }}
+        />
+      )}
+
       {/* Reference Dark Navy Sidebar */}
-      <aside style={{
-        width: '275px',
-        background: 'var(--dark-navy)',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        zIndex: 20,
-        color: '#FFFFFF',
-      }}>
+      <aside
+        className={`dashboard-sidebar ${mobileSidebarOpen ? 'open' : ''}`}
+        style={{
+          width: '275px',
+          background: 'var(--dark-navy)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          zIndex: 50,
+          color: '#FFFFFF',
+          transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         {/* Brand */}
         <div style={{
           padding: '1.25rem 1.25rem',
           borderBottom: '1px solid var(--dark-navy-border)',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           gap: '0.75rem',
         }}>
-          <img
-            src="/i2s-logo.webp"
-            alt="I2S — Imagination2Software"
-            style={{
-              width: '38px',
-              height: '38px',
-              objectFit: 'contain',
-              flexShrink: 0,
-            }}
-          />
-          <div style={{ minWidth: 0 }}>
-            <div style={{
-              fontWeight: 800,
-              fontSize: '0.92rem',
-              letterSpacing: '-0.01em',
-              color: '#FFFFFF',
-              whiteSpace: 'nowrap',
-              fontFamily: 'var(--font-heading)',
-            }}>
-              Imagination2Software
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+            <img
+              src="/i2s-logo.webp"
+              alt="I2S — Imagination2Software"
+              style={{
+                width: '38px',
+                height: '38px',
+                objectFit: 'contain',
+                flexShrink: 0,
+              }}
+            />
+            <div style={{ minWidth: 0 }}>
+              <div style={{
+                fontWeight: 800,
+                fontSize: '0.92rem',
+                letterSpacing: '-0.01em',
+                color: '#FFFFFF',
+                whiteSpace: 'nowrap',
+                fontFamily: 'var(--font-heading)',
+              }}>
+                Imagination2Software
+              </div>
             </div>
           </div>
+          {/* Mobile close button */}
+          <button
+            onClick={() => setMobileSidebarOpen(false)}
+            className="mobile-sidebar-close"
+            style={{
+              background: 'transparent',
+              color: '#94A3B8',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'none',
+              padding: '0.25rem',
+            }}
+            title="Close menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Navigation Items */}
@@ -714,6 +776,23 @@ export const DashboardLayout = () => {
               </NavLink>
 
               <NavLink
+                to="/app/project-assignments"
+                style={({ isActive }) => ({
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: 'var(--radius-sm)',
+                  color: isActive ? '#FFFFFF' : '#94A3B8',
+                  background: isActive ? 'var(--primary-blue)' : 'transparent',
+                  fontWeight: isActive ? 600 : 500,
+                  fontSize: '0.88rem',
+                })}
+              >
+                <FolderKanban size={18} /> Project Assignment
+              </NavLink>
+
+              <NavLink
                 to="/app/tasks"
                 style={({ isActive }) => ({
                   display: 'flex',
@@ -728,23 +807,6 @@ export const DashboardLayout = () => {
                 })}
               >
                 <CheckSquare size={18} /> Tasks
-              </NavLink>
-
-              <NavLink
-                to="/app/daily-work"
-                style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '0.65rem 0.85rem',
-                  borderRadius: 'var(--radius-sm)',
-                  color: isActive ? '#FFFFFF' : '#94A3B8',
-                  background: isActive ? 'var(--primary-blue)' : 'transparent',
-                  fontWeight: isActive ? 600 : 500,
-                  fontSize: '0.88rem',
-                })}
-              >
-                <Clock size={18} /> My Daily Work
               </NavLink>
 
               <NavLink
@@ -779,6 +841,23 @@ export const DashboardLayout = () => {
                 })}
               >
                 <ShoppingBag size={18} /> Service Management & Quotes
+              </NavLink>
+
+              <NavLink
+                to="/app/admin/videos"
+                style={({ isActive }) => ({
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: 'var(--radius-sm)',
+                  color: isActive ? '#FFFFFF' : '#94A3B8',
+                  background: isActive ? 'var(--primary-blue)' : 'transparent',
+                  fontWeight: isActive ? 600 : 500,
+                  fontSize: '0.88rem',
+                })}
+              >
+                <Video size={18} /> Video Guidance Manager
               </NavLink>
 
               <NavLink
@@ -902,22 +981,39 @@ export const DashboardLayout = () => {
               >
                 <UserCheck size={18} /> Attendance
               </NavLink>
-              <NavLink
-                to="/app/hr/leave"
-                style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '0.65rem 0.85rem',
-                  borderRadius: 'var(--radius-sm)',
-                  color: isActive ? '#FFFFFF' : '#94A3B8',
-                  background: isActive ? 'var(--primary-blue)' : 'transparent',
-                  fontWeight: isActive ? 600 : 500,
-                  fontSize: '0.88rem',
-                })}
-              >
-                <Calendar size={18} /> Leave Management
-              </NavLink>
+              {(user?.role !== 'ADMIN' || leaveCount > 0) && (
+                <NavLink
+                  to="/app/hr/leave"
+                  style={({ isActive }) => ({
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.75rem',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: 'var(--radius-sm)',
+                    color: isActive ? '#FFFFFF' : '#94A3B8',
+                    background: isActive ? 'var(--primary-blue)' : 'transparent',
+                    fontWeight: isActive ? 600 : 500,
+                    fontSize: '0.88rem',
+                  })}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <Calendar size={18} /> Leave Requests
+                  </span>
+                  {user?.role === 'ADMIN' && pendingLeaveCount > 0 && (
+                    <span style={{
+                      background: '#D97706',
+                      color: '#FFFFFF',
+                      fontSize: '0.7rem',
+                      fontWeight: 800,
+                      padding: '0.1rem 0.45rem',
+                      borderRadius: '999px',
+                    }}>
+                      {pendingLeaveCount}
+                    </span>
+                  )}
+                </NavLink>
+              )}
               <NavLink
                 to="/app/hr/payroll"
                 style={({ isActive }) => ({
@@ -986,14 +1082,48 @@ export const DashboardLayout = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#FFFFFF' }}>{user?.firstName} {user?.lastName}</div>
-            <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>{user?.role?.replace('_', ' ')}</div>
-          </div>
+          <NavLink
+            to="/app/profile"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0, textDecoration: 'none' }}
+            title="My Profile & Account"
+          >
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: user?.avatarUrl ? '#FFFFFF' : 'var(--primary-blue-light)',
+              color: 'var(--primary-blue)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              border: '1.5px solid rgba(255, 90, 0, 0.4)',
+              overflow: 'hidden',
+              flexShrink: 0,
+            }}>
+              {user?.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt={`${user.firstName}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              ) : (
+                <span>{(user?.firstName?.[0] || 'U').toUpperCase()}</span>
+              )}
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user?.firstName} {user?.lastName}
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>{user?.role?.replace('_', ' ')}</div>
+            </div>
+          </NavLink>
           <button
             onClick={handleLogout}
             title="Sign Out"
-            style={{ background: 'transparent', color: '#94A3B8', padding: '0.4rem', borderRadius: '4px' }}
+            style={{ background: 'transparent', color: '#94A3B8', padding: '0.4rem', borderRadius: '4px', border: 'none', cursor: 'pointer' }}
           >
             <LogOut size={16} />
           </button>
@@ -1002,11 +1132,11 @@ export const DashboardLayout = () => {
 
       {/* Main Content Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        {/* Reference White Topbar */}
-        <header style={{
+        {/* Reference Topbar with global app background */}
+        <header className="dashboard-topbar" style={{
           height: '64px',
           borderBottom: '1px solid var(--border-color)',
-          background: '#FFFFFF',
+          background: 'var(--bg-app)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -1015,23 +1145,46 @@ export const DashboardLayout = () => {
           top: 0,
           zIndex: 10,
         }}>
-          {/* Topbar Search */}
-          <div style={{ position: 'relative', width: '320px' }}>
-            <input
-              type="text"
-              placeholder="Search projects, tasks, invoices..."
+          {/* Left Topbar: Mobile Toggle + Search */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* Hamburger button for mobile/tablet */}
+            <button
+              onClick={() => setMobileSidebarOpen(true)}
+              className="dashboard-hamburger-btn"
               style={{
-                width: '100%',
-                padding: '0.55rem 0.85rem 0.55rem 2.25rem',
                 background: 'var(--bg-subtle)',
-                border: '1px solid transparent',
+                border: '1px solid var(--border-color)',
                 borderRadius: 'var(--radius-sm)',
-                fontSize: '0.85rem',
-                color: 'var(--text-main)',
-                outline: 'none',
+                padding: '0.45rem',
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--dark-navy)',
+                cursor: 'pointer',
               }}
-            />
-            <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              title="Open Navigation Menu"
+            >
+              <Menu size={20} />
+            </button>
+
+            {/* Topbar Search */}
+            <div className="topbar-search-container" style={{ position: 'relative', width: '320px' }}>
+              <input
+                type="text"
+                placeholder="Search projects, tasks, invoices..."
+                style={{
+                  width: '100%',
+                  padding: '0.55rem 0.85rem 0.55rem 2.25rem',
+                  background: 'var(--bg-subtle)',
+                  border: '1px solid transparent',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.85rem',
+                  color: 'var(--text-main)',
+                  outline: 'none',
+                }}
+              />
+              <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+            </div>
           </div>
 
           {/* Right Topbar Actions */}
@@ -1138,32 +1291,111 @@ export const DashboardLayout = () => {
             </div>
 
             {/* User Profile */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <NavLink
+              to="/app/profile"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', textDecoration: 'none', cursor: 'pointer' }}
+              title="My Profile & Photo"
+            >
               <div style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: 'var(--primary-blue-light)',
+                background: user?.avatarUrl ? '#FFFFFF' : 'var(--primary-blue-light)',
                 color: 'var(--primary-blue)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: 700,
                 fontSize: '0.85rem',
-                border: '1px solid rgba(255, 90, 0, 0.25)',
+                border: '1.5px solid rgba(255, 90, 0, 0.35)',
+                overflow: 'hidden',
+                flexShrink: 0,
               }}>
-                {user?.firstName?.[0] || 'U'}
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={`${user.firstName}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                ) : (
+                  <span>{(user?.firstName?.[0] || 'U').toUpperCase()}</span>
+                )}
               </div>
               <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{user?.firstName} {user?.lastName}</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>{user?.firstName} {user?.lastName}</div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{user?.role?.replace('_', ' ')}</div>
               </div>
-            </div>
+            </NavLink>
           </div>
         </header>
 
+        {/* ========================================================================= */}
+        {/* FEATURE 2: PERSONALIZED USER WELCOME HEADER (UNDER NAVBAR/HEADER) */}
+        {/* ========================================================================= */}
+        {(() => {
+          const rawName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : '';
+          const displayName = rawName || user?.firstName || user?.email?.split('@')[0] || '';
+          const roleLabel = user?.role ? user.role.replace(/_/g, ' ') : '';
+          const isClient = user?.role === 'CLIENT';
+
+          return (
+            <div
+              style={{
+                padding: '1.25rem 2rem 0.5rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '0.75rem',
+              }}
+            >
+              <div>
+                <h1
+                  style={{
+                    fontSize: '1.5rem',
+                    fontWeight: 800,
+                    color: 'var(--dark-navy)',
+                    fontFamily: 'var(--font-heading)',
+                    letterSpacing: '-0.02em',
+                    margin: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {displayName ? `Welcome back, ${displayName}! 👋` : 'Welcome back! 👋'}
+                </h1>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', margin: '0.25rem 0 0' }}>
+                  {isClient
+                    ? "Here's your client portal overview for today."
+                    : "Here’s your dashboard overview for today."}
+                </p>
+              </div>
+
+              {roleLabel && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span
+                    className="badge badge-primary"
+                    style={{
+                      padding: '0.4rem 0.85rem',
+                      fontSize: '0.76rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {roleLabel}
+                  </span>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
         {/* Dedicated Page Main View */}
-        <main style={{ padding: '2rem', flex: 1 }}>
+        <main style={{ padding: '1.5rem 2rem 2rem', flex: 1 }}>
           <Outlet />
         </main>
       </div>

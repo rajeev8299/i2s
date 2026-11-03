@@ -7,6 +7,8 @@ export const TasksPage = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [employeeSearch, setEmployeeSearch] = useState('');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [showTaskModal, setShowTaskModal] = useState(false);
@@ -31,12 +33,14 @@ export const TasksPage = () => {
 
   const loadData = async () => {
     try {
-      const [tData, pData] = await Promise.all([
+      const [tData, pData, empData] = await Promise.all([
         apiFetch('/projects/tasks'),
         apiFetch('/projects'),
+        apiFetch('/projects/assignable-users').catch(() => ({ users: [] })),
       ]);
       setTasks(tData.tasks || []);
       setProjects(pData.projects || []);
+      setEmployees(empData.users || []);
     } catch (err) {
       console.error(err);
     }
@@ -44,6 +48,10 @@ export const TasksPage = () => {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
+    if (!taskForm.assigneeId) {
+      alert('Please select an employee to assign this task to.');
+      return;
+    }
     try {
       await apiFetch('/projects/tasks', {
         method: 'POST',
@@ -59,6 +67,7 @@ export const TasksPage = () => {
         assigneeId: '',
         isClientVisible: true,
       });
+      setEmployeeSearch('');
       loadData();
     } catch (err) {
       alert(err.message);
@@ -312,11 +321,11 @@ export const TasksPage = () => {
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(20, 38, 63, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '1rem'
         }}>
-          <div className="ref-card" style={{ width: '100%', maxWidth: '500px', padding: '2rem' }}>
+          <div className="ref-card" style={{ width: '100%', maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto', padding: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '1.25rem' }}>Assign New Task</h2>
             <form onSubmit={handleCreateTask} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>Project</label>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>Project <span style={{ color: '#EF4444' }}>*</span></label>
                 <select
                   required
                   className="form-input"
@@ -330,8 +339,59 @@ export const TasksPage = () => {
                 </select>
               </div>
 
+              {/* Assign To — Select Employee (Searchable Dropdown) */}
               <div>
-                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>Task Title</label>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>
+                  Assign To — Select Employee <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                <div style={{ position: 'relative', marginBottom: '0.4rem' }}>
+                  <input
+                    type="text"
+                    placeholder="Search employee by name, ID or role..."
+                    value={employeeSearch}
+                    onChange={(e) => setEmployeeSearch(e.target.value)}
+                    className="form-input"
+                    style={{ paddingLeft: '2.1rem', fontSize: '0.82rem' }}
+                  />
+                  <Search size={14} style={{ position: 'absolute', left: '0.7rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                </div>
+                <select
+                  required
+                  className="form-input"
+                  value={taskForm.assigneeId}
+                  onChange={(e) => setTaskForm({ ...taskForm, assigneeId: e.target.value })}
+                  style={{ width: '100%', fontWeight: taskForm.assigneeId ? 600 : 400 }}
+                >
+                  <option value="">-- Choose Employee ({employees.filter(e => {
+                    const term = employeeSearch.toLowerCase();
+                    const name = `${e.firstName} ${e.lastName}`.toLowerCase();
+                    return name.includes(term) || (e.role && e.role.toLowerCase().includes(term)) || (e.temporaryClientId && e.temporaryClientId.toLowerCase().includes(term));
+                  }).length}) --</option>
+                  {employees
+                    .filter((e) => {
+                      const term = employeeSearch.toLowerCase();
+                      const name = `${e.firstName} ${e.lastName}`.toLowerCase();
+                      return (
+                        name.includes(term) ||
+                        (e.role && e.role.toLowerCase().includes(term)) ||
+                        (e.temporaryClientId && e.temporaryClientId.toLowerCase().includes(term))
+                      );
+                    })
+                    .map((emp) => (
+                      <option key={emp.id} value={emp.id}>
+                        {emp.firstName} {emp.lastName} — {emp.role.replace(/_/g, ' ')} {emp.temporaryClientId ? `(ID: ${emp.temporaryClientId})` : `(ID: ${emp.id.slice(0, 6)})`}
+                      </option>
+                    ))}
+                </select>
+                {taskForm.assigneeId && (
+                  <div style={{ fontSize: '0.75rem', color: 'var(--primary-blue)', marginTop: '0.25rem', fontWeight: 600 }}>
+                    Selected: {employees.find(e => e.id === taskForm.assigneeId)?.firstName} {employees.find(e => e.id === taskForm.assigneeId)?.lastName}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem', fontWeight: 600 }}>Task Title <span style={{ color: '#EF4444' }}>*</span></label>
                 <input
                   required
                   className="form-input"

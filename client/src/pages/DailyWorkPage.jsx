@@ -19,25 +19,17 @@ export const DailyWorkPage = () => {
   const [editingReport, setEditingReport] = useState(null);
   const [selectedReportView, setSelectedReportView] = useState(null);
 
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
+
   const [formData, setFormData] = useState({
     projectId: '',
     taskId: '',
     reportDate: new Date().toISOString().split('T')[0],
-    workTitle: '',
-    description: '',
     completedWork: '',
     pendingWork: '',
     currentStatus: 'In Progress',
-    timeSpentMinutes: 60,
-    completionPercent: 50,
-    workLinks: '',
-    blockers: '',
-    nextSteps: '',
-    plannedTomorrow: '',
-    internalNotes: '',
-    clientSummary: '',
-    reviewedReportsCount: 0,
-    status: 'SUBMITTED', // or DRAFT
   });
 
   useEffect(() => {
@@ -63,66 +55,67 @@ export const DailyWorkPage = () => {
 
   const handleOpenCreate = () => {
     setEditingReport(null);
+    setFormError('');
+    setFormSuccess('');
     setFormData({
       projectId: projects[0]?.id || '',
       taskId: '',
       reportDate: new Date().toISOString().split('T')[0],
-      workTitle: '',
-      description: '',
       completedWork: '',
       pendingWork: '',
       currentStatus: 'In Progress',
-      timeSpentMinutes: 120,
-      completionPercent: 50,
-      workLinks: '',
-      blockers: '',
-      nextSteps: '',
-      plannedTomorrow: '',
-      internalNotes: '',
-      clientSummary: '',
-      reviewedReportsCount: 0,
-      status: 'SUBMITTED',
     });
     setShowModal(true);
   };
 
   const handleOpenEdit = (rep) => {
     setEditingReport(rep);
+    setFormError('');
+    setFormSuccess('');
+    // Combine pendingWork and blockers if they were recorded separately
+    const combinedPending = [rep.pendingWork, rep.blockers ? `Blockers: ${rep.blockers}` : '']
+      .filter(Boolean)
+      .join('\n');
+
     setFormData({
       projectId: rep.projectId,
       taskId: rep.taskId || '',
       reportDate: new Date(rep.reportDate).toISOString().split('T')[0],
-      workTitle: rep.workTitle,
-      description: rep.description,
       completedWork: rep.completedWork || rep.description || '',
-      pendingWork: rep.pendingWork || '',
+      pendingWork: combinedPending,
       currentStatus: rep.currentStatus || 'In Progress',
-      timeSpentMinutes: rep.timeSpentMinutes || 60,
-      completionPercent: rep.completionPercent || 0,
-      workLinks: rep.workLinks || '',
-      blockers: rep.blockers || '',
-      nextSteps: rep.nextSteps || '',
-      plannedTomorrow: rep.plannedTomorrow || '',
-      internalNotes: rep.internalNotes || '',
-      clientSummary: rep.clientSummary || '',
-      reviewedReportsCount: rep.reviewedReportsCount || 0,
-      status: rep.status === 'DRAFT' ? 'DRAFT' : 'SUBMITTED',
     });
     setShowModal(true);
   };
 
-  const handleSubmit = async (submitStatus) => {
+  const handleSubmit = async (submitStatus = 'SUBMITTED') => {
+    setFormError('');
+    setFormSuccess('');
+
+    if (!formData.projectId) {
+      setFormError('Please select a project or task.');
+      return;
+    }
+
+    if (!formData.completedWork?.trim()) {
+      setFormError('Please describe the work completed today.');
+      return;
+    }
+
+    setSubmitting(true);
     try {
-      const derivedTitle = formData.workTitle?.trim() ||
-        (formData.completedWork ? formData.completedWork.trim().slice(0, 70) : 'Daily Work Progress');
-      const derivedDescription = formData.description?.trim() ||
-        formData.completedWork?.trim() ||
-        'Daily Work Progress Report';
+      const trimmedCompleted = formData.completedWork.trim();
+      const derivedTitle = trimmedCompleted.slice(0, 70);
+      const derivedDescription = trimmedCompleted;
 
       const payload = {
         ...formData,
         workTitle: derivedTitle,
         description: derivedDescription,
+        completedWork: trimmedCompleted,
+        pendingWork: formData.pendingWork?.trim() || null,
+        blockers: formData.pendingWork?.trim() || null,
+        completionPercent: formData.currentStatus === 'Completed' ? 100 : formData.currentStatus === 'Blocked' ? 30 : 60,
         status: submitStatus,
       };
 
@@ -138,10 +131,16 @@ export const DailyWorkPage = () => {
         });
       }
 
-      setShowModal(false);
+      setFormSuccess(submitStatus === 'DRAFT' ? 'Draft saved successfully.' : 'Daily report submitted successfully.');
+      setTimeout(() => {
+        setShowModal(false);
+        setFormSuccess('');
+      }, 900);
       loadData();
     } catch (err) {
-      alert(err.message);
+      setFormError(err.message || 'Failed to submit report. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -323,31 +322,42 @@ export const DailyWorkPage = () => {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(20, 38, 63, 0.6)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '1rem' }}>
           <div className="ref-card" style={{ maxWidth: '680px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.25rem' }}>
-              {editingReport ? 'Edit / Resubmit Daily Work Report' : user?.role === 'INTERN' ? 'Intern Daily Work Report' : 'Submit Daily Work Report'}
+              {editingReport ? 'Edit / Resubmit Daily Work Report' : 'Submit Daily Work Report'}
             </h3>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-              {user?.role === 'INTERN'
-                ? 'Quickly record what you completed today, what is pending, and your current status (1-2 minutes).'
-                : 'Record your daily deliverables, pending tasks, and work updates.'}
+              Quickly record what you completed today, any pending items or blockers, and your status (1–2 minutes).
             </p>
 
+            {formError && (
+              <div style={{ background: '#FEE2E2', border: '1px solid #FCA5A5', color: '#991B1B', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <AlertCircle size={16} />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            {formSuccess && (
+              <div style={{ background: '#DCFCE7', border: '1px solid #86EFAC', color: '#166534', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <CheckCircle2 size={16} />
+                <span>{formSuccess}</span>
+              </div>
+            )}
+
             <form onSubmit={(e) => { e.preventDefault(); handleSubmit('SUBMITTED'); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* Field 1: Report Date (automatically selected) */}
+              {/* Field 1: Report Date (automatically populated, read-only/clean) */}
               <div className="form-group">
                 <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Calendar size={14} /> Report Date <span style={{ color: '#DC2626' }}>*</span>
+                  <Calendar size={14} /> Report Date
                 </label>
                 <input
                   type="date"
-                  required
                   value={formData.reportDate}
-                  onChange={(e) => setFormData({ ...formData, reportDate: e.target.value })}
+                  readOnly
                   className="search-input"
-                  style={{ background: 'var(--bg-app)' }}
+                  style={{ background: 'var(--bg-app)', cursor: 'default' }}
                 />
               </div>
 
-              {/* Field 2: Project / Task (one combined dropdown) */}
+              {/* Field 2: Project / Task (dropdown from assigned projects/tasks) */}
               <div className="form-group">
                 <label className="form-label">
                   Project / Task <span style={{ color: '#DC2626' }}>*</span>
@@ -378,7 +388,7 @@ export const DailyWorkPage = () => {
                   }}
                   className="search-input"
                 >
-                  <option value="">Select Assigned Project or Task...</option>
+                  <option value="">Select Project or Task...</option>
                   {projects.map((p) => {
                     const projTasks = tasks.filter(t => t.projectId === p.id);
                     return (
@@ -397,7 +407,7 @@ export const DailyWorkPage = () => {
                 </select>
               </div>
 
-              {/* Field 3: Work Completed Today */}
+              {/* Field 3: Work Completed Today (required, short textarea) */}
               <div className="form-group">
                 <label className="form-label">
                   Work Completed Today <span style={{ color: '#DC2626' }}>*</span>
@@ -405,35 +415,15 @@ export const DailyWorkPage = () => {
                 <textarea
                   rows={3}
                   required
-                  placeholder="Summarize the work, modules, or features you completed today..."
+                  placeholder="Summarize the tasks, features, or modules completed today..."
                   value={formData.completedWork}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    completedWork: e.target.value,
-                    description: e.target.value,
-                    workTitle: formData.workTitle || e.target.value.slice(0, 60),
-                  })}
+                  onChange={(e) => setFormData({ ...formData, completedWork: e.target.value })}
                   className="search-input"
                   style={{ resize: 'vertical' }}
                 />
               </div>
 
-              {/* Field 4: Pending Work */}
-              <div className="form-group">
-                <label className="form-label">
-                  Pending Work
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="What work or tasks remain pending for tomorrow..."
-                  value={formData.pendingWork}
-                  onChange={(e) => setFormData({ ...formData, pendingWork: e.target.value })}
-                  className="search-input"
-                  style={{ resize: 'vertical' }}
-                />
-              </div>
-
-              {/* Field 5: Status (Dropdown: In Progress, Completed, or Blocked) */}
+              {/* Field 4: Status (required dropdown) */}
               <div className="form-group">
                 <label className="form-label">
                   Status <span style={{ color: '#DC2626' }}>*</span>
@@ -441,11 +431,7 @@ export const DailyWorkPage = () => {
                 <select
                   required
                   value={formData.currentStatus}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    currentStatus: e.target.value,
-                    completionPercent: e.target.value === 'Completed' ? 100 : e.target.value === 'Blocked' ? 30 : 60,
-                  })}
+                  onChange={(e) => setFormData({ ...formData, currentStatus: e.target.value })}
                   className="search-input"
                 >
                   <option value="In Progress">In Progress</option>
@@ -454,25 +440,11 @@ export const DailyWorkPage = () => {
                 </select>
               </div>
 
-              {/* Additional optional field only for Team Leader (Internal reports reviewed count) */}
-              {user?.role === 'TEAM_LEADER' && (
-                <div className="form-group">
-                  <label className="form-label">Intern Reports Reviewed Today</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={formData.reviewedReportsCount}
-                    onChange={(e) => setFormData({ ...formData, reviewedReportsCount: e.target.value })}
-                    className="search-input"
-                    placeholder="e.g. 2"
-                  />
-                </div>
-              )}
-
               {/* Buttons: Save Draft & Submit Report */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)' }}>
                 <button
                   type="button"
+                  disabled={submitting}
                   onClick={() => handleSubmit('DRAFT')}
                   className="btn-secondary"
                   style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
@@ -481,11 +453,21 @@ export const DailyWorkPage = () => {
                 </button>
 
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button type="button" onClick={() => setShowModal(false)} className="btn-secondary">
+                  <button
+                    type="button"
+                    disabled={submitting}
+                    onClick={() => setShowModal(false)}
+                    className="btn-secondary"
+                  >
                     Cancel
                   </button>
-                  <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Send size={15} /> Submit Report
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="btn-primary"
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                  >
+                    <Send size={15} /> {submitting ? 'Submitting...' : 'Submit Report'}
                   </button>
                 </div>
               </div>

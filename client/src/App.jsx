@@ -12,6 +12,16 @@ import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
+// 7 New Official Public Pages
+import { AboutPage } from './pages/AboutPage';
+import { ServicesPublicPage } from './pages/ServicesPublicPage';
+import { WorkPage } from './pages/WorkPage';
+import { StorePage } from './pages/StorePage';
+import { BlogPage } from './pages/BlogPage';
+import { FAQPage } from './pages/FAQPage';
+import { ContactPage } from './pages/ContactPage';
+import { VideosGalleryPage } from './pages/VideosGalleryPage';
+
 // Protected App Pages
 import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
@@ -27,7 +37,10 @@ import { TeamReportsPage } from './pages/TeamReportsPage';
 import { ClientProgressPage } from './pages/ClientProgressPage';
 import { ClientServicesPage } from './pages/ClientServicesPage';
 import { AdminServicesPage } from './pages/AdminServicesPage';
+import { AdminVideosPage } from './pages/AdminVideosPage';
 import { NoticesPage } from './pages/NoticesPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { ProjectAssignmentPage } from './pages/ProjectAssignmentPage';
 
 export const App = () => {
   return (
@@ -36,6 +49,15 @@ export const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPublicPage />} />
+          <Route path="/work" element={<WorkPage />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/videos" element={<VideosGalleryPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -46,6 +68,7 @@ export const App = () => {
             <Route element={<DashboardLayout />}>
               <Route index element={<Navigate to="/app/dashboard" replace />} />
               <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="profile" element={<ProfilePage />} />
               <Route path="projects" element={<ProjectsPage />} />
               <Route path="tasks" element={<TasksPage />} />
               <Route path="daily-work" element={<DailyWorkPage />} />
@@ -88,6 +111,26 @@ export const App = () => {
                 }
               >
                 <Route index element={<AdminServicesPage />} />
+              </Route>
+
+              {/* Admin Video Management */}
+              <Route
+                path="admin/videos"
+                element={
+                  <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'ADMIN']} />
+                }
+              >
+                <Route index element={<AdminVideosPage />} />
+              </Route>
+
+              {/* Admin Direct Project Assignment */}
+              <Route
+                path="project-assignments"
+                element={
+                  <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'ADMIN']} />
+                }
+              >
+                <Route index element={<ProjectAssignmentPage />} />
               </Route>
 
               {/* Service alias */}

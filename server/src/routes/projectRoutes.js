@@ -32,6 +32,7 @@ router.get('/', authenticate, async (req, res, next) => {
         members: {
           include: {
             user: { select: { id: true, firstName: true, lastName: true, role: true, email: true } },
+            assignedBy: { select: { id: true, firstName: true, lastName: true, email: true } },
           },
         },
         milestones: {
@@ -266,6 +267,241 @@ router.patch('/tasks/:id/status', authenticate, async (req, res, next) => {
     });
 
     res.json({ success: true, task: updated });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// =========================================================================
+// PROJECT ASSIGNMENT SYSTEM (ADMIN DIRECT PROJECT ASSIGNMENT)
+// =========================================================================
+
+// GET /api/projects/assignments - List all direct project assignments with full metadata
+router.get('/assignments', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), async (req, res, next) => {
+  try {
+    const assignments = await prisma.projectMember.findMany({
+      include: {
+        project: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
+            status: true,
+            priority: true,
+            deadline: true,
+            client: { select: { id: true, companyName: true } },
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+            avatarUrl: true,
+          },
+        },
+        assignedBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json({ success: true, assignments });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /api/projects/assignable-users - List all eligible internal users for assignment
+router.get('/assignable-users', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), async (req, res, next) => {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        isActive: true,
+        // Exclude pure client users from internal technical assignments unless desired, but allow team members
+        role: { in: ['SUPER_ADMIN', 'ADMIN', 'TEAM_LEADER', 'STAFF', 'INTERN', 'HR_MANAGER', 'ACCOUNTS_MANAGER'] },
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        role: true,
+        avatarUrl: true,
+        temporaryClientId: true,
+      },
+      orderBy: [{ role: 'asc' }, { firstName: 'asc' }],
+    });
+
+    res.json({ success: true, users });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/projects/assign - Direct Project Assignment by Admin
+router.post('/assign', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), async (req, res, next) => {
+  try {
+    const { projectId, userId, roleTitle, isLeader } = req.body;
+    const adminUser = req.user;
+
+    // 1. Meaningful Validations
+    if (!projectId || !projectId.trim()) {
+      return res.status(400).json({ success: false, error: 'Please select a valid Project to assign.' });
+    }
+    if (!userId || !userId.trim()) {
+      return res.status(400).json({ success: false, error: 'Please select a valid User to assign the project to.' });
+    }
+
+    // 2. Verify Project Exists
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { id: true, name: true, code: true, status: true },
+    });
+    if (!project) {
+      return res.status(404).json({ success: false, error: 'Target project does not exist.' });
+    }
+
+    // 3. Verify User Exists
+    const targetUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, firstName: true, lastName: true, email: true, role: true, isActive: true },
+    });
+    if (!targetUser) {
+      return res.status(404).json({ success: false, error: 'Target user does not exist.' });
+    }
+    if (!targetUser.isActive) {
+      return res.status(400).json({ success: false, error: 'Cannot assign project to an inactive user account.' });
+    }
+
+    // 4. Duplicate Check
+    const existingMembership = await prisma.projectMember.findUnique({
+      where: {
+        projectId_userId: {
+          projectId,
+          userId,
+        },
+      },
+      include: {
+        assignedBy: { select: { firstName: true, lastName: true } },
+      },
+    });
+
+    if (existingMembership) {
+      const assignedByName = existingMembership.assignedBy
+        ? `${existingMembership.assignedBy.firstName} ${existingMembership.assignedBy.lastName}`
+        : 'System Admin';
+      return res.status(400).json({
+        success: false,
+        error: `User "${targetUser.firstName} ${targetUser.lastName}" is already assigned to project "${project.name}" (Assigned by: ${assignedByName} on ${new Date(existingMembership.createdAt).toLocaleDateString()}). Duplicate assignment prevented.`,
+      });
+    }
+
+    // 5. Secure Database Operation (assignedById derived exclusively from authenticated admin)
+    const assignment = await prisma.$transaction(async (tx) => {
+      const newMember = await tx.projectMember.create({
+        data: {
+          projectId,
+          userId,
+          roleTitle: roleTitle?.trim() || (isLeader ? 'Team Leader' : 'Team Member'),
+          isLeader: !!isLeader,
+          assignedById: adminUser.id, // Strictly server-derived from verified auth token
+        },
+        include: {
+          project: {
+            select: { id: true, name: true, code: true, status: true, priority: true, deadline: true },
+          },
+          user: {
+            select: { id: true, firstName: true, lastName: true, email: true, role: true },
+          },
+          assignedBy: {
+            select: { id: true, firstName: true, lastName: true, email: true, role: true },
+          },
+        },
+      });
+
+      // 6. Existing Notification System Integration
+      await tx.notification.create({
+        data: {
+          userId,
+          title: 'New Project Assigned',
+          message: `You have been directly assigned to project "${project.name}" (${project.code}) by Admin ${adminUser.firstName} ${adminUser.lastName}.`,
+          type: 'PROJECT',
+          link: '/app/projects',
+        },
+      });
+
+      return newMember;
+    });
+
+    // 7. Audit Log
+    await logAudit({
+      userId: adminUser.id,
+      action: 'PROJECT_ASSIGNED_DIRECTLY',
+      entity: 'ProjectMember',
+      entityId: assignment.id,
+      details: {
+        projectId,
+        projectName: project.name,
+        assignedToUserId: userId,
+        assignedToName: `${targetUser.firstName} ${targetUser.lastName}`,
+        roleTitle: assignment.roleTitle,
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Project "${project.name}" successfully assigned to ${targetUser.firstName} ${targetUser.lastName}.`,
+      assignment,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /api/projects/assignments/:id - Remove or Revoke Project Assignment
+router.delete('/assignments/:id', authenticate, authorize('SUPER_ADMIN', 'ADMIN'), async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const existing = await prisma.projectMember.findUnique({
+      where: { id },
+      include: {
+        project: { select: { name: true } },
+        user: { select: { firstName: true, lastName: true } },
+      },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ success: false, error: 'Project assignment record not found.' });
+    }
+
+    await prisma.projectMember.delete({ where: { id } });
+
+    await logAudit({
+      userId: req.user.id,
+      action: 'PROJECT_ASSIGNMENT_REVOKED',
+      entity: 'ProjectMember',
+      entityId: id,
+      details: {
+        projectName: existing.project?.name,
+        userName: `${existing.user?.firstName} ${existing.user?.lastName}`,
+      },
+    });
+
+    res.json({
+      success: true,
+      message: `Assignment for "${existing.user?.firstName} ${existing.user?.lastName}" from project "${existing.project?.name}" has been revoked.`,
+    });
   } catch (err) {
     next(err);
   }

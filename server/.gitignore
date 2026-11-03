@@ -18,3 +18,10 @@ yarn-error.log*
 *.sqlite3
 *.db
 pg_data/
+
+# User Uploads
+uploads/*
+!uploads/.gitkeep
+uploads/avatars/*
+!uploads/avatars/.gitkeep
+

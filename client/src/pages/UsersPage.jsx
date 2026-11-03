@@ -58,6 +58,8 @@ export const UsersPage = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [tempPasswordNotice, setTempPasswordNotice] = useState(null);
+  const [emailStatusNotice, setEmailStatusNotice] = useState(null);
+  const [retryingEmailId, setRetryingEmailId] = useState(null);
 
   // Permission Matrix State
   const [selectedRoleForPerms, setSelectedRoleForPerms] = useState('ADMIN');
@@ -222,7 +224,7 @@ export const UsersPage = () => {
     if (!approvalTargetUser) return;
     try {
       setApprovalSubmitting(true);
-      await apiFetch(`/users/${approvalTargetUser.id}/approval`, {
+      const res = await apiFetch(`/users/${approvalTargetUser.id}/approval`, {
         method: 'PATCH',
         body: JSON.stringify({
           decision: approvalDecision,
@@ -232,6 +234,21 @@ export const UsersPage = () => {
           designation: approvalDesignation || undefined,
         }),
       });
+
+      if (res.emailDelivery) {
+        if (res.emailDelivery.success) {
+          setEmailStatusNotice({
+            type: 'success',
+            message: `User approved successfully. Welcome email sent to ${approvalTargetUser.email} (Message ID: ${res.emailDelivery.messageId}${res.emailDelivery.isSimulated ? ' - Dev Mode' : ''}).`,
+          });
+        } else {
+          setEmailStatusNotice({
+            type: 'warning',
+            message: `User approved successfully, but welcome email delivery encountered an issue: ${res.emailDelivery.error || 'Check SMTP configuration'}. You can retry anytime using the Retry Email action.`,
+          });
+        }
+      }
+
       setShowApprovalModal(false);
       setApprovalTargetUser(null);
       await loadData();
@@ -239,6 +256,33 @@ export const UsersPage = () => {
       alert(err.message);
     } finally {
       setApprovalSubmitting(false);
+    }
+  };
+
+  const handleRetryWelcomeEmail = async (targetUser) => {
+    if (!targetUser) return;
+    try {
+      setRetryingEmailId(targetUser.id);
+      const res = await apiFetch(`/users/${targetUser.id}/retry-welcome-email`, {
+        method: 'PATCH',
+      });
+
+      if (res.emailDelivery?.success) {
+        setEmailStatusNotice({
+          type: 'success',
+          message: `Welcome email sent successfully to ${targetUser.email} (Message ID: ${res.emailDelivery.messageId}${res.emailDelivery.isSimulated ? ' - Dev Mode' : ''}).`,
+        });
+      } else {
+        setEmailStatusNotice({
+          type: 'warning',
+          message: `Email dispatch failed for ${targetUser.email}: ${res.emailDelivery?.error || res.message}`,
+        });
+      }
+      await loadData();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setRetryingEmailId(null);
     }
   };
 
@@ -440,6 +484,38 @@ export const UsersPage = () => {
         </div>
       )}
 
+      {/* Welcome Email Status Alert Notice */}
+      {emailStatusNotice && (
+        <div style={{
+          padding: '1rem 1.25rem',
+          background: emailStatusNotice.type === 'success' ? '#F0FDF4' : '#FFFBEB',
+          border: `1px solid ${emailStatusNotice.type === 'success' ? '#BBF7D0' : '#FDE68A'}`,
+          borderRadius: 'var(--radius-sm)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '1rem',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {emailStatusNotice.type === 'success' ? (
+              <CheckCircle2 size={18} color="#16A34A" style={{ flexShrink: 0 }} />
+            ) : (
+              <AlertCircle size={18} color="#D97706" style={{ flexShrink: 0 }} />
+            )}
+            <div style={{ fontSize: '0.86rem', color: emailStatusNotice.type === 'success' ? '#166534' : '#92400E', fontWeight: 600 }}>
+              {emailStatusNotice.message}
+            </div>
+          </div>
+          <button
+            onClick={() => setEmailStatusNotice(null)}
+            className="btn-secondary"
+            style={{ fontSize: '0.78rem', padding: '0.25rem 0.55rem', whiteSpace: 'nowrap' }}
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* VIEW: NEW USER APPROVALS & DEPARTMENT ASSIGNMENT TAB */}
       {activeTab === 'approvals' && (
         <div className="ref-card">
@@ -503,18 +579,21 @@ export const UsersPage = () => {
           </div>
 
           <div className="data-table-container">
-            <table className="data-table">
+            <table className="data-table users-approval-table">
               <thead>
                 <tr>
-                  <th>User ID / Client ID</th>
-                  <th>Full Name</th>
-                  <th>Email Address</th>
-                  <th>Registration Date & Time</th>
-                  <th>Current Role</th>
-                  <th>Assigned Department</th>
-                  <th>Account Status</th>
-                  <th>Approval Status</th>
-                  <th>Action</th>
+                  <th style={{ width: '110px' }}>User / Client ID</th>
+                  <th style={{ minWidth: '160px' }}>Full Name</th>
+                  <th style={{ minWidth: '150px' }}>Email Address</th>
+                  <th style={{ width: '135px' }}>Registration Date</th>
+                  <th style={{ width: '100px' }}>Role</th>
+                  <th style={{ minWidth: '140px' }}>Department</th>
+                  <th style={{ width: '95px' }}>Account</th>
+                  <th style={{ width: '115px' }}>Approval</th>
+                  <th style={{ minWidth: '155px' }}>Email Delivery</th>
+                  {['ADMIN', 'SUPER_ADMIN'].includes(currentUser?.role) && (
+                    <th style={{ minWidth: '200px' }}>Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -541,7 +620,7 @@ export const UsersPage = () => {
                   if (filteredList.length === 0) {
                     return (
                       <tr>
-                        <td colSpan="9" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--text-secondary)' }}>
+                        <td colSpan={['ADMIN', 'SUPER_ADMIN'].includes(currentUser?.role) ? 10 : 9} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--text-secondary)' }}>
                           No registration records match the selected filter.
                         </td>
                       </tr>
@@ -560,13 +639,14 @@ export const UsersPage = () => {
                             <span style={{
                               fontFamily: 'monospace',
                               fontWeight: 700,
-                              fontSize: '0.82rem',
+                              fontSize: '0.8rem',
                               background: 'rgba(23, 101, 232, 0.1)',
                               color: 'var(--primary-blue)',
-                              padding: '0.2rem 0.5rem',
+                              padding: '0.15rem 0.45rem',
                               borderRadius: '4px',
                               border: '1px solid rgba(23, 101, 232, 0.25)',
                               display: 'inline-block',
+                              whiteSpace: 'nowrap',
                             }}>
                               {u.temporaryClientId}
                             </span>
@@ -577,23 +657,53 @@ export const UsersPage = () => {
                           )}
                         </td>
                         <td>
-                          <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.92rem' }}>
-                            {u.firstName} {u.lastName}
-                          </div>
-                          {u.phone && (
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '2px' }}>
-                              <Phone size={11} /> {u.phone}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                            <div style={{
+                              width: '30px',
+                              height: '30px',
+                              borderRadius: '50%',
+                              background: u.avatarUrl ? '#FFFFFF' : 'var(--primary-light)',
+                              color: 'var(--primary-orange)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: 700,
+                              fontSize: '0.78rem',
+                              border: '1px solid var(--border-color)',
+                              overflow: 'hidden',
+                              flexShrink: 0,
+                            }}>
+                              {u.avatarUrl ? (
+                                <img
+                                  src={u.avatarUrl}
+                                  alt=""
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                  onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                              ) : (
+                                <span>{(u.firstName?.[0] || 'U').toUpperCase()}</span>
+                              )}
                             </div>
-                          )}
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.88rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {u.firstName} {u.lastName}
+                              </div>
+                              {u.phone && (
+                                <div style={{ fontSize: '0.73rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.2rem', marginTop: '1px', whiteSpace: 'nowrap' }}>
+                                  <Phone size={10} /> {u.phone}
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </td>
                         <td>
-                          <div style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                            <Mail size={13} /> {u.email}
+                          <div className="table-cell-email" title={u.email} style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            <Mail size={12} style={{ flexShrink: 0 }} /> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{u.email}</span>
                           </div>
                         </td>
-                        <td style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                          {new Date(u.createdAt).toLocaleDateString()}
-                          <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
+                        <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                          <div>{new Date(u.createdAt).toLocaleDateString()}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
                             {new Date(u.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </div>
                         </td>
@@ -602,61 +712,139 @@ export const UsersPage = () => {
                             u.role === 'SUPER_ADMIN' ? 'badge-danger' :
                             u.role === 'ADMIN' ? 'badge-warning' :
                             u.role === 'CLIENT' ? 'badge-success' : 'badge-info'
-                          }`}>
+                          }`} style={{ fontSize: '0.72rem', padding: '0.2rem 0.5rem', whiteSpace: 'nowrap' }}>
                             {u.role}
                           </span>
                         </td>
                         <td>
-                          <div style={{ fontSize: '0.82rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+                          <div className="table-cell-dept" style={{ fontSize: '0.82rem', color: 'var(--text-primary)', fontWeight: 600, lineHeight: 1.3 }}>
                             {u.employeeProfile?.department?.name || (u.role === 'CLIENT' ? 'External / Client Portal' : 'Unassigned')}
                           </div>
                           {u.employeeProfile?.designation && (
-                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: 1.2 }}>
                               {u.employeeProfile.designation}
                             </div>
                           )}
                         </td>
                         <td>
-                          <span className={`badge ${u.isActive ? 'badge-success' : 'badge-danger'}`}>
+                          <span className={`badge ${u.isActive ? 'badge-success' : 'badge-danger'}`} style={{ fontSize: '0.72rem', padding: '0.2rem 0.5rem', whiteSpace: 'nowrap' }}>
                             {u.isActive ? 'ACTIVE' : 'DEACTIVATED'}
                           </span>
                         </td>
                         <td>
                           {isPending && (
-                            <span className="badge badge-warning" style={{ fontWeight: 700, letterSpacing: '0.02em' }}>
-                              PENDING APPROVAL
+                            <span className="badge badge-warning" style={{ fontWeight: 700, letterSpacing: '0.02em', fontSize: '0.72rem', padding: '0.2rem 0.5rem', whiteSpace: 'nowrap' }}>
+                              PENDING
                             </span>
                           )}
                           {isApproved && (
-                            <span className="badge badge-success" style={{ fontWeight: 700 }}>
+                            <span className="badge badge-success" style={{ fontWeight: 700, fontSize: '0.72rem', padding: '0.2rem 0.5rem', whiteSpace: 'nowrap' }}>
                               APPROVED
                             </span>
                           )}
                           {isRejected && (
-                            <span className="badge badge-danger" style={{ fontWeight: 700 }}>
+                            <span className="badge badge-danger" style={{ fontWeight: 700, fontSize: '0.72rem', padding: '0.2rem 0.5rem', whiteSpace: 'nowrap' }}>
                               REJECTED
                             </span>
                           )}
                         </td>
                         <td>
-                          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                            <button
-                              onClick={() => openApprovalModal(u)}
-                              className="btn-primary"
-                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
-                            >
-                              <Shield size={13} /> Assign Department
-                            </button>
-                            <button
-                              onClick={() => handleToggleStatus(u)}
-                              className="btn-secondary"
-                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
-                              title="Activate or Deactivate User Login"
-                            >
-                              {u.isActive ? 'Deactivate' : 'Activate'}
-                            </button>
-                          </div>
+                          {(() => {
+                            if (isPending) {
+                              return (
+                                <span style={{ fontSize: '0.73rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                                  <Lock size={11} /> Awaiting Approval
+                                </span>
+                              );
+                            }
+                            if (isRejected) {
+                              return (
+                                <span style={{ fontSize: '0.73rem', color: 'var(--text-dim)' }}>
+                                  Not Applicable
+                                </span>
+                              );
+                            }
+                            // User is approved
+                            const emailStatus = u.welcomeEmailStatus;
+                            if (!emailStatus) {
+                              return (
+                                <span className="badge badge-secondary" style={{ fontSize: '0.7rem', padding: '0.2rem 0.45rem', whiteSpace: 'nowrap' }}>
+                                  Email Pending
+                                </span>
+                              );
+                            }
+                            if (emailStatus.status === 'SENT') {
+                              return (
+                                <div title={`Delivered via ${emailStatus.messageId || 'Provider'}\nSent: ${emailStatus.sentAt ? new Date(emailStatus.sentAt).toLocaleString() : ''}`}>
+                                  <span className="badge badge-success" style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}>
+                                    <CheckCircle2 size={11} /> Email Sent
+                                  </span>
+                                  {emailStatus.sentAt && (
+                                    <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)', marginTop: '2px' }}>
+                                      {new Date(emailStatus.sentAt).toLocaleDateString()}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                            if (emailStatus.status === 'FAILED') {
+                              return (
+                                <div title={`Delivery Error: ${emailStatus.error || 'Unknown'}`}>
+                                  <span className="badge badge-danger" style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}>
+                                    <AlertCircle size={11} /> Email Failed
+                                  </span>
+                                  {['ADMIN', 'SUPER_ADMIN'].includes(currentUser?.role) && (
+                                    <button
+                                      onClick={() => handleRetryWelcomeEmail(u)}
+                                      disabled={retryingEmailId === u.id}
+                                      className="btn-secondary"
+                                      style={{
+                                        fontSize: '0.68rem',
+                                        padding: '0.15rem 0.4rem',
+                                        marginTop: '3px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.2rem',
+                                        color: 'var(--primary-blue)',
+                                        borderColor: 'var(--primary-blue)',
+                                      }}
+                                      title="Retry sending welcome email to user"
+                                    >
+                                      <RefreshCw size={10} className={retryingEmailId === u.id ? 'spin' : ''} />
+                                      {retryingEmailId === u.id ? 'Sending...' : 'Retry Email'}
+                                    </button>
+                                  )}
+                                </div>
+                              );
+                            }
+                            return (
+                              <span className="badge badge-secondary" style={{ fontSize: '0.7rem', padding: '0.2rem 0.45rem', whiteSpace: 'nowrap' }}>
+                                Email Pending
+                              </span>
+                            );
+                          })()}
                         </td>
+                          {['ADMIN', 'SUPER_ADMIN'].includes(currentUser?.role) && (
+                            <td>
+                              <div className="table-action-group">
+                                <button
+                                  onClick={() => openApprovalModal(u)}
+                                  className="btn-primary"
+                                  style={{ padding: '0.3rem 0.55rem', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}
+                                >
+                                  <Shield size={12} /> Assign Dept
+                                </button>
+                                <button
+                                  onClick={() => handleToggleStatus(u)}
+                                  className="btn-secondary"
+                                  style={{ padding: '0.3rem 0.55rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+                                  title="Activate or Deactivate User Login"
+                                >
+                                  {u.isActive ? 'Deactivate' : 'Activate'}
+                                </button>
+                              </div>
+                            </td>
+                          )}
                       </tr>
                     );
                   });
@@ -779,13 +967,15 @@ export const UsersPage = () => {
                           >
                             <Key size={13} /> Reset Pass
                           </button>
-                          <button
-                            onClick={() => handleToggleStatus(u)}
-                            className="btn-secondary"
-                            style={{ padding: '0.3rem 0.55rem', fontSize: '0.75rem' }}
-                          >
-                            {u.isActive ? 'Disable' : 'Enable'}
-                          </button>
+                          {['ADMIN', 'SUPER_ADMIN'].includes(currentUser?.role) && (
+                            <button
+                              onClick={() => handleToggleStatus(u)}
+                              className="btn-secondary"
+                              style={{ padding: '0.3rem 0.55rem', fontSize: '0.75rem' }}
+                            >
+                              {u.isActive ? 'Disable' : 'Enable'}
+                            </button>
+                          )}
                           {currentUser?.role === 'SUPER_ADMIN' && u.id !== currentUser.id && (
                             <button
                               onClick={() => handleDeleteSafe(u)}
@@ -1282,32 +1472,64 @@ export const UsersPage = () => {
 
               {/* Role Assignment Dropdown */}
               {approvalDecision === 'APPROVED' && (
-                <div>
-                  <label className="form-label" style={{ fontWeight: 700 }}>
-                    Assign Final Role *
-                  </label>
-                  <select
-                    value={approvalRole}
-                    onChange={(e) => setApprovalRole(e.target.value)}
-                    className="search-input"
-                    style={{ width: '100%', fontWeight: 600 }}
-                  >
-                    <option value="CLIENT">Client</option>
-                    <option value="INTERN">Intern</option>
-                    <option value="STAFF">Staff Specialist</option>
-                    <option value="TEAM_LEADER">Team Leader</option>
-                    <option value="ACCOUNTS_MANAGER">Accounts Manager</option>
-                    <option value="HR_MANAGER">HR Manager</option>
-                    <option value="ADMIN">Admin</option>
-                    {/* Super Admin security check: Only Super Admin can assign Super Admin */}
-                    {currentUser?.role === 'SUPER_ADMIN' && (
-                      <option value="SUPER_ADMIN">Super Admin</option>
-                    )}
-                  </select>
-                  <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                    * Users cannot self-assign roles. Upon approval, their access permissions and dashboard redirect will match this role.
+                <>
+                  <div>
+                    <label className="form-label" style={{ fontWeight: 700 }}>
+                      Assign Final Role *
+                    </label>
+                    <select
+                      value={approvalRole}
+                      onChange={(e) => setApprovalRole(e.target.value)}
+                      className="search-input"
+                      style={{ width: '100%', fontWeight: 600 }}
+                    >
+                      <option value="CLIENT">Client</option>
+                      <option value="INTERN">Intern</option>
+                      <option value="STAFF">Staff Specialist</option>
+                      <option value="TEAM_LEADER">Team Leader</option>
+                      <option value="ACCOUNTS_MANAGER">Accounts Manager</option>
+                      <option value="HR_MANAGER">HR Manager</option>
+                      <option value="ADMIN">Admin</option>
+                      {/* Super Admin security check: Only Super Admin can assign Super Admin */}
+                      {currentUser?.role === 'SUPER_ADMIN' && (
+                        <option value="SUPER_ADMIN">Super Admin</option>
+                      )}
+                    </select>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                      * Users cannot self-assign roles. Upon approval, their access permissions and dashboard redirect will match this role.
+                    </div>
                   </div>
-                </div>
+
+                  {approvalRole !== 'CLIENT' && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700 }}>Assigned Department</label>
+                        <select
+                          value={approvalDepartmentId}
+                          onChange={(e) => setApprovalDepartmentId(e.target.value)}
+                          className="search-input"
+                          style={{ width: '100%' }}
+                        >
+                          <option value="">Select Department...</option>
+                          {departments.map((d) => (
+                            <option key={d.id} value={d.id}>{d.name}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700 }}>Designation</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Senior Developer"
+                          value={approvalDesignation}
+                          onChange={(e) => setApprovalDesignation(e.target.value)}
+                          className="search-input"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Action buttons */}

@@ -107,4 +107,44 @@ describe('I2S Business OS - Security & RBAC Acceptance Tests', () => {
     expect(res.status).toBe(200);
     expect(res.body.notifications.length).toBeGreaterThan(0);
   });
+
+  it('12. Welcome Email template generator produces valid HTML and text with required fields', async () => {
+    const { buildWelcomeEmailHtml, buildWelcomeEmailText } = await import('../src/services/emailService.js');
+    const params = {
+      userName: 'John Doe',
+      userEmail: 'john.doe@example.com',
+      departmentName: 'Engineering & Development',
+      assignedRole: 'STAFF',
+      loginUrl: 'http://localhost:5173/login',
+    };
+
+    const html = buildWelcomeEmailHtml(params);
+    const text = buildWelcomeEmailText(params);
+
+    // Verify HTML contains required placeholders and values
+    expect(html).toContain('John Doe');
+    expect(html).toContain('john.doe@example.com');
+    expect(html).toContain('Engineering & Development');
+    expect(html).toContain('STAFF');
+    expect(html).toContain('http://localhost:5173/login');
+    expect(html).toContain('Welcome to I2S');
+    expect(html).toContain('Approved');
+
+    // Verify plain text fallback
+    expect(text).toContain('Dear John Doe,');
+    expect(text).toContain('Welcome to I2S!');
+    expect(text).toContain('Assigned Department: Engineering & Development');
+    expect(text).toContain('Assigned Role: STAFF');
+    expect(text).toContain('Account Status: Approved');
+    expect(text).toContain('http://localhost:5173/login');
+  });
+
+  it('13. Unauthorized users cannot trigger welcome email retry', async () => {
+    const res = await request(app)
+      .patch('/api/users/non-existent-id/retry-welcome-email')
+      .set('Authorization', `Bearer ${clientToken}`);
+
+    expect(res.status).toBe(403);
+  });
 });
+

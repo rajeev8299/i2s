@@ -114,7 +114,8 @@ model User {
   attendances      Attendance[]
   notifications    Notification[]
   auditLogs        AuditLog[]
-  projectMemberships ProjectMember[]
+  projectMemberships ProjectMember[]       @relation("ProjectMemberUser")
+  assignedProjectMembers ProjectMember[]   @relation("ProjectMemberAssigner")
   createdInvoices  Invoice[]        @relation("InvoiceCreator")
   recordedPayments Payment[]        @relation("PaymentRecorder")
   dailyReports     DailyWorkReport[] @relation("ReportAuthor")
@@ -246,14 +247,16 @@ model Project {
 }
 
 model ProjectMember {
-  id        String   @id @default(uuid())
-  projectId String
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  roleTitle String   @default("Member") // E.g., Team Leader, Lead Dev, Designer
-  isLeader  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id           String    @id @default(uuid())
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User      @relation("ProjectMemberUser", fields: [userId], references: [id], onDelete: Cascade)
+  roleTitle    String    @default("Member") // E.g., Team Leader, Lead Dev, Designer
+  isLeader     Boolean   @default(false)
+  assignedById String?
+  assignedBy   User?     @relation("ProjectMemberAssigner", fields: [assignedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
 
   @@unique([projectId, userId])
 }
@@ -705,4 +708,33 @@ model ServiceRequest {
 
   @@index([clientId, status])
 }
+
+// -------------------------------------------------------------
+// 11. GUIDANCE ON VIDEO (LINK-BASED SOCIAL VIDEO SYSTEM)
+// -------------------------------------------------------------
+enum VideoPlatform {
+  YOUTUBE
+  INSTAGRAM
+  FACEBOOK
+  OTHER
+}
+
+model GuidanceVideo {
+  id           String        @id @default(uuid())
+  originalUrl  String
+  platform     VideoPlatform @default(YOUTUBE)
+  title        String
+  description  String?
+  thumbnailUrl String?
+  category     String        @default("Engineering")
+  duration     String?
+  displayOrder Int           @default(0)
+  isActive     Boolean       @default(true)
+  createdById  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
 
