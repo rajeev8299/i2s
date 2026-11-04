@@ -151,22 +151,6 @@ export const LandingPage = () => {
 
         {/* Right: Actions & Mobile Hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Link
-            to="/login"
-            className="btn-secondary"
-            style={{
-              fontSize: '0.85rem',
-              padding: '0.6rem 1.15rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              textDecoration: 'none',
-            }}
-          >
-            <Lock size={15} color="var(--primary-blue)" />
-            <span>Sign In</span>
-          </Link>
-
           <Link to="/login" className="btn-primary" style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
             Get Started <ArrowRight size={16} />
           </Link>
