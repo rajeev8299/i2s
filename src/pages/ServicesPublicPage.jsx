@@ -48,8 +48,8 @@ export const ServicesPublicPage = () => {
             <Zap size={14} /> Full-Stack Software, AI & Growth Capabilities
           </div>
 
-          <h1 style={{
-            fontSize: '3.2rem',
+          <h1 className="public-hero-title" style={{
+            fontSize: 'clamp(2.1rem, 5.5vw, 3.2rem)',
             fontFamily: 'var(--font-heading)',
             fontWeight: 800,
             lineHeight: 1.15,

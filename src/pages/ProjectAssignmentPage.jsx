@@ -462,8 +462,8 @@ export const ProjectAssignmentPage = () => {
             No project assignments found matching your search.
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table className="data-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+          <div className="data-table-container" style={{ overflowX: 'auto' }}>
+            <table className="data-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', minWidth: '700px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border-color)', background: 'var(--bg-subtle)' }}>
                   <th style={{ padding: '0.75rem 1rem', fontSize: '0.78rem', fontWeight: 700, color: 'var(--dark-navy)' }}>PROJECT</th>

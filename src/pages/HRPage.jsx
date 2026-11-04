@@ -1385,8 +1385,8 @@ export const HRPage = () => {
                 </div>
 
                 {/* Date-wise Attendance Table */}
-                <div style={{ overflowX: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                  <table className="data-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+                <div className="data-table-container" style={{ overflowX: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                  <table className="data-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', minWidth: '650px' }}>
                     <thead>
                       <tr style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border-color)' }}>
                         <th style={{ padding: '0.65rem 0.85rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--dark-navy)' }}>DATE</th>

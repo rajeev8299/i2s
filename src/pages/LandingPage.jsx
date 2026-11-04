@@ -56,7 +56,7 @@ export const LandingPage = () => {
   return (
     <div style={{ background: 'var(--bg-app)', color: 'var(--text-main)', minHeight: '100vh', overflowX: 'hidden' }}>
       {/* 1. PROFESSIONAL NAVBAR */}
-      <header style={{
+      <header className="public-navbar-header" style={{
         padding: '1.15rem 3rem',
         display: 'flex',
         alignItems: 'center',
@@ -68,18 +68,19 @@ export const LandingPage = () => {
         zIndex: 50,
       }}>
         {/* Left: Branding */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0, textDecoration: 'none' }}>
           <img
             src="/i2s-logo.webp"
             alt="I2S — Imagination2Software"
             style={{
-              width: '42px',
-              height: '42px',
+              width: '40px',
+              height: '40px',
               objectFit: 'contain',
+              flexShrink: 0
             }}
           />
-          <div>
-            <div style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)', color: 'var(--text-main)' }}>
+          <div style={{ minWidth: 0 }}>
+            <div className="public-brand-title" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               Imagination2Software
             </div>
           </div>
@@ -227,10 +228,10 @@ export const LandingPage = () => {
       {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
       <section style={{
         background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
-        padding: '5rem 2rem 4rem',
+        padding: 'clamp(2.5rem, 5vw, 5rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 4vw, 4rem)',
         borderBottom: '1px solid var(--border-color)',
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '3.5rem', alignItems: 'center' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
           {/* Left Text Column */}
           <div>
             <div style={{
@@ -250,8 +251,8 @@ export const LandingPage = () => {
               <Sparkles size={15} /> All-in-One Business Operating System
             </div>
 
-            <h1 style={{
-              fontSize: '3.4rem',
+            <h1 className="public-hero-title" style={{
+              fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
               fontFamily: 'var(--font-heading)',
               fontWeight: 800,
               lineHeight: 1.15,
@@ -263,7 +264,7 @@ export const LandingPage = () => {
             </h1>
 
             <p style={{
-              fontSize: '1.1rem',
+              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
               color: 'var(--text-muted)',
               lineHeight: 1.6,
               marginBottom: '2rem',
@@ -407,8 +408,8 @@ export const LandingPage = () => {
           {/* Service Cards Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '1.75rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+            gap: '1.5rem',
           }}>
             {filteredServices.map((service) => (
               <div
@@ -565,8 +566,8 @@ export const LandingPage = () => {
           {/* Product Cards Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '2rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+            gap: '1.75rem',
             marginBottom: '4rem'
           }}>
             {filteredProducts.map((product) => {
@@ -922,8 +923,8 @@ export const LandingPage = () => {
       <VideoCarouselSection />
 
       {/* 8. FOOTER */}
-      <footer style={{ background: 'var(--dark-navy)', color: '#FFFFFF', padding: '2.5rem 3rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+      <footer style={{ background: 'var(--dark-navy)', color: '#FFFFFF', padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3vw, 3rem)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <img
               src="/i2s-logo.webp"
@@ -939,7 +940,7 @@ export const LandingPage = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.82rem', color: '#94A3B8' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', fontSize: '0.82rem', color: '#94A3B8' }}>
             <Link to="/login?role=super-admin" style={{ color: '#94A3B8' }}>Super Admin</Link>
             <Link to="/login?role=accounts-manager" style={{ color: '#94A3B8' }}>Accounts</Link>
             <Link to="/login?role=client" style={{ color: '#94A3B8' }}>Client Portal</Link>

@@ -441,7 +441,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1.25rem' }}>
+        <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
           <Link to="/app/hr/attendance" className="btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
             <UserCheck size={16} /> Employee Attendance & Shift Logs
           </Link>
@@ -525,7 +525,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+        <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
           <Link to="/app/finance/invoices" className="btn-primary">Manage Invoices</Link>
           <Link to="/app/finance/ledger" className="btn-secondary">View Trial Balance</Link>
           <Link to="/app/hr/attendance" className="btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -595,7 +595,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <Link to="/app/hr/attendance" className="btn-primary">View Attendance Logs</Link>
           <Link to="/app/hr/payroll" className="btn-secondary">Payroll Processing</Link>
         </div>
@@ -662,7 +662,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <Link to="/app/team-reports" className="btn-primary">Intern Work Reports</Link>
           <Link to="/app/daily-work" className="btn-secondary">Submit My Daily Report</Link>
           <Link to="/app/tasks" className="btn-secondary">Review & Assign Tasks</Link>
@@ -721,7 +721,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <Link to="/app/daily-work" className="btn-primary">
             {user?.role === 'INTERN' ? 'Daily Work Report' : 'Daily Work Log'}
           </Link>
@@ -774,7 +774,7 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div className="responsive-action-cluster" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
         <Link to="/app/projects" className="btn-primary">View Project Milestones</Link>
         <Link to="/app/finance/invoices" className="btn-secondary">Download PDF Invoices</Link>
       </div>

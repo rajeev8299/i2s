@@ -872,7 +872,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
-/* Responsive Media Queries */
+/* Responsive Media Queries & Mobile System Enhancements */
 @media (max-width: 900px) {
   .dashboard-sidebar {
     position: fixed !important;
@@ -921,6 +921,99 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
   .dashboard-topbar {
     padding: 0 1rem !important;
+  }
+  .welcome-banner {
+    padding: 1rem 1rem 0.5rem !important;
+  }
+  .dashboard-main-content {
+    padding: 1rem !important;
+  }
+  .dashboard-user-meta {
+    display: none !important;
+  }
+  .public-navbar-header {
+    padding: 0.85rem 1.25rem !important;
+  }
+  .public-brand-title {
+    font-size: 1.05rem !important;
+  }
+  .public-hero-title {
+    font-size: 2.2rem !important;
+  }
+  .public-footer-container {
+    padding: 2.5rem 1.25rem 2rem !important;
+    gap: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-topbar {
+    padding: 0 0.75rem !important;
+  }
+  .welcome-banner {
+    padding: 0.75rem 0.75rem 0.25rem !important;
+  }
+  .dashboard-main-content {
+    padding: 0.75rem !important;
+  }
+  .public-navbar-header {
+    padding: 0.75rem 0.85rem !important;
+  }
+  .public-brand-title {
+    font-size: 0.95rem !important;
+  }
+  .public-hero-title {
+    font-size: 1.85rem !important;
+  }
+  .ref-card {
+    padding: 0.95rem;
+  }
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+  .modal-container {
+    max-height: 94vh;
+  }
+  .modal-header, .modal-body, .modal-footer {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Touch targets and tap-friendly touch area guarantees */
+button, input, select, textarea, .btn-primary, .btn-secondary, .btn-outline, .btn-danger, .glow-btn {
+  touch-action: manipulation;
+}
+
+button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .btn-danger, .glow-btn {
+  min-height: 42px;
+}
+
+@media (max-width: 768px) {
+  /* Prevent horizontal screen blowouts and enforce auto table scrollers */
+  .data-table-container {
+    border-radius: var(--radius-sm);
+    box-shadow: none;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  /* Form and grid single-column collapse for narrow phones */
+  .responsive-form-grid,
+  .form-two-col {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Responsive action clusters */
+  .responsive-action-cluster {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .responsive-action-cluster > * {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 

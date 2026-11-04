@@ -21,12 +21,29 @@ export const PublicNavbar = () => {
     { label: 'Contact', path: '/contact' },
   ];
 
+  // Automatically close mobile menu when path changes
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const isActive = (path) => {
     return location.pathname === path;
   };
 
   return (
-    <header style={{
+    <header className="public-navbar-header" style={{
       padding: '1.1rem 2.5rem',
       display: 'flex',
       alignItems: 'center',
@@ -39,24 +56,27 @@ export const PublicNavbar = () => {
       boxShadow: 'var(--shadow-xs)'
     }}>
       {/* Brand Logo & Name */}
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', textDecoration: 'none' }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', minWidth: 0 }}>
         <img
           src="/i2s-logo.webp"
           alt="I2S — Imagination2Software"
-          style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+          style={{ width: '38px', height: '38px', objectFit: 'contain', flexShrink: 0 }}
         />
-        <div>
-          <div style={{
+        <div style={{ minWidth: 0 }}>
+          <div className="public-brand-title" style={{
             fontWeight: 800,
             fontSize: '1.2rem',
             letterSpacing: '-0.02em',
             fontFamily: 'var(--font-heading)',
             color: 'var(--text-main)',
-            lineHeight: 1.1
+            lineHeight: 1.1,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}>
             Imagination2Software
           </div>
-          <div style={{ fontSize: '0.7rem', color: 'var(--primary-orange)', fontWeight: 700, letterSpacing: '0.06em' }}>
+          <div style={{ fontSize: '0.68rem', color: 'var(--primary-orange)', fontWeight: 700, letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
             SOFTWARE & AI AGENCY
           </div>
         </div>
@@ -268,13 +288,13 @@ export const PublicFooter = () => {
       </div>
 
       {/* Main Footer Links */}
-      <div style={{
+      <div className="public-footer-container" style={{
         maxWidth: '1240px',
         margin: '0 auto',
         padding: '4rem 2rem 3rem',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '3rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '2.5rem'
       }}>
         {/* Col 1: Brand & Positioning */}
         <div>

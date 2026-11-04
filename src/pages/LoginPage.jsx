@@ -84,9 +84,9 @@ export const LoginPage = () => {
       alignItems: 'center',
       justifyContent: 'center',
       background: 'radial-gradient(circle at top, #1e1e1e 0%, #111111 100%)',
-      padding: '2rem 1rem',
+      padding: 'clamp(1rem, 3vw, 2rem) 1rem',
     }}>
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '480px', padding: '2.5rem' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '480px', padding: 'clamp(1.25rem, 4vw, 2.5rem)' }}>
         {/* Header Branding */}
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
           <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
@@ -297,7 +297,7 @@ export const LoginPage = () => {
         {/* MODE 2: ACCOUNT REGISTRATION FORM */}
         {mode === 'register' && !regSuccess && (
           <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div className="form-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.35rem', color: '#E2E8F0' }}>
                   First Name *
@@ -382,7 +382,7 @@ export const LoginPage = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div className="form-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.35rem', color: '#E2E8F0' }}>
                   Phone Number

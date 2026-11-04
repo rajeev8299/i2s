@@ -507,7 +507,7 @@ export const DailyWorkPage = () => {
                 </div>
               )}
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div className="form-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
                   <strong style={{ color: 'var(--text-secondary)' }}>Current Status:</strong>
                   <p style={{ marginTop: '0.2rem', fontWeight: 600 }}>

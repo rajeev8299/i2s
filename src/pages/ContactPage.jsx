@@ -118,8 +118,8 @@ export const ContactPage = () => {
             <Sparkles size={14} /> [ CONTACT US ]
           </div>
 
-          <h1 style={{
-            fontSize: '3.4rem',
+          <h1 className="public-hero-title" style={{
+            fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
             fontFamily: 'var(--font-heading)',
             fontWeight: 800,
             lineHeight: 1.15,

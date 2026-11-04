@@ -22,6 +22,23 @@ export const DashboardLayout = () => {
   const [pendingLeaveCount, setPendingLeaveCount] = useState(0);
 
   useEffect(() => {
+    // Automatically close mobile drawer navigation whenever user changes route
+    setMobileSidebarOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    // Prevent background scrolling when mobile sidebar drawer is open
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileSidebarOpen]);
+
+  useEffect(() => {
     fetchNotifications();
     if (user?.role === 'ADMIN') {
       fetchAdminLeaves();
@@ -1322,9 +1339,9 @@ export const DashboardLayout = () => {
                   <span>{(user?.firstName?.[0] || 'U').toUpperCase()}</span>
                 )}
               </div>
-              <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>{user?.firstName} {user?.lastName}</div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{user?.role?.replace('_', ' ')}</div>
+              <div className="dashboard-user-meta">
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', whiteSpace: 'nowrap', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.firstName} {user?.lastName}</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{user?.role?.replace('_', ' ')}</div>
               </div>
             </NavLink>
           </div>
@@ -1341,6 +1358,7 @@ export const DashboardLayout = () => {
 
           return (
             <div
+              className="welcome-banner"
               style={{
                 padding: '1.25rem 2rem 0.5rem',
                 display: 'flex',
@@ -1353,7 +1371,7 @@ export const DashboardLayout = () => {
               <div>
                 <h1
                   style={{
-                    fontSize: '1.5rem',
+                    fontSize: 'clamp(1.15rem, 3.5vw, 1.5rem)',
                     fontWeight: 800,
                     color: 'var(--dark-navy)',
                     fontFamily: 'var(--font-heading)',
@@ -1395,7 +1413,7 @@ export const DashboardLayout = () => {
         })()}
 
         {/* Dedicated Page Main View */}
-        <main style={{ padding: '1.5rem 2rem 2rem', flex: 1 }}>
+        <main className="dashboard-main-content" style={{ padding: '1.5rem 2rem 2rem', flex: 1, minWidth: 0 }}>
           <Outlet />
         </main>
       </div>
