@@ -32,6 +32,7 @@ export const LandingPage = () => {
   const [selectedServiceCategory, setSelectedServiceCategory] = useState('All');
   const [selectedStoreCategory, setSelectedStoreCategory] = useState('All');
   const dropdownRef = useRef(null);
+  const mobileMenuDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -42,6 +43,33 @@ export const LandingPage = () => {
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
+
+  // Handle escape key and outside click for mobile navigation dropdown
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handlePointerDown = (e) => {
+      if (mobileMenuDropdownRef.current && !mobileMenuDropdownRef.current.contains(e.target)) {
+        const toggleBtn = document.querySelector('.landing-mobile-toggle-btn');
+        if (toggleBtn && toggleBtn.contains(e.target)) return;
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', handlePointerDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [mobileMenuOpen]);
 
   const serviceCategories = ['All', 'Engineering', 'AI & Automation', 'Platforms', 'Growth & Marketing'];
   const filteredServices = selectedServiceCategory === 'All'
@@ -148,7 +176,7 @@ export const LandingPage = () => {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
-            className="visible-mobile"
+            className="visible-mobile landing-mobile-toggle-btn"
             style={{
               background: 'none',
               border: '1px solid var(--border-color)',
@@ -157,71 +185,65 @@ export const LandingPage = () => {
               cursor: 'pointer',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--text-main)'
+              color: 'var(--text-main)',
+              minHeight: '40px',
+              minWidth: '40px'
             }}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Mobile Drawer Menu */}
+        {/* Compact Floating Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
-          <div style={{
-            position: 'fixed',
-            top: '68px',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(17, 17, 17, 0.96)',
-            backdropFilter: 'blur(10px)',
-            zIndex: 99,
-            padding: '1.75rem 2rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            overflowY: 'auto'
-          }}>
-            {[
-              { label: 'Home', path: '/' },
-              { label: 'About', path: '/about' },
-              { label: 'Services', path: '/services' },
-              { label: 'Work', path: '/work' },
-              { label: 'Store', path: '/store' },
-              { label: 'Blog', path: '/blog' },
-              { label: 'FAQ', path: '/faq' },
-              { label: 'Contact', path: '/contact' },
-            ].map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  fontSize: '1.2rem',
-                  fontWeight: 700,
-                  color: link.path === '/' ? 'var(--primary-orange)' : '#FFFFFF',
-                  textDecoration: 'none',
-                  padding: '0.75rem 0',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
-                <span>{link.label}</span>
-                <ChevronRight size={18} color="var(--primary-orange)" />
-              </Link>
-            ))}
-            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="btn-primary"
-                style={{ padding: '0.85rem', textAlign: 'center', textDecoration: 'none', justifyContent: 'center' }}
-              >
-                Get Started
-              </Link>
+          <>
+            <div
+              className="compact-mobile-dropdown-backdrop"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <div
+              ref={mobileMenuDropdownRef}
+              className="compact-mobile-dropdown"
+              role="dialog"
+              aria-label="Mobile Navigation"
+            >
+              <div className="compact-mobile-dropdown-body">
+                {[
+                  { label: 'Home', path: '/' },
+                  { label: 'About', path: '/about' },
+                  { label: 'Services', path: '/services' },
+                  { label: 'Work', path: '/work' },
+                  { label: 'Store', path: '/store' },
+                  { label: 'Blog', path: '/blog' },
+                  { label: 'FAQ', path: '/faq' },
+                  { label: 'Contact', path: '/contact' },
+                ].map((link) => {
+                  const active = link.path === '/';
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`compact-mobile-nav-link ${active ? 'active' : ''}`}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronRight size={15} color={active ? 'var(--primary-orange)' : 'rgba(255,255,255,0.4)'} />
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className="compact-mobile-dropdown-footer">
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="btn-primary"
+                >
+                  Get Started <ArrowRight size={15} />
+                </Link>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </header>
 

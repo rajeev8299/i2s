@@ -9,6 +9,7 @@ import { I2S_COMPANY_INFO } from '../data/websiteContent';
 export const PublicNavbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = React.useRef(null);
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -26,15 +27,31 @@ export const PublicNavbar = () => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Handle outside click and escape key to close menu
   React.useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handlePointerDown = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        // Only close if click is outside the toggle button as well
+        const toggleBtn = document.querySelector('.public-mobile-toggle-btn');
+        if (toggleBtn && toggleBtn.contains(e.target)) return;
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', handlePointerDown);
+
     return () => {
-      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', handlePointerDown);
     };
   }, [mobileMenuOpen]);
 
@@ -160,7 +177,7 @@ export const PublicNavbar = () => {
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation menu"
-          className="visible-mobile"
+          className="visible-mobile public-mobile-toggle-btn"
           style={{
             background: 'none',
             border: '1px solid var(--border-color)',
@@ -170,69 +187,64 @@ export const PublicNavbar = () => {
             display: 'none',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--text-main)'
+            color: 'var(--text-main)',
+            minHeight: '40px',
+            minWidth: '40px'
           }}
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Compact Floating Mobile Navigation Dropdown */}
       {mobileMenuOpen && (
-        <div style={{
-          position: 'fixed',
-          top: '68px',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(17, 17, 17, 0.98)',
-          zIndex: 999,
-          padding: '2rem 1.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem',
-          overflowY: 'auto'
-        }}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                fontSize: '1.25rem',
-                fontWeight: 700,
-                color: isActive(link.path) ? 'var(--primary-orange)' : '#FFFFFF',
-                textDecoration: 'none',
-                padding: '0.75rem 0',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              <span>{link.label}</span>
-              <ChevronRight size={18} color="var(--primary-orange)" />
-            </Link>
-          ))}
-          <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <Link
-              to="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="btn-primary"
-              style={{ padding: '0.85rem', textAlign: 'center', textDecoration: 'none', justifyContent: 'center' }}
-            >
-              Start a Project
-            </Link>
-            <Link
-              to="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="btn-secondary"
-              style={{ padding: '0.85rem', textAlign: 'center', textDecoration: 'none', justifyContent: 'center', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.2)' }}
-            >
-              Client & Enterprise Sign In
-            </Link>
+        <>
+          <div
+            className="compact-mobile-dropdown-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            ref={dropdownRef}
+            className="compact-mobile-dropdown"
+            role="dialog"
+            aria-label="Mobile Navigation"
+          >
+            <div className="compact-mobile-dropdown-body">
+              {navLinks.map((link) => {
+                const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`compact-mobile-nav-link ${active ? 'active' : ''}`}
+                  >
+                    <span>{link.label}</span>
+                    <ChevronRight size={15} color={active ? 'var(--primary-orange)' : 'rgba(255,255,255,0.4)'} />
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="compact-mobile-dropdown-footer">
+              <Link
+                to="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-primary"
+              >
+                Start a Project <ArrowRight size={15} />
+              </Link>
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-secondary"
+              >
+                <Lock size={13} color="var(--primary-orange)" />
+                <span>Client & Enterprise Sign In</span>
+              </Link>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Inline styles for responsive visibility */}
