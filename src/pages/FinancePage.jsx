@@ -205,7 +205,7 @@ export const FinancePage = () => {
       </div>
 
       {/* Module Navigation Tabs */}
-      <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <button
           onClick={() => setActiveTab('invoices')}
           style={{
@@ -220,6 +220,7 @@ export const FinancePage = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
+            whiteSpace: 'nowrap',
           }}
         >
           <Receipt size={16} /> Invoices ({invoices.length})
@@ -241,6 +242,7 @@ export const FinancePage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.4rem',
+                whiteSpace: 'nowrap',
               }}
             >
               <CreditCard size={16} /> Payment Receipts ({allPayments.length})
@@ -260,6 +262,7 @@ export const FinancePage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.4rem',
+                whiteSpace: 'nowrap',
               }}
             >
               <DollarSign size={16} /> Trial Balance & Ledger
@@ -520,7 +523,7 @@ export const FinancePage = () => {
             </p>
 
             <form onSubmit={handleCreateInvoice} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div className="form-two-col">
                 <div className="form-group">
                   <label className="form-label">Client *</label>
                   <select
@@ -552,49 +555,54 @@ export const FinancePage = () => {
               {/* Items Table */}
               <div>
                 <label className="form-label">Invoice Items</label>
-                {invoiceForm.items.map((item, index) => (
-                  <div key={index} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 2fr auto', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Service / Product Description"
-                      value={item.description}
-                      onChange={(e) => updateItemRow(index, 'description', e.target.value)}
-                      className="search-input"
-                    />
-                    <input
-                      type="number"
-                      required
-                      min="1"
-                      placeholder="Qty"
-                      value={item.quantity}
-                      onChange={(e) => updateItemRow(index, 'quantity', parseInt(e.target.value) || 1)}
-                      className="search-input"
-                    />
-                    <input
-                      type="number"
-                      required
-                      placeholder="Unit Price"
-                      value={item.unitPrice}
-                      onChange={(e) => updateItemRow(index, 'unitPrice', e.target.value)}
-                      className="search-input"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeItemRow(index)}
-                      className="btn-secondary"
-                      style={{ padding: '0.4rem 0.6rem', color: '#DC2626' }}
-                    >
-                      &times;
-                    </button>
-                  </div>
-                ))}
-                <button type="button" onClick={addItemRow} className="btn-secondary" style={{ fontSize: '0.8rem', marginTop: '0.25rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {invoiceForm.items.map((item, index) => (
+                    <div key={index} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Service / Product Description"
+                        value={item.description}
+                        onChange={(e) => updateItemRow(index, 'description', e.target.value)}
+                        className="search-input"
+                        style={{ flex: '2 1 180px', minWidth: '160px' }}
+                      />
+                      <input
+                        type="number"
+                        required
+                        min="1"
+                        placeholder="Qty"
+                        value={item.quantity}
+                        onChange={(e) => updateItemRow(index, 'quantity', parseInt(e.target.value) || 1)}
+                        className="search-input"
+                        style={{ flex: '1 1 65px', minWidth: '60px' }}
+                      />
+                      <input
+                        type="number"
+                        required
+                        placeholder="Unit Price"
+                        value={item.unitPrice}
+                        onChange={(e) => updateItemRow(index, 'unitPrice', e.target.value)}
+                        className="search-input"
+                        style={{ flex: '1.5 1 95px', minWidth: '90px' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeItemRow(index)}
+                        className="btn-secondary"
+                        style={{ padding: '0.4rem 0.6rem', color: '#DC2626', minWidth: '36px' }}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button type="button" onClick={addItemRow} className="btn-secondary" style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
                   + Add Item Line
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div className="form-two-col">
                 <div className="form-group">
                   <label className="form-label">GST Tax Rate (%)</label>
                   <select

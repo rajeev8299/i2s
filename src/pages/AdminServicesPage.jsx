@@ -509,7 +509,7 @@ export const AdminServicesPage = () => {
             </h2>
 
             <form onSubmit={handleSaveService}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="form-two-col" style={{ marginBottom: '1rem' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '0.35rem' }}>
                     Service Title *
@@ -535,7 +535,7 @@ export const AdminServicesPage = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="form-two-col" style={{ marginBottom: '1rem' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '0.35rem' }}>
                     Base Price (₹) *
