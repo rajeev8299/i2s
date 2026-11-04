@@ -15,17 +15,6 @@ import {
 } from '../data/servicesData';
 import { VideoCarouselSection } from '../components/VideoCarouselSection';
 
-const PORTAL_OPTIONS = [
-  { label: 'Super Admin', path: '/login', role: 'System Administration & Governance' },
-  { label: 'Admin', path: '/login', role: 'Operations & Management' },
-  { label: 'Accounts Manager', path: '/login', role: 'Invoices, Ledger & Finance' },
-  { label: 'HR Manager', path: '/login', role: 'Talent, Attendance & Payroll' },
-  { label: 'Team Leader', path: '/login', role: 'Project Oversight & Task Review' },
-  { label: 'Staff Specialist', path: '/login', role: 'Engineering Tasks & Deliverables' },
-  { label: 'Intern', path: '/login', role: 'Learning Tasks & Submissions' },
-  { label: 'Client Portal', path: '/login', role: 'Approved Milestones & Invoices' },
-];
-
 export const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
