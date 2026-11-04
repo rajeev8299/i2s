@@ -109,7 +109,8 @@ export const LandingPage = () => {
           />
           <div style={{ minWidth: 0 }}>
             <div className="public-brand-title" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              Imagination2Software
+              <span className="brand-text-desktop">Imagination2Software</span>
+              <span className="brand-text-mobile">I2S</span>
             </div>
           </div>
         </Link>

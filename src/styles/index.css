@@ -873,6 +873,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 /* Responsive Media Queries & Mobile System Enhancements */
+.brand-text-mobile {
+  display: none;
+}
+.brand-text-desktop {
+  display: inline;
+}
+
 @media (max-width: 900px) {
   .dashboard-sidebar {
     position: fixed !important;
@@ -936,6 +943,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
   .public-brand-title {
     font-size: 1.05rem !important;
+  }
+  .brand-text-desktop {
+    display: none !important;
+  }
+  .brand-text-mobile {
+    display: inline !important;
+    font-weight: 800;
   }
   .public-hero-title {
     font-size: 2.2rem !important;
@@ -1018,6 +1032,13 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
 }
 
 /* Responsive Visibility Helpers */
+.brand-text-mobile {
+  display: none;
+}
+.brand-text-desktop {
+  display: inline;
+}
+
 @media (max-width: 900px) {
   .hidden-mobile {
     display: none !important;

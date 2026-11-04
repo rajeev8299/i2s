@@ -91,7 +91,8 @@ export const PublicNavbar = () => {
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }}>
-            Imagination2Software
+            <span className="brand-text-desktop">Imagination2Software</span>
+            <span className="brand-text-mobile">I2S</span>
           </div>
           <div style={{ fontSize: '0.68rem', color: 'var(--primary-orange)', fontWeight: 700, letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
             SOFTWARE & AI AGENCY
