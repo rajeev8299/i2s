@@ -851,57 +851,26 @@ export const LandingPage = () => {
 
       {/* 5. BENEFITS & SECURITY */}
       <section id="security" style={{ padding: '5rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3.5rem', alignItems: 'center' }}>
-          <div>
-            <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '1rem' }}>
-              Enterprise Reliability & Zero-Trust Access
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-              The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
-            </p>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '1rem' }}>
+            Enterprise Reliability & Zero-Trust Access
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>
+            The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
+          </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {[
-                'Server-enforced role-based access control (RBAC)',
-                'Double-entry accounting parity with immutable journal audit trail',
-                'Dedicated client data isolation preventing cross-tenant visibility',
-                'Real on-the-fly streaming PDF invoices generated from PostgreSQL',
-              ].map((text, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}>{text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="ref-card" style={{ padding: '2rem', background: 'var(--bg-app)' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '1.25rem' }}>
-              8 Configured Role Portals
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              {PORTAL_OPTIONS.map((p, idx) => (
-                <Link
-                  key={idx}
-                  to={p.path}
-                  style={{
-                    background: '#FFFFFF',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--border-color)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    color: 'var(--dark-navy)',
-                  }}
-                >
-                  <span>{p.label}</span>
-                  <ArrowRight size={14} color="var(--primary-blue)" />
-                </Link>
-              ))}
-            </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', textAlign: 'left' }}>
+            {[
+              'Server-enforced role-based access control (RBAC)',
+              'Double-entry accounting parity with immutable journal audit trail',
+              'Dedicated client data isolation preventing cross-tenant visibility',
+              'Real on-the-fly streaming PDF invoices generated from PostgreSQL',
+            ].map((text, idx) => (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#FFFFFF', padding: '1rem 1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
+                <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}>{text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
