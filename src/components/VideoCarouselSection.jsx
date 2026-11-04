@@ -126,12 +126,45 @@ export const VideoCarouselSection = () => {
     }
   };
 
+  const manualScrollPauseTimeoutRef = useRef(null);
+
   const handleManualScroll = (direction) => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    const cardWidth = 360 + 24; // card width + gap
-    const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
+
+    // Temporarily pause continuous auto-sliding during user manual scroll
+    isHoveredRef.current = true;
+    setIsPaused(true);
+
+    if (manualScrollPauseTimeoutRef.current) {
+      clearTimeout(manualScrollPauseTimeoutRef.current);
+    }
+    manualScrollPauseTimeoutRef.current = setTimeout(() => {
+      // Resume auto-sliding after 1800ms if mouse is not currently hovering over cards
+      if (hoveredCardCountRef.current === 0) {
+        isHoveredRef.current = false;
+        setIsPaused(false);
+      }
+    }, 1800);
+
+    // Calculate actual card width dynamically from DOM or fallback
+    const firstCard = container.querySelector('.video-carousel-card');
+    const computedCardWidth = firstCard ? firstCard.getBoundingClientRect().width : 360;
+    const gap = 24; // 1.5rem gap
+    const scrollStep = computedCardWidth + gap;
+
+    const scrollAmount = direction === 'left' ? -scrollStep : scrollStep;
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+    // Handle seamless boundary wrap if near the edges
+    const oneSetWidth = container.scrollWidth / 3;
+    if (oneSetWidth > 0) {
+      if (container.scrollLeft >= oneSetWidth * 2) {
+        container.scrollLeft -= oneSetWidth;
+      } else if (container.scrollLeft <= 0) {
+        container.scrollLeft += oneSetWidth;
+      }
+    }
   };
 
   return (
@@ -208,11 +241,16 @@ export const VideoCarouselSection = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
+              zIndex: 10,
             }}
           >
             <button
               type="button"
-              onClick={() => handleManualScroll('left')}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleManualScroll('left');
+              }}
               aria-label="Previous video card"
               className="carousel-nav-btn"
               style={{
@@ -234,7 +272,11 @@ export const VideoCarouselSection = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleManualScroll('right')}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleManualScroll('right');
+              }}
               aria-label="Next video card"
               className="carousel-nav-btn"
               style={{
