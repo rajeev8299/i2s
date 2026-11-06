@@ -143,34 +143,18 @@ export const PublicNavbar = () => {
       {/* Action Buttons & Mobile Hamburger */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <Link
-          to="/login"
-          className="btn-secondary"
-          style={{
-            fontSize: '0.85rem',
-            padding: '0.55rem 1rem',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            textDecoration: 'none'
-          }}
-        >
-          <Lock size={14} color="var(--primary-orange)" />
-          <span>Sign In</span>
-        </Link>
-
-        <Link
           to="/contact"
           className="btn-primary"
           style={{
             fontSize: '0.85rem',
-            padding: '0.55rem 1.15rem',
+            padding: '0.6rem 1.25rem',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.35rem',
             textDecoration: 'none'
           }}
         >
-          Start a Project <ArrowRight size={14} />
+          Start a Project <ArrowRight size={16} />
         </Link>
 
         {/* Mobile Menu Toggle Button */}
@@ -234,14 +218,6 @@ export const PublicNavbar = () => {
                 className="btn-primary"
               >
                 Start a Project <ArrowRight size={15} />
-              </Link>
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="btn-secondary"
-              >
-                <Lock size={13} color="var(--primary-orange)" />
-                <span>Client & Enterprise Sign In</span>
               </Link>
             </div>
           </div>

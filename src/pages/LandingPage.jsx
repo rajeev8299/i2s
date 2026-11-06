@@ -141,8 +141,8 @@ export const LandingPage = () => {
 
         {/* Right: Actions & Mobile Hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Link to="/login" className="btn-primary" style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
-            Get Started <ArrowRight size={16} />
+          <Link to="/contact" className="btn-primary" style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
+            Start a Project <ArrowRight size={16} />
           </Link>
 
           {/* Mobile Menu Toggle Button */}
@@ -209,11 +209,11 @@ export const LandingPage = () => {
               </div>
               <div className="compact-mobile-dropdown-footer">
                 <Link
-                  to="/login"
+                  to="/contact"
                   onClick={() => setMobileMenuOpen(false)}
                   className="btn-primary"
                 >
-                  Get Started <ArrowRight size={15} />
+                  Start a Project <ArrowRight size={15} />
                 </Link>
               </div>
             </div>
