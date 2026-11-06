@@ -75,7 +75,7 @@ export const PublicNavbar = () => {
       {/* Brand Logo & Name */}
       <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', minWidth: 0 }}>
         <img
-          src="/i2s-logo.webp"
+          src="/i2s-logo.svg"
           alt="I2S — Imagination2Software"
           style={{ width: '38px', height: '38px', objectFit: 'contain', flexShrink: 0 }}
         />
@@ -312,7 +312,7 @@ export const PublicFooter = () => {
         {/* Col 1: Brand & Positioning */}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-            <img src="/i2s-logo.webp" alt="I2S Logo" style={{ width: '38px', height: '38px', objectFit: 'contain' }} />
+            <img src="/i2s-logo-light.svg" alt="I2S Logo" style={{ width: '38px', height: '38px', objectFit: 'contain' }} />
             <span style={{ fontWeight: 800, fontSize: '1.15rem', color: '#FFFFFF', fontFamily: 'var(--font-heading)' }}>
               Imagination 2 Software
             </span>

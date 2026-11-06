@@ -132,7 +132,7 @@ export const DashboardLayout = () => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
             <img
-              src="/i2s-logo.webp"
+              src="/i2s-logo-light.svg"
               alt="I2S — Imagination2Software"
               style={{
                 width: '38px',

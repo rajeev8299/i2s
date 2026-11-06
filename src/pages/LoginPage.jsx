@@ -91,7 +91,7 @@ export const LoginPage = () => {
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
           <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
             <img
-              src="/i2s-logo.webp"
+              src="/i2s-logo-light.svg"
               alt="I2S — Imagination2Software"
               style={{
                 width: '46px',
