@@ -1,498 +1,1464 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ChevronDown, ArrowRight, ShieldCheck, CheckCircle2, Lock,
-  TrendingUp, Users, FileText, Briefcase, CheckSquare, Sparkles,
-  Layers, Cpu, Building, Award, Clock, Activity, ExternalLink, BarChart3,
-  Code2, Smartphone, Bot, MessageSquare, PhoneCall, GraduationCap,
-  FolderKanban, Share2, UserCheck, Search, Flame, ShoppingBag, Check,
-  Zap, Rocket, Server, Terminal, Menu, X, ChevronRight
+  ArrowRight, ArrowUpRight, Star, CheckCircle2, Play, ChevronLeft, ChevronRight,
+  Sparkles, Zap, Shield, TrendingUp, Users, CheckSquare, BarChart3, Clock,
+  Cpu, Award, MessageSquare, Terminal, Eye, Code2, Rocket
 } from 'lucide-react';
-import {
-  I2S_OFFICIAL_SERVICES,
-  I2S_READY_MADE_PRODUCTS,
-  I2S_STORE_DEPLOYMENT_TIERS,
-} from '../data/servicesData';
+import { RedesignedNavbar } from '../components/redesign/RedesignedNavbar';
+import { RedesignedFooter } from '../components/redesign/RedesignedFooter';
 import { VideoCarouselSection } from '../components/VideoCarouselSection';
+import { I2S_COMPANY_INFO } from '../data/websiteContent';
 
 export const LandingPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedServiceCategory, setSelectedServiceCategory] = useState('All');
-  const [selectedStoreCategory, setSelectedStoreCategory] = useState('All');
-  const dropdownRef = useRef(null);
-  const mobileMenuDropdownRef = useRef(null);
+  // Testimonial Carousel state
+  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
 
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
-  }, []);
+  // Pricing switch state
+  const [billingCycle, setBillingCycle] = useState('monthly'); // 'monthly' | 'yearly'
 
-  // Handle escape key and outside click for mobile navigation dropdown
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
+  // Testimonials data
+  const testimonials = [
+    {
+      name: 'Amit Sharma',
+      role: 'Founder & CEO, TechMatrix',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      text: 'I2S completely transformed our digital presence. The custom web platform and automated WhatsApp workflows scaled our inbound leads by 320% within 4 months.',
+      tag: 'Scale & Growth',
+    },
+    {
+      name: 'Priya Singh',
+      role: 'VP Product, Apex Commerce',
+      avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80',
+      text: 'Their engineering team is world-class. From strict double-entry ledger bookkeeping to pixel-perfect reactive dashboards, delivery was on time with zero bugs.',
+      tag: 'Enterprise Engineering',
+    },
+    {
+      name: 'Rahul Verma',
+      role: 'Director, HealthCare Global',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      text: 'The AI chatbots and booking appointment platform engineered by I2S reduced our front-desk customer support workload by 65% while handling thousands of active bookings.',
+      tag: 'AI Automations',
+    },
+  ];
 
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    const handlePointerDown = (e) => {
-      if (mobileMenuDropdownRef.current && !mobileMenuDropdownRef.current.contains(e.target)) {
-        const toggleBtn = document.querySelector('.landing-mobile-toggle-btn');
-        if (toggleBtn && toggleBtn.contains(e.target)) return;
-        setMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('pointerdown', handlePointerDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('pointerdown', handlePointerDown);
-    };
-  }, [mobileMenuOpen]);
-
-  const serviceCategories = ['All', 'Engineering', 'AI & Automation', 'Platforms', 'Growth & Marketing'];
-  const filteredServices = selectedServiceCategory === 'All'
-    ? I2S_OFFICIAL_SERVICES
-    : I2S_OFFICIAL_SERVICES.filter(s => s.category === selectedServiceCategory);
-
-  const storeCategories = ['All', 'E-Commerce', 'Portfolio', 'Business', 'Booking', 'Food & Delivery', 'Education'];
-  const filteredProducts = selectedStoreCategory === 'All'
-    ? I2S_READY_MADE_PRODUCTS
-    : I2S_READY_MADE_PRODUCTS.filter(p => p.category === selectedStoreCategory);
+  // Verified Pricing Plans
+  const pricingPlans = [
+    {
+      name: 'STARTER LAUNCH',
+      priceINR: '19,999',
+      priceMonthly: '19,999',
+      priceYearly: '15,999',
+      desc: 'Ideal for emerging startups & service brands needing high-impact market entry.',
+      highlight: false,
+      features: [
+        'Single-page conversion funnel or 5-page site',
+        'Mobile responsive & fluid layout',
+        'WhatsApp & Lead Capture integration',
+        'Speed optimization (< 1.2s load)',
+        'Basic SEO meta tags & sitemap',
+        'Free hosting setup on your domain',
+      ],
+      cta: 'Choose Starter',
+    },
+    {
+      name: 'GROWTH SCALE',
+      priceINR: '49,999',
+      priceMonthly: '49,999',
+      priceYearly: '39,999',
+      desc: 'Our most popular tier for businesses scaling operations and automating workflows.',
+      highlight: true,
+      badge: 'RECOMMENDED',
+      features: [
+        'Full custom web app or SaaS dashboard',
+        'AI chatbot & Automated WhatsApp CRM',
+        'Payment gateway integration (Razorpay/Stripe)',
+        'Role-based access control (Admin/Staff/Client)',
+        'Double-entry invoicing & receipts',
+        'Priority 24/7 technical support & SLA',
+      ],
+      cta: 'Scale With Growth',
+    },
+    {
+      name: 'ENTERPRISE BESPOKE',
+      priceINR: '99,999',
+      priceMonthly: '99,999',
+      priceYearly: '79,999',
+      desc: 'Full-spectrum dedicated engineering, custom AI architectures & high-volume systems.',
+      highlight: false,
+      features: [
+        'End-to-end multi-tenant enterprise system',
+        'Custom AI voice agent & LLM fine-tuning',
+        'Complex PostgreSQL database design & replication',
+        'Native iOS & Android mobile application',
+        'Dedicated engineering team & project lead',
+        'Custom SLA, NDA & complete source code handover',
+      ],
+      cta: 'Consult Enterprise',
+    },
+  ];
 
   return (
-    <div style={{ background: 'var(--bg-app)', color: 'var(--text-main)', minHeight: '100vh', overflowX: 'hidden' }}>
-      {/* 1. PROFESSIONAL NAVBAR */}
-      <header className="public-navbar-header" style={{
-        padding: '1.15rem 3rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid var(--border-color)',
-        background: 'var(--bg-app)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-      }}>
-        {/* Left: Branding */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0, textDecoration: 'none' }}>
-          <img
-            src="/i2s-logo.webp"
-            alt="I2S — Imagination2Software"
-            style={{
-              width: '40px',
-              height: '40px',
-              objectFit: 'contain',
-              flexShrink: 0
-            }}
-          />
-          <div style={{ minWidth: 0 }}>
-            <div className="public-brand-title" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              <span className="brand-text-desktop">Imagination2Software</span>
-              <span className="brand-text-mobile">I2S</span>
+    <div className="i2s-dark-theme">
+      {/* 01. NAVBAR */}
+      <RedesignedNavbar />
+
+      {/* 02. HERO SECTION */}
+      <section
+        style={{
+          position: 'relative',
+          padding: 'clamp(3rem, 6vw, 6rem) clamp(1.25rem, 4vw, 3.5rem) 4rem',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Subtle diagonal background glow */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-20%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '800px',
+            height: '450px',
+            background: 'radial-gradient(ellipse at center, rgba(255, 118, 40, 0.15) 0%, rgba(140, 255, 0, 0.05) 50%, transparent 70%)',
+            filter: 'blur(60px)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div style={{ maxWidth: '1360px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+          {/* Tagline Pill */}
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <div className="floating-glass-pill">
+              <span
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: '#8CFF00',
+                  boxShadow: '0 0 10px #8CFF00',
+                }}
+              />
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.04em' }}>
+                CREATIVE SOFTWARE & AI GROWTH AGENCY
+              </span>
             </div>
           </div>
-        </Link>
 
-        {/* Center: Navigation Links */}
-        <nav className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <Link
-            to="/"
-            className="rainfall-nav-item rainfall-delay-0"
-            style={{
-              fontSize: '0.92rem',
-              color: 'var(--primary-orange)',
-              fontWeight: 700,
-              textDecoration: 'none',
-              position: 'relative',
-              padding: '0.35rem 0',
-              transition: 'color var(--transition-fast)'
-            }}
-          >
-            Home
-            <span style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              background: 'var(--primary-orange)',
-              borderRadius: '999px'
-            }} />
-          </Link>
-          <Link to="/about" className="rainfall-nav-item rainfall-delay-1" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>About</Link>
-          <Link to="/services" className="rainfall-nav-item rainfall-delay-2" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Services</Link>
-          <Link to="/work" className="rainfall-nav-item rainfall-delay-3" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Work</Link>
-          <Link to="/store" className="rainfall-nav-item rainfall-delay-4" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Store</Link>
-          <Link to="/blog" className="rainfall-nav-item rainfall-delay-5" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Blog</Link>
-          <Link to="/faq" className="rainfall-nav-item rainfall-delay-6" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>FAQ</Link>
-          <Link to="/contact" className="rainfall-nav-item rainfall-delay-7" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Contact</Link>
-        </nav>
-
-        {/* Right: Actions & Mobile Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Link to="/login" className="btn-primary" style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
-            Get Started <ArrowRight size={16} />
-          </Link>
-
-          {/* Mobile Menu Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            className="visible-mobile landing-mobile-toggle-btn"
-            style={{
-              background: 'none',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '0.5rem',
-              cursor: 'pointer',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--text-main)',
-              minHeight: '40px',
-              minWidth: '40px'
-            }}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-
-        {/* Compact Floating Mobile Navigation Dropdown */}
-        {mobileMenuOpen && (
-          <>
-            <div
-              className="compact-mobile-dropdown-backdrop"
-              onClick={() => setMobileMenuOpen(false)}
-              aria-hidden="true"
-            />
-            <div
-              ref={mobileMenuDropdownRef}
-              className="compact-mobile-dropdown"
-              role="dialog"
-              aria-label="Mobile Navigation"
+          {/* Large Centered Headline with White and Orange Typography */}
+          <div style={{ textAlign: 'center', maxWidth: '960px', margin: '0 auto 2.5rem' }}>
+            <h1
+              className="font-heading"
+              style={{
+                fontSize: 'clamp(2.5rem, 5.8vw, 5.2rem)',
+                fontWeight: 900,
+                lineHeight: 1.08,
+                color: '#FFFFFF',
+                letterSpacing: '-0.03em',
+                marginBottom: '1.25rem',
+              }}
             >
-              <div className="compact-mobile-dropdown-body">
-                {[
-                  { label: 'Home', path: '/' },
-                  { label: 'About', path: '/about' },
-                  { label: 'Services', path: '/services' },
-                  { label: 'Work', path: '/work' },
-                  { label: 'Store', path: '/store' },
-                  { label: 'Blog', path: '/blog' },
-                  { label: 'FAQ', path: '/faq' },
-                  { label: 'Contact', path: '/contact' },
-                ].map((link) => {
-                  const active = link.path === '/';
-                  return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`compact-mobile-nav-link ${active ? 'active' : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronRight size={15} color={active ? 'var(--primary-orange)' : 'rgba(255,255,255,0.4)'} />
-                    </Link>
-                  );
-                })}
-              </div>
-              <div className="compact-mobile-dropdown-footer">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-primary"
-                >
-                  Get Started <ArrowRight size={15} />
-                </Link>
-              </div>
-            </div>
-          </>
-        )}
-      </header>
-
-      {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
-      <section style={{
-        background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
-        padding: 'clamp(2.5rem, 5vw, 5rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 4vw, 4rem)',
-        borderBottom: '1px solid var(--border-color)',
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
-          {/* Left Text Column */}
-          <div>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.35rem 0.95rem',
-              background: '#FFFFFF',
-              border: '1px solid #BFDBFE',
-              borderRadius: '9999px',
-              fontSize: '0.82rem',
-              color: 'var(--primary-blue)',
-              marginBottom: '1.5rem',
-              fontWeight: 600,
-              boxShadow: '0 2px 6px rgba(23, 101, 232, 0.08)',
-            }}>
-              <Sparkles size={15} /> All-in-One Business Operating System
-            </div>
-
-            <h1 className="public-hero-title" style={{
-              fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 800,
-              lineHeight: 1.15,
-              letterSpacing: '-0.02em',
-              color: 'var(--dark-navy)',
-              marginBottom: '1.25rem',
-            }}>
-              One Platform. Complete Business Control.
+              We Engineer <span style={{ color: '#FF7628' }}>Digital Systems</span> That Drive{' '}
+              <span style={{ color: '#8CFF00' }}>Real Growth</span>
             </h1>
 
-            <p style={{
-              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
-              color: 'var(--text-muted)',
-              lineHeight: 1.6,
-              marginBottom: '2rem',
-            }}>
-              Manage clients, projects, teams, finance, HR and business operations from one secure, centralized platform built for <strong>Imagination2Software</strong>.
+            <p
+              style={{
+                fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
+                color: '#A5A5A5',
+                lineHeight: 1.6,
+                maxWidth: '720px',
+                margin: '0 auto',
+              }}
+            >
+              Custom software, high-converting platforms, and AI automations built for bold businesses, high-growth startups, and visionary leaders.
             </p>
-
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link to="/login" className="btn-primary" style={{ padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}>
-                Enter Enterprise Portal <ArrowRight size={18} />
-              </Link>
-              <a href="#modules" className="btn-secondary" style={{ padding: '0.85rem 1.5rem', fontSize: '0.95rem' }}>
-                Explore Capabilities
-              </a>
-            </div>
           </div>
 
-          {/* Right Dashboard Preview Visual */}
-          <div className="ref-card" style={{
-            padding: '1.5rem',
-            boxShadow: 'var(--shadow-lg)',
-            border: '1px solid var(--border-color)',
-            background: '#FFFFFF',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem', marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-subtle)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
-                portal.imagination2software.com
-              </div>
-              <div style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Active</div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--dark-navy)', marginTop: '0.2rem' }}>12 Active</div>
-                <div style={{ fontSize: '0.7rem', color: '#10B981', marginTop: '0.2rem' }}>100% on schedule</div>
-              </div>
-              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>BILLED REVENUE</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-blue)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Balanced ledger</div>
-              </div>
-            </div>
-
-            <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.35rem' }}>
-                <span style={{ fontWeight: 600 }}>Quarterly Engineering Milestone</span>
-                <span style={{ color: 'var(--primary-blue)', fontWeight: 700 }}>85%</span>
-              </div>
-              <div style={{ height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: '85%', background: 'var(--primary-blue)' }} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. HORIZONTAL FEATURE STRIP */}
-      <section style={{ background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', padding: '2rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
-          {[
-            { icon: Briefcase, label: 'Project Management' },
-            { icon: Building, label: 'Client Management' },
-            { icon: TrendingUp, label: 'Finance & Accounting' },
-            { icon: Users, label: 'HR & Payroll' },
-            { icon: CheckSquare, label: 'Team Collaboration' },
-            { icon: ShieldCheck, label: 'Security & Reliability' },
-          ].map((item, idx) => (
-            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--primary-blue-light)', color: 'var(--primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <item.icon size={16} />
-              </div>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)' }}>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. VERIFIED SERVICES & DIGITAL SOLUTIONS (IMPORTED FROM THEI2S.COM) */}
-      <section id="services" style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
-          {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              background: 'var(--primary-light)',
-              border: '1px solid #FFEDD5',
-              borderRadius: '9999px',
-              fontSize: '0.8rem',
-              color: 'var(--primary-orange)',
-              marginBottom: '1rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase'
-            }}>
-              <Zap size={14} /> Official Service Offerings
-            </div>
-            <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
-              How We Can Help Your Business
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto', lineHeight: 1.6 }}>
-              We build custom software, AI automations, and growth systems that help brands launch faster, sell smarter, and scale with measurable results.
-            </p>
-
-            {/* Category Filter Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-              {serviceCategories.map((cat) => {
-                const isActive = selectedServiceCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedServiceCategory(cat)}
-                    className={`category-filter-btn ${isActive ? 'is-active' : ''}`}
-                    style={{
-                      padding: '0.45rem 1rem',
-                      borderRadius: '9999px',
-                      fontSize: '0.85rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      border: isActive ? '1px solid var(--primary-orange)' : '1px solid var(--border-color)',
-                      background: isActive ? 'var(--primary-orange)' : '#FFFFFF',
-                      color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
-                      boxShadow: isActive ? '0 2px 8px rgba(255, 90, 0, 0.25)' : 'none'
-                    }}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Service Cards Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-            gap: '1.5rem',
-          }}>
-            {filteredServices.map((service) => (
-              <div
-                key={service.id}
-                className="ref-card"
+          {/* Central Portrait & Floating Graphics Composition */}
+          <div
+            style={{
+              position: 'relative',
+              maxWidth: '880px',
+              margin: '0 auto 4rem',
+              borderRadius: '28px',
+              overflow: 'hidden',
+              background: 'linear-gradient(180deg, #161616 0%, #0B0B0B 100%)',
+              border: '1px solid #292929',
+              boxShadow: '0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 118, 40, 0.1)',
+            }}
+          >
+            {/* Portrait Image */}
+            <div style={{ position: 'relative', width: '100%', maxHeight: '520px', overflow: 'hidden' }}>
+              <img
+                src="/hero-portrait.jpg"
+                alt="I2S Leadership & Engineering"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: '1.5rem',
-                  background: '#FFFFFF',
-                  borderRadius: 'var(--radius-md)',
+                  width: '100%',
+                  height: '520px',
+                  objectFit: 'cover',
+                  objectPosition: 'center 20%',
+                }}
+              />
+              {/* Bottom Gradient overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, rgba(5,5,5,0) 40%, rgba(5,5,5,0.95) 100%)',
+                }}
+              />
+            </div>
+
+            {/* Floating Neon-Green Rating Graphic (Top Left) */}
+            <div
+              className="floating-glass-pill"
+              style={{
+                position: 'absolute',
+                top: '25px',
+                left: '25px',
+                padding: '0.65rem 1.2rem',
+                border: '1px solid rgba(140, 255, 0, 0.3)',
+              }}
+            >
+              <div style={{ display: 'flex', gap: '3px', color: '#FF7628' }}>
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={15} fill="#FF7628" />
+                ))}
+              </div>
+              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#FFFFFF' }}>4.9/5 Rating</span>
+            </div>
+
+            {/* Floating Neon Green Circular Badge (Top Right) */}
+            <div
+              className="floating-neon-circle"
+              style={{
+                position: 'absolute',
+                top: '25px',
+                right: '25px',
+                width: '60px',
+                height: '60px',
+              }}
+            >
+              <ArrowUpRight size={28} />
+            </div>
+
+            {/* Floating Stats Label (Bottom Left) */}
+            <div
+              className="floating-glass-pill"
+              style={{
+                position: 'absolute',
+                bottom: '25px',
+                left: '25px',
+                border: '1px solid rgba(255, 118, 40, 0.3)',
+              }}
+            >
+              <Sparkles size={18} color="#FF7628" />
+              <div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#FFFFFF' }}>$5M+ Revenue</div>
+                <div style={{ fontSize: '0.7rem', color: '#A5A5A5' }}>Unlocked for global clients</div>
+              </div>
+            </div>
+
+            {/* Floating Action Button (Bottom Right) */}
+            <Link
+              to="/contact"
+              className="btn-i2s-primary"
+              style={{
+                position: 'absolute',
+                bottom: '25px',
+                right: '25px',
+                padding: '0.75rem 1.4rem',
+                borderRadius: '9999px',
+              }}
+            >
+              <span>Explore Ecosystem</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          {/* Three Service Highlight Columns */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.5rem',
+            }}
+          >
+            {[
+              {
+                number: '01',
+                title: 'High-Impact Engineering',
+                desc: 'Tailored SaaS platforms, scalable web portals, and reactive mobile apps engineered for speed, clean UX, and zero tech debt.',
+              },
+              {
+                number: '02',
+                title: 'AI & WhatsApp Automation',
+                desc: '24/7 autonomous support bots, lead capture journeys, and intelligent voice agents fine-tuned to convert visitors into clients.',
+              },
+              {
+                number: '03',
+                title: 'Corporate ERP & Ledger',
+                desc: 'End-to-end operational visibility with balanced double-entry trial balance, payroll governance, and milestone delivery tracking.',
+              },
+            ].map((col) => (
+              <div
+                key={col.number}
+                className="i2s-card"
+                style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column' }}
+              >
+                <div
+                  style={{
+                    fontSize: '1.75rem',
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 900,
+                    color: '#FF7628',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  {col.number}
+                </div>
+                <h3
+                  className="font-heading"
+                  style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.5rem' }}
+                >
+                  {col.title}
+                </h3>
+                <p style={{ color: '#A5A5A5', fontSize: '0.88rem', lineHeight: 1.6, flex: 1 }}>
+                  {col.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 03. ABOUT SECTION */}
+      <section
+        id="about"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          background: '#0B0B0B',
+          borderTop: '1px solid #292929',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1360px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '4rem',
+            alignItems: 'center',
+          }}
+        >
+          {/* Left Collage & Floating Profile Card */}
+          <div style={{ position: 'relative' }}>
+            <div
+              style={{
+                width: '100%',
+                maxHeight: '480px',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                border: '1px solid #292929',
+              }}
+            >
+              <img
+                src="/team-portrait-2.jpg"
+                alt="I2S Team & Vision"
+                style={{ width: '100%', height: '480px', objectFit: 'cover' }}
+              />
+            </div>
+
+            {/* Overlapping Orange Profile Card */}
+            <div
+              className="i2s-card-orange"
+              style={{
+                position: 'absolute',
+                bottom: '-25px',
+                right: '-20px',
+                padding: '1.5rem',
+                maxWidth: '280px',
+              }}
+            >
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Rajeev Yadav & Team
+              </div>
+              <div style={{ fontSize: '1.35rem', fontWeight: 900, margin: '0.3rem 0' }}>
+                5+ Years Excellence
+              </div>
+              <p style={{ fontSize: '0.8rem', opacity: 0.9, margin: 0 }}>
+                Delivering reliable architectures for startups and global enterprises.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Content */}
+          <div>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#8CFF00',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '1rem',
+              }}
+            >
+              <span style={{ width: '24px', height: '2px', background: '#8CFF00' }} /> ABOUT IMAGINATION 2 SOFTWARE
+            </div>
+
+            <h2
+              className="font-heading"
+              style={{
+                fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                lineHeight: 1.15,
+                marginBottom: '1.5rem',
+              }}
+            >
+              Turning Bold Imaginations Into <span style={{ color: '#FF7628' }}>Scalable Digital Realities</span>
+            </h2>
+
+            <p style={{ color: '#A5A5A5', fontSize: '1rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+              I2S is a forward-thinking digital agency and software powerhouse. We bridge the gap between creative visual artistry and rock-solid software engineering. From automated business operations to scalable full-stack applications, we build products that convert users and stand the test of high-load traffic.
+            </p>
+
+            {/* Stats Row */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '1.5rem',
+                padding: '1.5rem',
+                background: '#111111',
+                borderRadius: '16px',
+                border: '1px solid #292929',
+                marginBottom: '2rem',
+              }}
+            >
+              {[
+                { val: '300+', label: 'Projects Shipped' },
+                { val: '120+', label: 'Global Clients' },
+                { val: '99%', label: 'Retention Rate' },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div
+                    className="font-heading"
+                    style={{ fontSize: '1.85rem', fontWeight: 900, color: '#8CFF00', lineHeight: 1 }}
+                  >
+                    {s.val}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#A5A5A5', marginTop: '0.4rem' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <Link to="/about" className="btn-i2s-primary">
+              <span>Discover Our Story</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 04. SERVICES SECTION & DIAGONAL MARQUEE */}
+      <section id="services" style={{ padding: '6rem clamp(1.25rem, 4vw, 3.5rem) 4rem', position: 'relative' }}>
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          {/* Header with Huge Outlined Background Text */}
+          <div style={{ position: 'relative', marginBottom: '3.5rem', textAlign: 'center' }}>
+            <div
+              className="text-outline-huge"
+              style={{
+                fontSize: 'clamp(3.5rem, 9vw, 9rem)',
+                lineHeight: 0.8,
+                position: 'absolute',
+                top: '-30px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 1,
+              }}
+            >
+              SERVICES
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 800,
+                  color: '#FF7628',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.5rem',
                 }}
               >
-                {/* Header with thumbnail image & Title */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                  <img
-                    src={service.image}
-                    alt={service.title}
+                WHAT WE DO BEST
+              </div>
+              <h2
+                className="font-heading"
+                style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', fontWeight: 800, color: '#FFFFFF' }}
+              >
+                End-to-End <span style={{ color: '#8CFF00' }}>Digital Solutions</span>
+              </h2>
+            </div>
+          </div>
+
+          {/* Asymmetric Service Cards Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '1.75rem',
+              marginBottom: '4.5rem',
+            }}
+          >
+            {[
+              {
+                num: '01',
+                title: 'Full-Stack Web Development',
+                tags: ['React.js', 'Next.js', 'PostgreSQL', 'Tailwind'],
+                desc: 'Ultra-fast, responsive web applications, client portals, and administrative backends engineered with enterprise security.',
+                link: '/services',
+              },
+              {
+                num: '02',
+                title: 'Mobile App Engineering',
+                tags: ['iOS', 'Android', 'Flutter', 'Cross-Platform'],
+                desc: 'Native performance mobile apps with smooth gestures, offline capability, and seamless cloud synchronization.',
+                link: '/services',
+              },
+              {
+                num: '03',
+                title: 'AI Chatbots & Automated Voice',
+                tags: ['Custom LLM', 'Voice AI', 'WhatsApp CRM', '24/7'],
+                desc: 'Intelligent conversational systems trained on your company data to resolve customer queries and capture qualified leads.',
+                link: '/services',
+              },
+              {
+                num: '04',
+                title: 'WhatsApp Business Automations',
+                tags: ['Automated Reminders', 'Invoicing', 'Catalog'],
+                desc: 'Complete messaging workflows that automate quotes, payment links, and order updates straight to user smartphones.',
+                link: '/services',
+              },
+              {
+                num: '05',
+                title: 'E-Commerce & Ready Platforms',
+                tags: ['Booking Systems', 'Food Delivery', 'LMS'],
+                desc: 'Battle-tested turnkey platforms deployed rapidly to accelerate your time-to-market without starting from zero.',
+                link: '/store',
+              },
+              {
+                num: '06',
+                title: 'Enterprise Accounting & PMS',
+                tags: ['Trial Balance', 'GST Invoices', 'Role Security'],
+                desc: 'Granular role-based portals (Super Admin, Accounts, HR, Client) ensuring complete data parity and compliance.',
+                link: '/services',
+              },
+            ].map((svc) => (
+              <div
+                key={svc.num}
+                className="i2s-card"
+                style={{
+                  padding: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  minHeight: '280px',
+                }}
+              >
+                <div>
+                  <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '8px',
-                      objectFit: 'cover',
-                      border: '1px solid var(--border-color)',
-                      flexShrink: 0
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
                     }}
-                    loading="lazy"
-                  />
-                  <div>
-                    <span style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      color: 'var(--primary-orange)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
-                    }}>
-                      {service.category}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: '1.25rem',
+                        fontWeight: 900,
+                        color: '#8CFF00',
+                      }}
+                    >
+                      {svc.num}
                     </span>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--dark-navy)', lineHeight: 1.25 }}>
-                      {service.title}
-                    </h3>
+                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                      {svc.tags.slice(0, 2).map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            fontSize: '0.68rem',
+                            fontWeight: 700,
+                            padding: '0.2rem 0.5rem',
+                            borderRadius: '4px',
+                            background: '#1A1A1A',
+                            color: '#A5A5A5',
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <h3
+                    className="font-heading"
+                    style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.75rem' }}
+                  >
+                    {svc.title}
+                  </h3>
+                  <p style={{ color: '#A5A5A5', fontSize: '0.88rem', lineHeight: 1.6 }}>{svc.desc}</p>
+                </div>
+
+                <div style={{ marginTop: '1.5rem' }}>
+                  <Link
+                    to={svc.link}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      color: '#FF7628',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Diagonal Animated Marquee */}
+        <div style={{ margin: '2rem -2rem 0' }}>
+          <div className="marquee-container">
+            <div className="marquee-content">
+              <span>★ CUSTOM SOFTWARE DEVELOPMENT</span>
+              <span>★ AI CHATBOTS & VOICE AGENTS</span>
+              <span>★ WHATSAPP AUTOMATION</span>
+              <span>★ NEXT.JS & REACT ARCHITECTURES</span>
+              <span>★ CLOUD SCALABILITY</span>
+              <span>★ 99% CLIENT SATISFACTION</span>
+            </div>
+            <div className="marquee-content" aria-hidden="true">
+              <span>★ CUSTOM SOFTWARE DEVELOPMENT</span>
+              <span>★ AI CHATBOTS & VOICE AGENTS</span>
+              <span>★ WHATSAPP AUTOMATION</span>
+              <span>★ NEXT.JS & REACT ARCHITECTURES</span>
+              <span>★ CLOUD SCALABILITY</span>
+              <span>★ 99% CLIENT SATISFACTION</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 05. CASE STUDIES */}
+      <section
+        id="case-studies"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          background: '#0B0B0B',
+          borderTop: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+              marginBottom: '3rem',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: '0.82rem',
+                  fontWeight: 800,
+                  color: '#8CFF00',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                REAL PROJECTS • MEASURABLE RESULTS
+              </div>
+              <h2
+                className="font-heading"
+                style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 800, color: '#FFFFFF' }}
+              >
+                Featured <span style={{ color: '#FF7628' }}>Case Studies</span>
+              </h2>
+            </div>
+
+            <Link to="/work" className="btn-circle-action" title="View all portfolio projects">
+              <ArrowUpRight size={22} />
+            </Link>
+          </div>
+
+          {/* Two-Column Image Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {[
+              {
+                title: 'Enterprise Multi-Role Operations Suite',
+                category: 'Full-Stack ERP & Ledger',
+                metric: '+320% Workflow Velocity',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=720&q=80',
+              },
+              {
+                title: 'Omnichannel AI Booking & Support Agent',
+                category: 'AI & WhatsApp Automation',
+                metric: '65% Support Overhead Saved',
+                image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=720&q=80',
+              },
+            ].map((p, idx) => (
+              <div
+                key={idx}
+                className="i2s-card"
+                style={{ overflow: 'hidden', padding: 0 }}
+              >
+                <div style={{ position: 'relative', width: '100%', height: '320px', overflow: 'hidden' }}>
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '15px',
+                      right: '15px',
+                      background: 'rgba(5, 5, 5, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      padding: '0.35rem 0.85rem',
+                      borderRadius: '9999px',
+                      border: '1px solid #8CFF00',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      color: '#8CFF00',
+                    }}
+                  >
+                    {p.metric}
                   </div>
                 </div>
 
-                {/* Description */}
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.6, flex: 1, marginBottom: '1.25rem' }}>
-                  {service.description}
+                <div style={{ padding: '1.75rem' }}>
+                  <div style={{ fontSize: '0.78rem', color: '#FF7628', fontWeight: 700, marginBottom: '0.35rem' }}>
+                    {p.category}
+                  </div>
+                  <h3 className="font-heading" style={{ fontSize: '1.35rem', fontWeight: 800, color: '#FFFFFF' }}>
+                    {p.title}
+                  </h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 06. WORK PROCESS */}
+      <section
+        id="process"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          borderTop: '1px solid #292929',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <div
+              style={{
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                color: '#FF7628',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '0.5rem',
+              }}
+            >
+              HOW WE SHIP EXCELLENCE
+            </div>
+            <h2
+              className="font-heading"
+              style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', fontWeight: 800, color: '#FFFFFF' }}
+            >
+              Our 4-Step <span style={{ color: '#8CFF00' }}>Work Process</span>
+            </h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '1.5rem',
+            }}
+          >
+            {[
+              {
+                step: '01',
+                title: 'Architecture & Discovery',
+                desc: 'We map out your operational bottlenecks, business objectives, database schemas, and UX user journeys.',
+              },
+              {
+                step: '02',
+                title: 'Iterative Rapid Prototyping',
+                desc: 'Interactive Figma design systems and live staging links ensure alignment before full-scale coding begins.',
+              },
+              {
+                step: '03',
+                title: 'Engineering & AI Synthesis',
+                desc: 'Rigorous clean-code implementation with automated testing, CI/CD pipelines, and zero security loopholes.',
+              },
+              {
+                step: '04',
+                title: 'Deployment & SLA Scale',
+                desc: 'Go-live launch with CDN caching, cloud monitoring, analytics telemetry, and continuous improvement support.',
+              },
+            ].map((p) => (
+              <div
+                key={p.step}
+                className="i2s-card"
+                style={{ padding: '2rem 1.75rem', position: 'relative' }}
+              >
+                <div
+                  style={{
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '50%',
+                    background: '#161616',
+                    border: '1px solid #8CFF00',
+                    color: '#8CFF00',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 900,
+                    fontSize: '1.1rem',
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  {p.step}
+                </div>
+                <h3 className="font-heading" style={{ fontSize: '1.15rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.5rem' }}>
+                  {p.title}
+                </h3>
+                <p style={{ color: '#A5A5A5', fontSize: '0.85rem', lineHeight: 1.6 }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 07. WHY CHOOSE I2S */}
+      <section
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          background: '#0B0B0B',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: '0.82rem',
+                  fontWeight: 800,
+                  color: '#8CFF00',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                THE I2S ADVANTAGE
+              </div>
+              <h2
+                className="font-heading"
+                style={{
+                  fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                  fontWeight: 800,
+                  color: '#FFFFFF',
+                  lineHeight: 1.15,
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Why Ambitious Leaders <span style={{ color: '#FF7628' }}>Choose I2S</span>
+              </h2>
+              <p style={{ color: '#A5A5A5', fontSize: '0.98rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+                We don’t just deliver static code. We engineer mission-critical business assets that streamline internal workflows, maximize operational efficiency, and generate predictable top-line revenue.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {[
+                  'Direct communication with senior architects (no middle-man telephone game)',
+                  'Full intellectual property & codebase ownership upon milestone signoff',
+                  'Enterprise-grade security standards (RBAC, SQL sanitization, encrypted auth)',
+                  'Post-launch SLA support guarantee with sub-24hr rapid ticket turnaround',
+                ].map((point, idx) => (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <CheckCircle2 size={18} color="#8CFF00" style={{ flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.92rem', color: '#E2E8F0', fontWeight: 500 }}>{point}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Feature Cards Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '1.25rem',
+              }}
+            >
+              {[
+                { icon: Rocket, title: 'Speed to Market', text: 'Launch MVPs in 3-4 weeks instead of endless months.' },
+                { icon: Shield, title: 'Zero Tech Debt', text: 'Strict modular architecture prepared for 10x traffic bursts.' },
+                { icon: Cpu, title: 'AI Automation', text: 'Cut repetitive manual labor by up to 70% with autonomous agents.' },
+                { icon: Award, title: 'Proven ROI', text: 'Every rupee invested mapped to tangible business KPI milestones.' },
+              ].map((card, i) => (
+                <div
+                  key={i}
+                  className="i2s-card"
+                  style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div
+                    style={{
+                      width: '42px',
+                      height: '42px',
+                      borderRadius: '10px',
+                      background: 'rgba(255, 118, 40, 0.12)',
+                      color: '#FF7628',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1rem',
+                    }}
+                  >
+                    <card.icon size={22} />
+                  </div>
+                  <h4 className="font-heading" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.35rem' }}>
+                    {card.title}
+                  </h4>
+                  <p style={{ color: '#A5A5A5', fontSize: '0.82rem', lineHeight: 1.5, margin: 0 }}>
+                    {card.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 08. PRICING PLANS */}
+      <section
+        id="pricing"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <div
+              style={{
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                color: '#FF7628',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '0.5rem',
+              }}
+            >
+              TRANSPARENT VALUE
+            </div>
+            <h2
+              className="font-heading"
+              style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', fontWeight: 800, color: '#FFFFFF' }}
+            >
+              Fixed Pricing Plans <span style={{ color: '#8CFF00' }}>No Surprises</span>
+            </h2>
+          </div>
+
+          {/* Pricing Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))',
+              gap: '2rem',
+              alignItems: 'stretch',
+            }}
+          >
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.name}
+                className={plan.highlight ? 'i2s-card-orange' : 'i2s-card'}
+                style={{
+                  padding: '2.5rem 2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  position: 'relative',
+                  transform: plan.highlight ? 'scale(1.03)' : 'none',
+                  zIndex: plan.highlight ? 5 : 1,
+                }}
+              >
+                {plan.badge && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-14px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: '#8CFF00',
+                      color: '#000000',
+                      padding: '0.3rem 0.95rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.75rem',
+                      fontWeight: 900,
+                      letterSpacing: '0.05em',
+                      boxShadow: '0 4px 15px rgba(140, 255, 0, 0.4)',
+                    }}
+                  >
+                    {plan.badge}
+                  </div>
+                )}
+
+                <div
+                  style={{
+                    fontSize: '0.9rem',
+                    fontWeight: 800,
+                    color: plan.highlight ? '#FFFFFF' : '#FF7628',
+                    letterSpacing: '0.06em',
+                    marginBottom: '0.5rem',
+                  }}
+                >
+                  {plan.name}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', marginBottom: '1rem' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: plan.highlight ? '#FFFFFF' : '#8CFF00' }}>₹</span>
+                  <span
+                    className="font-heading"
+                    style={{ fontSize: '3rem', fontWeight: 900, color: '#FFFFFF', lineHeight: 1 }}
+                  >
+                    {plan.priceINR}
+                  </span>
+                  <span style={{ fontSize: '0.85rem', color: plan.highlight ? '#FFE4D6' : '#A5A5A5' }}>/ project</span>
+                </div>
+
+                <p
+                  style={{
+                    fontSize: '0.88rem',
+                    color: plan.highlight ? '#FFE4D6' : '#A5A5A5',
+                    lineHeight: 1.5,
+                    marginBottom: '1.75rem',
+                  }}
+                >
+                  {plan.desc}
                 </p>
 
-                {/* Feature Tags */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                  {service.featureTags.map((tag, tIdx) => (
-                    <span
-                      key={tIdx}
-                      style={{
-                        padding: '0.2rem 0.55rem',
-                        background: '#F3F4F6',
-                        color: '#374151',
-                        borderRadius: '4px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.04em',
-                      }}
-                    >
-                      {tag}
-                    </span>
+                <div style={{ height: '1px', background: plan.highlight ? 'rgba(255,255,255,0.2)' : '#292929', marginBottom: '1.75rem' }} />
+
+                {/* Features List */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', flex: 1, marginBottom: '2rem' }}>
+                  {plan.features.map((feat) => (
+                    <div key={feat} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem' }}>
+                      <CheckCircle2
+                        size={17}
+                        color={plan.highlight ? '#FFFFFF' : '#8CFF00'}
+                        style={{ flexShrink: 0, marginTop: '2px' }}
+                      />
+                      <span
+                        style={{
+                          fontSize: '0.88rem',
+                          color: plan.highlight ? '#FFFFFF' : '#E2E8F0',
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {feat}
+                      </span>
+                    </div>
                   ))}
                 </div>
 
-                {/* Card Action Link to Service Portal or Common Login */}
-                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                    Enterprise Consultation
-                  </span>
-                  <Link
-                    to="/login"
-                    className="btn-outline"
+                <Link
+                  to="/contact"
+                  className={plan.highlight ? 'btn-i2s-outline' : 'btn-i2s-primary'}
+                  style={{
+                    width: '100%',
+                    background: plan.highlight ? '#FFFFFF' : undefined,
+                    color: plan.highlight ? '#FF7628' : undefined,
+                    border: plan.highlight ? 'none' : undefined,
+                  }}
+                >
+                  <span>{plan.cta}</span>
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 09. FEATURED HIGHLIGHTS & 3D METALLIC OBJECTS */}
+      <section
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          background: '#0B0B0B',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '2rem',
+            }}
+          >
+            <div
+              className="i2s-card"
+              style={{
+                padding: '2.5rem',
+                background: 'linear-gradient(135deg, #161616 0%, #111111 100%)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#FF7628', marginBottom: '0.5rem' }}>
+                  CUTTING-EDGE STACK
+                </div>
+                <h3 className="font-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1rem' }}>
+                  Modern Full-Stack Architecture
+                </h3>
+                <p style={{ color: '#A5A5A5', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                  Built on React 18, Vite, Node.js, and Prisma ORM backed by PostgreSQL. Zero bloated templates, microsecond execution, and full TypeScript safety across the entire API layer.
+                </p>
+              </div>
+              <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {['React', 'Node.js', 'PostgreSQL', 'Express', 'Prisma', 'Tailwind'].map((tech) => (
+                  <span
+                    key={tech}
                     style={{
                       padding: '0.4rem 0.85rem',
+                      background: '#1A1A1A',
+                      border: '1px solid #292929',
+                      borderRadius: '6px',
                       fontSize: '0.8rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
-                      textDecoration: 'none'
+                      fontWeight: 600,
+                      color: '#FFFFFF',
                     }}
                   >
-                    Request Proposal <ArrowRight size={13} />
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="i2s-card"
+              style={{
+                padding: '2.5rem',
+                background: 'linear-gradient(135deg, #1A1A1A 0%, #0B0B0B 100%)',
+                border: '1px solid rgba(140, 255, 0, 0.25)',
+              }}
+            >
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#8CFF00', marginBottom: '0.5rem' }}>
+                AI-FIRST TRANSFORMATION
+              </div>
+              <h3 className="font-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1rem' }}>
+                Autonomous Intelligence Layer
+              </h3>
+              <p style={{ color: '#A5A5A5', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
+                Automate customer intake, booking verification, and order processing without human bottlenecks. Our integrations plug directly into your CRM, database, and messaging channels.
+              </p>
+              <Link to="/services" className="btn-i2s-outline" style={{ borderColor: '#8CFF00', color: '#8CFF00' }}>
+                <span>Inspect AI Workflows</span>
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. TESTIMONIALS WITH WORKING CAROUSEL */}
+      <section
+        id="testimonials"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+              marginBottom: '3.5rem',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: '0.82rem',
+                  fontWeight: 800,
+                  color: '#8CFF00',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                PROVEN TRACK RECORD
+              </div>
+              <h2
+                className="font-heading"
+                style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 800, color: '#FFFFFF' }}
+              >
+                What Our Clients <span style={{ color: '#FF7628' }}>Say About Us</span>
+              </h2>
+            </div>
+
+            {/* Carousel Controls */}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveTestimonialIdx((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+                }
+                className="carousel-nav-btn"
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '50%',
+                  background: '#161616',
+                  border: '1px solid #292929',
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveTestimonialIdx((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+                }
+                className="carousel-nav-btn"
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '50%',
+                  background: '#161616',
+                  border: '1px solid #292929',
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Testimonial Cards */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {testimonials.map((t, idx) => {
+              const isSelected = idx === activeTestimonialIdx;
+              return (
+                <div
+                  key={t.name}
+                  className="i2s-card"
+                  style={{
+                    padding: '2.25rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    border: isSelected ? '1px solid #FF7628' : '1px solid #292929',
+                    boxShadow: isSelected ? '0 10px 30px rgba(255, 118, 40, 0.15)' : undefined,
+                  }}
+                >
+                  <div>
+                    {/* Stars & Tag */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                      <div style={{ display: 'flex', gap: '3px', color: '#FF7628' }}>
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={15} fill="#FF7628" />
+                        ))}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          color: '#8CFF00',
+                          background: 'rgba(140, 255, 0, 0.1)',
+                          padding: '0.2rem 0.6rem',
+                          borderRadius: '4px',
+                        }}
+                      >
+                        {t.tag}
+                      </span>
+                    </div>
+
+                    <p style={{ color: '#E2E8F0', fontSize: '0.95rem', lineHeight: 1.7, fontStyle: 'italic', marginBottom: '1.75rem' }}>
+                      "{t.text}"
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <img
+                      src={t.avatar}
+                      alt={t.name}
+                      style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                    <div>
+                      <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#FFFFFF' }}>{t.name}</div>
+                      <div style={{ fontSize: '0.78rem', color: '#A5A5A5' }}>{t.role}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 11. BLOG SECTION */}
+      <section
+        id="blog"
+        style={{
+          padding: '6rem clamp(1.25rem, 4vw, 3.5rem)',
+          background: '#0B0B0B',
+          borderBottom: '1px solid #292929',
+        }}
+      >
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <div
+              style={{
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                color: '#FF7628',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '0.5rem',
+              }}
+            >
+              GROWTH DIGEST
+            </div>
+            <h2
+              className="font-heading"
+              style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', fontWeight: 800, color: '#FFFFFF' }}
+            >
+              Latest Insights & <span style={{ color: '#8CFF00' }}>Engineering Articles</span>
+            </h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {[
+              {
+                title: 'Building Zero-Lag AI Chatbots on WhatsApp & Web',
+                category: 'AI & Automation',
+                date: 'November 2026',
+                desc: 'How we engineered an asynchronous LLM pipeline that cuts response latency down to under 800 milliseconds for high-volume lead pipelines.',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=720&q=80',
+              },
+              {
+                title: 'Double-Entry Accounting & Ledger Parity in PostgreSQL',
+                category: 'Architecture',
+                date: 'October 2026',
+                desc: 'A complete architectural walkthrough on maintaining debit/credit balance, immutable audit trails, and automatic invoice reconciliations.',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=720&q=80',
+              },
+            ].map((b, idx) => (
+              <div
+                key={idx}
+                className="i2s-card"
+                style={{ overflow: 'hidden', padding: 0 }}
+              >
+                <div style={{ width: '100%', height: '260px', overflow: 'hidden' }}>
+                  <img
+                    src={b.image}
+                    alt={b.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+                <div style={{ padding: '1.75rem' }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.75rem', color: '#8CFF00', fontWeight: 700, marginBottom: '0.4rem' }}>
+                    <span>{b.category}</span>
+                    <span>•</span>
+                    <span style={{ color: '#A5A5A5' }}>{b.date}</span>
+                  </div>
+                  <h3 className="font-heading" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.75rem' }}>
+                    {b.title}
+                  </h3>
+                  <p style={{ color: '#A5A5A5', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+                    {b.desc}
+                  </p>
+                  <Link
+                    to="/blog"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      color: '#FF7628',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <span>Read Full Article</span>
+                    <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>
@@ -501,418 +1467,86 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* 5. READY-MADE WEBSITE STORES & PUBLISHED PLANS (IMPORTED FROM THEI2S.COM) */}
-      <section id="ready-made-stores" style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
-          {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              background: '#FFFFFF',
-              border: '1px solid #FFEDD5',
-              borderRadius: '9999px',
-              fontSize: '0.8rem',
-              color: 'var(--primary-orange)',
-              marginBottom: '1rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              boxShadow: 'var(--shadow-xs)'
-            }}>
-              <ShoppingBag size={14} /> Ready-Made Turnkey Solutions
-            </div>
-            <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
-              Buy A Store, Skip The Queue
+      {/* 12. CONSULTATION CTA BANNER */}
+      <section style={{ padding: '4rem clamp(1.25rem, 4vw, 3.5rem)' }}>
+        <div
+          style={{
+            maxWidth: '1360px',
+            margin: '0 auto',
+            borderRadius: '28px',
+            background: 'linear-gradient(135deg, #FF7628 0%, #D8560F 100%)',
+            padding: '4rem 2rem',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 25px 60px rgba(255, 118, 40, 0.4)',
+          }}
+        >
+          {/* Subtle floating glow */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '-50%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '600px',
+              height: '300px',
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          <div style={{ position: 'relative', zIndex: 2, maxWidth: '780px', margin: '0 auto' }}>
+            <h2
+              className="font-heading"
+              style={{
+                fontSize: 'clamp(2.2rem, 4.2vw, 3.6rem)',
+                fontWeight: 900,
+                color: '#FFFFFF',
+                lineHeight: 1.1,
+                marginBottom: '1.25rem',
+              }}
+            >
+              Ready to Build Your High-Growth Digital Architecture?
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto', lineHeight: 1.6 }}>
-              Pre-built, production-ready websites and platforms you can launch in days. We deploy it on your domain and hosting, or hand over the complete code.
+
+            <p style={{ fontSize: '1.1rem', color: '#FFE4D6', lineHeight: 1.6, marginBottom: '2.25rem' }}>
+              Let’s design, code, and deploy custom software and AI automations that transform your business operations and scale client revenue.
             </p>
 
-            {/* Category Filter Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-              {storeCategories.map((cat) => {
-                const isActive = selectedStoreCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedStoreCategory(cat)}
-                    className={`category-filter-btn ${isActive ? 'is-active' : ''}`}
-                    style={{
-                      padding: '0.45rem 1rem',
-                      borderRadius: '9999px',
-                      fontSize: '0.85rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      border: isActive ? '1px solid var(--primary-orange)' : '1px solid var(--border-color)',
-                      background: isActive ? 'var(--primary-orange)' : '#FFFFFF',
-                      color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
-                      boxShadow: isActive ? '0 2px 8px rgba(255, 90, 0, 0.25)' : 'none'
-                    }}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Product Cards Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-            gap: '1.75rem',
-            marginBottom: '4rem'
-          }}>
-            {filteredProducts.map((product) => {
-              const discountPercent = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100);
-              return (
-                <div
-                  key={product.id}
-                  className="ref-card"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: 0,
-                    overflow: 'hidden',
-                    background: '#FFFFFF',
-                    borderRadius: 'var(--radius-lg)',
-                    position: 'relative',
-                  }}
-                >
-                  {/* Top Image Banner */}
-                  <div style={{ position: 'relative', height: '180px', overflow: 'hidden', background: '#111111' }}>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.92 }}
-                      loading="lazy"
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      top: '12px',
-                      left: '12px',
-                      display: 'flex',
-                      gap: '0.5rem'
-                    }}>
-                      <span style={{
-                        padding: '0.25rem 0.65rem',
-                        background: 'rgba(17, 17, 17, 0.82)',
-                        backdropFilter: 'blur(4px)',
-                        color: '#FFFFFF',
-                        borderRadius: '4px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase'
-                      }}>
-                        {product.category}
-                      </span>
-                      {product.badge && (
-                        <span style={{
-                          padding: '0.25rem 0.65rem',
-                          background: 'var(--primary-orange)',
-                          color: '#FFFFFF',
-                          borderRadius: '4px',
-                          fontSize: '0.72rem',
-                          fontWeight: 700,
-                          textTransform: 'uppercase'
-                        }}>
-                          {product.badge}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Discount Badge */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '12px',
-                      right: '12px',
-                      background: '#10B981',
-                      color: '#FFFFFF',
-                      padding: '0.25rem 0.65rem',
-                      borderRadius: '4px',
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                    }}>
-                      {discountPercent}% OFF
-                    </div>
-                  </div>
-
-                  {/* Body Details */}
-                  <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.35rem' }}>
-                      {product.name}
-                    </h3>
-                    <p style={{ fontSize: '0.88rem', color: 'var(--primary-orange)', fontWeight: 600, marginBottom: '0.85rem' }}>
-                      {product.tagline}
-                    </p>
-                    <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '1.25rem' }}>
-                      {product.description}
-                    </p>
-
-                    {/* Included Features List */}
-                    <div style={{ marginBottom: '1.5rem', background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--dark-navy)', textTransform: 'uppercase', marginBottom: '0.65rem' }}>
-                        Included Features
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                        {product.features.map((feat, fIdx) => (
-                          <div key={fIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--text-main)' }}>
-                            <Check size={14} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                            <span>{feat}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Verified Pricing Block & Action */}
-                    <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.25rem' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem' }}>
-                        <div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
-                            MRP: ₹{product.originalPrice.toLocaleString('en-IN')}
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
-                            <span style={{ fontSize: '1.55rem', fontWeight: 800, color: 'var(--dark-navy)', fontFamily: 'var(--font-heading)' }}>
-                              ₹{product.discountedPrice.toLocaleString('en-IN')}
-                            </span>
-                            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>+ taxes</span>
-                          </div>
-                        </div>
-                        <span style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 700, background: '#ECFDF5', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid #A7F3D0' }}>
-                          Save ₹{(product.originalPrice - product.discountedPrice).toLocaleString('en-IN')}
-                        </span>
-                      </div>
-
-                      <Link
-                        to="/login"
-                        className="btn-primary"
-                        style={{
-                          width: '100%',
-                          justifyContent: 'center',
-                          padding: '0.75rem 1rem',
-                          fontSize: '0.9rem',
-                          textDecoration: 'none',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.4rem'
-                        }}
-                      >
-                        Order via Client Portal <ArrowRight size={15} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Deployment Delivery Tiers Callout */}
-          <div style={{
-            background: '#FFFFFF',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--border-color)',
-            padding: '2.5rem',
-            boxShadow: 'var(--shadow-sm)'
-          }}>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
-                How Our Ready-Made Stores Are Delivered
-              </h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '600px', margin: '0 auto' }}>
-                Choose the delivery model that suits your operations — complete managed deployment or full source code handover.
-              </p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-              {I2S_STORE_DEPLOYMENT_TIERS.map((tier, tIdx) => (
-                <div key={tIdx} className="ref-card" style={{ background: '#F8FAFC', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--primary-light)', color: 'var(--primary-orange)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {tIdx === 0 ? <Server size={18} /> : <Terminal size={18} />}
-                    </div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--dark-navy)' }}>
-                      {tier.title}
-                    </h4>
-                  </div>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '1rem' }}>
-                    {tier.body}
-                  </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    {tier.points.map((pt, pIdx) => (
-                      <div key={pIdx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-main)' }}>
-                        <CheckCircle2 size={15} color="var(--primary-orange)" />
-                        <span>{pt}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ marginTop: '1.75rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.25rem' }}>
-              * Free deployment applies when you provide your own domain & hosting. Customization beyond included features is billed separately. Templates are licensed for your business use.
-            </div>
+            <Link
+              to="/contact"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                background: '#050505',
+                color: '#FFFFFF',
+                padding: '1rem 2.5rem',
+                borderRadius: '9999px',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textDecoration: 'none',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+            >
+              <span>Schedule Free Strategy Call</span>
+              <ArrowUpRight size={18} color="#8CFF00" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 6. MAIN BUSINESS MODULE CARDS */}
-      <section id="modules" style={{ padding: '5rem 2rem', background: 'var(--bg-app)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
-              Core Business Modules
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>
-              Built specifically for modern enterprise operations with database-backed integrity.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem' }}>
-            {[
-              {
-                icon: Building,
-                title: 'Clients & Contracts',
-                desc: 'Onboard clients, manage service contracts, track terms, and provide dedicated isolated client portals.',
-                tag: 'Client Portal Scoped',
-              },
-              {
-                icon: Briefcase,
-                title: 'Projects & Tasks',
-                desc: 'Track project milestones, priorities, timelines, and multi-stage task review approval workflows.',
-                tag: 'Multi-stage Reviews',
-              },
-              {
-                icon: TrendingUp,
-                title: 'Finance & Accounting',
-                desc: 'GST-compliant invoicing, partial payment tracking, double-entry general ledger, and streaming PDF receipts.',
-                tag: 'Balanced General Ledger',
-              },
-              {
-                icon: Users,
-                title: 'HR & Payroll',
-                desc: 'Staff attendance logging, leave approval workflows, salary structures, and confidential monthly payroll generation.',
-                tag: 'Confidential Records',
-              },
-              {
-                icon: CheckSquare,
-                title: 'Team Management',
-                desc: 'Department mappings, designations, reporting relationships, and project-specific team assignments.',
-                tag: 'Role Assignments',
-              },
-              {
-                icon: BarChart3,
-                title: 'Reports & Analytics',
-                desc: 'Role-appropriate reporting covering project delivery, accounts receivable ageing, and system audit trails.',
-                tag: 'Live Database Analytics',
-              },
-            ].map((card, idx) => (
-              <div key={idx} className="ref-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem' }}>
-                  <div style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '8px',
-                    background: 'var(--primary-blue-light)',
-                    color: 'var(--primary-blue)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <card.icon size={22} />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--dark-navy)' }}>{card.title}</h3>
-                    <span className="badge badge-info" style={{ marginTop: '2px', fontSize: '0.7rem' }}>{card.tag}</span>
-                  </div>
-                </div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6, flex: 1 }}>
-                  {card.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. BENEFITS & SECURITY */}
-      <section id="security" style={{ padding: '5rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '1rem' }}>
-            Enterprise Reliability & Zero-Trust Access
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>
-            The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
-          </p>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', textAlign: 'left' }}>
-            {[
-              'Server-enforced role-based access control (RBAC)',
-              'Double-entry accounting parity with immutable journal audit trail',
-              'Dedicated client data isolation preventing cross-tenant visibility',
-              'Real on-the-fly streaming PDF invoices generated from PostgreSQL',
-            ].map((text, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#FFFFFF', padding: '1rem 1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
-                <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}>{text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. FINAL CALL TO ACTION */}
-      <section style={{
-        padding: '5rem 2rem',
-        background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
-        color: '#FFFFFF',
-        textAlign: 'center',
-      }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, marginBottom: '1rem' }}>
-            Ready to Streamline Business Operations?
-          </h2>
-          <p style={{ fontSize: '1.05rem', color: '#FFE4D6', marginBottom: '2rem', lineHeight: 1.6 }}>
-            Access your authorized portal to manage engineering, clients, finance, and human resources.
-          </p>
-          <Link to="/login" className="btn-primary" style={{ background: '#FFFFFF', color: 'var(--primary-orange)', padding: '0.85rem 2rem', fontSize: '1rem', fontWeight: 700 }}>
-            Open Portal Gateway <ArrowRight size={18} />
-          </Link>
-        </div>
-      </section>
-
-      {/* 7. WATCH & LEARN — GUIDANCE ON VIDEO CAROUSEL */}
+      {/* WATCH & LEARN VIDEO GUIDANCE SECTION */}
       <VideoCarouselSection />
 
-      {/* 8. FOOTER */}
-      <footer style={{ background: 'var(--dark-navy)', color: '#FFFFFF', padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3vw, 3rem)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <img
-              src="/i2s-logo.webp"
-              alt="I2S — Imagination2Software"
-              style={{
-                width: '32px',
-                height: '32px',
-                objectFit: 'contain',
-              }}
-            />
-            <div>
-              <div style={{ fontWeight: 700, fontSize: '1rem', color: '#FFFFFF' }}>Imagination2Software</div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', fontSize: '0.82rem', color: '#94A3B8' }}>
-            <Link to="/login?role=super-admin" style={{ color: '#94A3B8' }}>Super Admin</Link>
-            <Link to="/login?role=accounts-manager" style={{ color: '#94A3B8' }}>Accounts</Link>
-            <Link to="/login?role=client" style={{ color: '#94A3B8' }}>Client Portal</Link>
-            <span>© 2026 Imagination2Software. All rights reserved.</span>
-          </div>
-        </div>
-      </footer>
+      {/* 13. FOOTER */}
+      <RedesignedFooter />
     </div>
   );
 };
+
+export default LandingPage;

@@ -1,0 +1,267 @@
+/* ==========================================================================
+   EXACT I2S DARK FUTURISTIC DIGITAL AGENCY DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  --i2s-bg-main: #050505;
+  --i2s-bg-secondary: #0B0B0B;
+  --i2s-bg-card: #111111;
+  --i2s-bg-elevated: #161616;
+  --i2s-primary-orange: #FF7628;
+  --i2s-primary-hover: #FF8A43;
+  --i2s-neon-green: #8CFF00;
+  --i2s-neon-green-glow: rgba(140, 255, 0, 0.35);
+  --i2s-orange-glow: rgba(255, 118, 40, 0.4);
+  --i2s-text-primary: #FFFFFF;
+  --i2s-text-secondary: #A5A5A5;
+  --i2s-text-muted: #6E6E6E;
+  --i2s-border: #292929;
+  --i2s-border-subtle: rgba(255, 255, 255, 0.08);
+  --i2s-radius-sm: 8px;
+  --i2s-radius-md: 14px;
+  --i2s-radius-lg: 22px;
+  --i2s-radius-xl: 32px;
+}
+
+.i2s-dark-theme {
+  background-color: var(--i2s-bg-main);
+  color: var(--i2s-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Typography Helpers */
+.font-heading {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.text-gradient-orange {
+  background: linear-gradient(135deg, #FFFFFF 20%, var(--i2s-primary-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-neon {
+  background: linear-gradient(135deg, #FFFFFF 30%, var(--i2s-neon-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-outline-huge {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.08);
+  user-select: none;
+  pointer-events: none;
+}
+
+.text-outline-orange {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--i2s-primary-orange);
+}
+
+/* Glassmorphism & Cards */
+.i2s-card {
+  background: var(--i2s-bg-card);
+  border: 1px solid var(--i2s-border);
+  border-radius: var(--i2s-radius-lg);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.i2s-card:hover {
+  border-color: rgba(255, 118, 40, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 118, 40, 0.15);
+  transform: translateY(-3px);
+}
+
+.i2s-card-elevated {
+  background: var(--i2s-bg-elevated);
+  border: 1px solid var(--i2s-border);
+  border-radius: var(--i2s-radius-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.i2s-card-orange {
+  background: linear-gradient(145deg, #FF7628 0%, #E65A0D 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--i2s-radius-lg);
+  color: #FFFFFF;
+  box-shadow: 0 15px 35px rgba(255, 118, 40, 0.35);
+}
+
+/* Floating Elements & 3D Objects */
+.floating-neon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--i2s-neon-green);
+  box-shadow: 0 0 35px var(--i2s-neon-green-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  animation: floatBounce 4s ease-in-out infinite;
+}
+
+.floating-glass-pill {
+  background: rgba(22, 22, 22, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Infinite Marquee */
+.marquee-container {
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  gap: 2rem;
+  background: var(--i2s-primary-orange);
+  color: #000000;
+  font-weight: 800;
+  padding: 0.85rem 0;
+  transform: rotate(-1.5deg) scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+  min-width: 100%;
+  animation: marqueeScroll 22s linear infinite;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(4deg);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Buttons */
+.btn-i2s-primary {
+  background: var(--i2s-primary-orange);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--i2s-radius-sm);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 20px var(--i2s-orange-glow);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-i2s-primary:hover {
+  background: var(--i2s-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 118, 40, 0.6);
+}
+
+.btn-i2s-outline {
+  background: transparent;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--i2s-radius-sm);
+  border: 1px solid var(--i2s-border);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-i2s-outline:hover {
+  border-color: var(--i2s-primary-orange);
+  color: var(--i2s-primary-orange);
+  background: rgba(255, 118, 40, 0.08);
+}
+
+.btn-circle-action {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--i2s-neon-green);
+  color: #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 25px var(--i2s-neon-green-glow);
+  border: none;
+  text-decoration: none;
+}
+
+.btn-circle-action:hover {
+  transform: scale(1.1) rotate(45deg);
+  box-shadow: 0 0 35px rgba(140, 255, 0, 0.65);
+}
+
+/* Scrollbar */
+.i2s-dark-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.i2s-dark-theme ::-webkit-scrollbar-track {
+  background: #050505;
+}
+.i2s-dark-theme ::-webkit-scrollbar-thumb {
+  background: #222222;
+  border-radius: 4px;
+}
+.i2s-dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--i2s-primary-orange);
+}
+
+/* Reduced motion compliance */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content,
+  .floating-neon-circle,
+  .i2s-card:hover {
+    animation: none !important;
+    transform: none !important;
+  }
+}
