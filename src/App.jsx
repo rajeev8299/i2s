@@ -21,6 +21,7 @@ import { BlogPage } from './pages/BlogPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
 import { VideosGalleryPage } from './pages/VideosGalleryPage';
+import { CapabilitiesPage } from './pages/CapabilitiesPage';
 
 // Protected App Pages
 import { DashboardPage } from './pages/DashboardPage';
@@ -57,6 +58,7 @@ export const App = () => {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/videos" element={<VideosGalleryPage />} />
+          <Route path="/capabilities" element={<CapabilitiesPage />} />
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />

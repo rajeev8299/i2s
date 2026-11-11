@@ -288,9 +288,9 @@ export const LandingPage = () => {
               <Link to="/login" className="btn-primary" style={{ padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}>
                 Enter Enterprise Portal <ArrowRight size={18} />
               </Link>
-              <a href="#modules" className="btn-secondary" style={{ padding: '0.85rem 1.5rem', fontSize: '0.95rem' }}>
+              <Link to="/capabilities" className="btn-secondary" style={{ padding: '0.85rem 1.5rem', fontSize: '0.95rem', textDecoration: 'none' }}>
                 Explore Capabilities
-              </a>
+              </Link>
             </div>
           </div>
 
