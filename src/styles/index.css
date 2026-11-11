@@ -1236,26 +1236,46 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
    ========================================================================== */
 .public-footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.3fr);
-  gap: 3rem;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr) minmax(0, 1.25fr) minmax(0, 1.15fr);
+  gap: 2.75rem 2.25rem;
+  align-items: stretch;
+}
+
+.public-footer-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.public-footer-col-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .public-footer-col-heading {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #FFFFFF;
+  margin-top: 0;
   margin-bottom: 1.25rem;
-  font-family: var(--font-heading);
+  height: 24px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  font-family: var(--font-heading);
+}
+
+.public-footer-services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 1rem;
 }
 
 .public-footer-link {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: #94A3B8;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1263,6 +1283,7 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
   align-items: center;
   gap: 0.4rem;
   width: fit-content;
+  line-height: 1.4;
 }
 
 .public-footer-link:hover {
@@ -1334,7 +1355,7 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
 @media (max-width: 1023px) and (min-width: 640px) {
   .public-footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.75rem 2rem;
+    gap: 3rem 2rem;
   }
 }
 
@@ -1343,6 +1364,10 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
   .public-footer-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+  .public-footer-services-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
 }
 

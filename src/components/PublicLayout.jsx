@@ -333,197 +333,210 @@ export const PublicFooter = () => {
       }}>
         <div className="public-footer-grid">
           {/* COLUMN 1 — BRAND & ABOUT */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <img
-                src="/i2s-logo-light.svg"
-                alt="I2S Logo"
-                style={{ width: '40px', height: '40px', objectFit: 'contain' }}
-              />
-              <span style={{ fontWeight: 800, fontSize: '1.25rem', color: '#FFFFFF', fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}>
-                Imagination 2 Software
+          <div className="public-footer-col">
+            <h4 className="public-footer-col-heading" style={{ height: 'auto', marginBottom: '1.25rem' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img
+                  src="/i2s-logo-light.svg"
+                  alt="I2S Logo"
+                  style={{ width: '34px', height: '34px', objectFit: 'contain' }}
+                />
+                <span style={{ fontWeight: 800, fontSize: '1.18rem', color: '#FFFFFF', fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', textTransform: 'none' }}>
+                  Imagination 2 Software
+                </span>
               </span>
-            </div>
+            </h4>
 
-            <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.65, marginBottom: '1.25rem' }}>
-              {I2S_COMPANY_INFO.subheading || 'Custom software, AI automation & social media branding, built for impact, performance, and enterprise scale.'}
-            </p>
+            <div className="public-footer-col-body">
+              <div>
+                <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.65, marginBottom: '1.25rem' }}>
+                  {I2S_COMPANY_INFO.subheading || 'Custom software, AI automation & social media branding, built for impact, performance, and enterprise scale.'}
+                </p>
 
-            {/* Subtle Visual Accent Badge */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.35rem 0.8rem',
-              background: 'rgba(255, 90, 0, 0.08)',
-              border: '1px solid rgba(255, 90, 0, 0.22)',
-              borderRadius: '100px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#FF8A3D',
-              marginBottom: '1.5rem',
-              width: 'fit-content'
-            }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 8px #22C55E', display: 'inline-block' }} />
-              <span>Accepting New Projects Worldwide</span>
-            </div>
+                {/* Subtle Visual Accent Badge */}
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.35rem 0.8rem',
+                  background: 'rgba(255, 90, 0, 0.08)',
+                  border: '1px solid rgba(255, 90, 0, 0.22)',
+                  borderRadius: '100px',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  color: '#FF8A3D',
+                  marginBottom: '1.5rem',
+                  width: 'fit-content'
+                }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 8px #22C55E', display: 'inline-block' }} />
+                  <span>Accepting New Projects Worldwide</span>
+                </div>
+              </div>
 
-            {/* Social Media Links with Professional Icons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <a
-                href={I2S_COMPANY_INFO.socials.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="public-footer-social-btn"
-                aria-label="Instagram"
-                title="Follow us on Instagram"
-              >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-                </svg>
-              </a>
+              {/* Social Media Links with Professional Icons aligned at baseline */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginTop: 'auto' }}>
+                <a
+                  href={I2S_COMPANY_INFO.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="public-footer-social-btn"
+                  aria-label="Instagram"
+                  title="Follow us on Instagram"
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                  </svg>
+                </a>
 
-              <a
-                href={I2S_COMPANY_INFO.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="public-footer-social-btn"
-                aria-label="LinkedIn"
-                title="Connect on LinkedIn"
-              >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                  <rect width="4" height="12" x="2" y="9"/>
-                  <circle cx="4" cy="4" r="2"/>
-                </svg>
-              </a>
+                <a
+                  href={I2S_COMPANY_INFO.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="public-footer-social-btn"
+                  aria-label="LinkedIn"
+                  title="Connect on LinkedIn"
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect width="4" height="12" x="2" y="9"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
 
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="public-footer-social-btn"
-                aria-label="X (Twitter)"
-                title="Follow us on X"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="public-footer-social-btn"
+                  aria-label="X (Twitter)"
+                  title="Follow us on X"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
 
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="public-footer-social-btn"
-                aria-label="GitHub"
-                title="View our GitHub"
-              >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                </svg>
-              </a>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="public-footer-social-btn"
+                  aria-label="GitHub"
+                  title="View our GitHub"
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
           {/* COLUMN 2 — QUICK LINKS */}
-          <div>
+          <div className="public-footer-col">
             <h4 className="public-footer-col-heading">
               <span>Quick Links</span>
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              <Link to="/" className="public-footer-link">Home</Link>
-              <Link to="/about" className="public-footer-link">About Us</Link>
-              <Link to="/services" className="public-footer-link">All Services</Link>
-              <Link to="/work" className="public-footer-link">Selected Work</Link>
-              <Link to="/store" className="public-footer-link">Ready-Made Stores</Link>
-              <Link to="/blog" className="public-footer-link">Blog & Insights</Link>
-              <Link to="/faq" className="public-footer-link">Frequently Asked Questions</Link>
-              <Link to="/contact" className="public-footer-link">Contact Us</Link>
+            <div className="public-footer-col-body">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <Link to="/" className="public-footer-link">Home</Link>
+                <Link to="/about" className="public-footer-link">About Us</Link>
+                <Link to="/services" className="public-footer-link">All Services</Link>
+                <Link to="/work" className="public-footer-link">Selected Work</Link>
+                <Link to="/store" className="public-footer-link">Ready-Made Stores</Link>
+                <Link to="/blog" className="public-footer-link">Blog & Insights</Link>
+                <Link to="/faq" className="public-footer-link">Frequently Asked Questions</Link>
+                <Link to="/contact" className="public-footer-link">Contact Us</Link>
+              </div>
             </div>
           </div>
 
-          {/* COLUMN 3 — OUR SERVICES */}
-          <div>
+          {/* COLUMN 3 — OUR SERVICES (Balanced 2-Column Grid) */}
+          <div className="public-footer-col">
             <h4 className="public-footer-col-heading">
               <span>Our Services</span>
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              <Link to="/services" className="public-footer-link">Web Development</Link>
-              <Link to="/services" className="public-footer-link">App Development</Link>
-              <Link to="/services" className="public-footer-link">AI Chatbots</Link>
-              <Link to="/services" className="public-footer-link">WhatsApp Bots</Link>
-              <Link to="/services" className="public-footer-link">AI Calling Agents</Link>
-              <Link to="/services" className="public-footer-link">LMS Platforms</Link>
-              <Link to="/services" className="public-footer-link">PMS Platforms</Link>
-              <Link to="/services" className="public-footer-link">Social Media Marketing</Link>
-              <Link to="/services" className="public-footer-link">AI Branding</Link>
-              <Link to="/services" className="public-footer-link">SEO & Growth</Link>
+            <div className="public-footer-col-body">
+              <div className="public-footer-services-grid">
+                <Link to="/services" className="public-footer-link">Web Development</Link>
+                <Link to="/services" className="public-footer-link">App Development</Link>
+                <Link to="/services" className="public-footer-link">AI Chatbots</Link>
+                <Link to="/services" className="public-footer-link">WhatsApp Bots</Link>
+                <Link to="/services" className="public-footer-link">AI Calling Agents</Link>
+                <Link to="/services" className="public-footer-link">LMS Platforms</Link>
+                <Link to="/services" className="public-footer-link">PMS Platforms</Link>
+                <Link to="/services" className="public-footer-link">Social Media</Link>
+                <Link to="/services" className="public-footer-link">AI Branding</Link>
+                <Link to="/services" className="public-footer-link">SEO & Growth</Link>
+              </div>
             </div>
           </div>
 
           {/* COLUMN 4 — CONTACT & GET IN TOUCH */}
-          <div>
+          <div className="public-footer-col">
             <h4 className="public-footer-col-heading">
               <span>Get in Touch</span>
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.88rem' }}>
-              <div>
-                <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                  Official Email
+            <div className="public-footer-col-body" style={{ fontSize: '0.88rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                    Official Email
+                  </div>
+                  <a
+                    href={`mailto:${I2S_COMPANY_INFO.email || 'hello@i2s.in'}`}
+                    style={{
+                      color: 'var(--primary-orange)',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.45rem',
+                      transition: 'color 0.2s ease'
+                    }}
+                    className="footer-email-link"
+                  >
+                    <Mail size={15} style={{ flexShrink: 0 }} />
+                    <span>{I2S_COMPANY_INFO.email || 'hello@i2s.in'}</span>
+                  </a>
                 </div>
-                <a
-                  href={`mailto:${I2S_COMPANY_INFO.email || 'hello@i2s.in'}`}
+
+                <div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                    HQ & Operations
+                  </div>
+                  <div style={{ color: '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <MapPin size={15} style={{ color: '#94A3B8', flexShrink: 0 }} />
+                    <span>{I2S_COMPANY_INFO.location || 'India — Remote Worldwide'}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                    Turnaround Guarantee
+                  </div>
+                  <div style={{ color: '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <Clock size={15} style={{ color: '#94A3B8', flexShrink: 0 }} />
+                    <span>Replies {I2S_COMPANY_INFO.responseTime ? I2S_COMPANY_INFO.responseTime.toLowerCase() : 'within 24 hours'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Start a Project CTA Button anchored at column bottom */}
+              <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                <Link
+                  to="/contact"
+                  className="public-footer-cta-btn"
                   style={{
-                    color: 'var(--primary-orange)',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.45rem',
-                    transition: 'color 0.2s ease'
+                    width: '100%',
                   }}
-                  className="footer-email-link"
                 >
-                  <Mail size={15} style={{ flexShrink: 0 }} />
-                  <span>{I2S_COMPANY_INFO.email || 'hello@i2s.in'}</span>
-                </a>
+                  <span>Start a Project</span>
+                  <ArrowRight size={16} />
+                </Link>
               </div>
-
-              <div>
-                <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                  HQ & Operations
-                </div>
-                <div style={{ color: '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                  <MapPin size={15} style={{ color: '#94A3B8', flexShrink: 0 }} />
-                  <span>{I2S_COMPANY_INFO.location || 'India — Remote Worldwide'}</span>
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                  Turnaround Guarantee
-                </div>
-                <div style={{ color: '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                  <Clock size={15} style={{ color: '#94A3B8', flexShrink: 0 }} />
-                  <span>Replies {I2S_COMPANY_INFO.responseTime ? I2S_COMPANY_INFO.responseTime.toLowerCase() : 'within 24 hours'}</span>
-                </div>
-              </div>
-
-              {/* Start a Project CTA Button */}
-              <Link
-                to="/contact"
-                className="public-footer-cta-btn"
-                style={{
-                  marginTop: '0.35rem',
-                  width: '100%',
-                }}
-              >
-                <span>Start a Project</span>
-                <ArrowRight size={16} />
-              </Link>
             </div>
           </div>
         </div>
