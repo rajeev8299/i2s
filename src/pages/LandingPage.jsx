@@ -14,52 +14,11 @@ import {
   I2S_STORE_DEPLOYMENT_TIERS,
 } from '../data/servicesData';
 import { VideoCarouselSection } from '../components/VideoCarouselSection';
-import { PublicFooter } from '../components/PublicLayout';
+import { PublicNavbar, PublicFooter } from '../components/PublicLayout';
 
 export const LandingPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedServiceCategory, setSelectedServiceCategory] = useState('All');
   const [selectedStoreCategory, setSelectedStoreCategory] = useState('All');
-  const dropdownRef = useRef(null);
-  const mobileMenuDropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
-  }, []);
-
-  // Handle escape key and outside click for mobile navigation dropdown
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    const handlePointerDown = (e) => {
-      if (mobileMenuDropdownRef.current && !mobileMenuDropdownRef.current.contains(e.target)) {
-        const toggleBtn = document.querySelector('.landing-mobile-toggle-btn');
-        if (toggleBtn && toggleBtn.contains(e.target)) return;
-        setMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('pointerdown', handlePointerDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('pointerdown', handlePointerDown);
-    };
-  }, [mobileMenuOpen]);
 
   const serviceCategories = ['All', 'Engineering', 'AI & Automation', 'Platforms', 'Growth & Marketing'];
   const filteredServices = selectedServiceCategory === 'All'
@@ -72,196 +31,18 @@ export const LandingPage = () => {
     : I2S_READY_MADE_PRODUCTS.filter(p => p.category === selectedStoreCategory);
 
   return (
-    <div style={{ background: 'var(--bg-app)', color: 'var(--text-main)', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ background: 'var(--bg-app)', color: 'var(--text-main)', minHeight: '100vh', overflowX: 'hidden', width: '100%' }}>
       {/* 1. PROFESSIONAL NAVBAR */}
-      <header className="public-navbar-header" style={{
-        padding: '1.15rem 3rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid var(--border-color)',
-        background: 'var(--bg-app)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-      }}>
-        {/* Left: Branding */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0, textDecoration: 'none' }}>
-          <img
-            src="/i2s-logo.svg"
-            alt="I2S — Imagination2Software"
-            style={{
-              width: '40px',
-              height: '40px',
-              objectFit: 'contain',
-              flexShrink: 0
-            }}
-          />
-          <div style={{ minWidth: 0 }}>
-            <div className="public-brand-title" style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', fontFamily: 'var(--font-heading)', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              <span className="brand-text-desktop">Imagination2Software</span>
-              <span className="brand-text-mobile">I2S</span>
-            </div>
-          </div>
-        </Link>
-
-        {/* Center: Navigation Links */}
-        <nav className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <Link
-            to="/"
-            className="rainfall-nav-item rainfall-delay-0"
-            style={{
-              fontSize: '0.92rem',
-              color: 'var(--primary-orange)',
-              fontWeight: 700,
-              textDecoration: 'none',
-              position: 'relative',
-              padding: '0.35rem 0',
-              transition: 'color var(--transition-fast)'
-            }}
-          >
-            Home
-            <span style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              background: 'var(--primary-orange)',
-              borderRadius: '999px'
-            }} />
-          </Link>
-          <Link to="/about" className="rainfall-nav-item rainfall-delay-1" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>About</Link>
-          <Link to="/services" className="rainfall-nav-item rainfall-delay-2" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Services</Link>
-          <Link to="/work" className="rainfall-nav-item rainfall-delay-3" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Work</Link>
-          <Link to="/store" className="rainfall-nav-item rainfall-delay-4" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Store</Link>
-          <Link to="/blog" className="rainfall-nav-item rainfall-delay-5" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Blog</Link>
-          <Link to="/faq" className="rainfall-nav-item rainfall-delay-6" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>FAQ</Link>
-          <Link to="/contact" className="rainfall-nav-item rainfall-delay-7" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 500, textDecoration: 'none' }}>Contact</Link>
-        </nav>
-
-        {/* Right: Actions & Mobile Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-          <Link
-            to="/login"
-            className="btn-outline hidden-mobile"
-            style={{
-              fontSize: '0.85rem',
-              padding: '0.55rem 1rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              textDecoration: 'none',
-              borderRadius: 'var(--radius-sm)'
-            }}
-          >
-            <Lock size={14} color="var(--primary-orange)" />
-            <span>Login</span>
-          </Link>
-
-          <Link to="/contact" className="btn-primary" style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
-            Start a Project <ArrowRight size={16} />
-          </Link>
-
-          {/* Mobile Menu Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            className="visible-mobile landing-mobile-toggle-btn"
-            style={{
-              background: 'none',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '0.5rem',
-              cursor: 'pointer',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--text-main)',
-              minHeight: '40px',
-              minWidth: '40px'
-            }}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-
-        {/* Compact Floating Mobile Navigation Dropdown */}
-        {mobileMenuOpen && (
-          <>
-            <div
-              className="compact-mobile-dropdown-backdrop"
-              onClick={() => setMobileMenuOpen(false)}
-              aria-hidden="true"
-            />
-            <div
-              ref={mobileMenuDropdownRef}
-              className="compact-mobile-dropdown"
-              role="dialog"
-              aria-label="Mobile Navigation"
-            >
-              <div className="compact-mobile-dropdown-body">
-                {[
-                  { label: 'Home', path: '/' },
-                  { label: 'About', path: '/about' },
-                  { label: 'Services', path: '/services' },
-                  { label: 'Work', path: '/work' },
-                  { label: 'Store', path: '/store' },
-                  { label: 'Blog', path: '/blog' },
-                  { label: 'FAQ', path: '/faq' },
-                  { label: 'Contact', path: '/contact' },
-                ].map((link) => {
-                  const active = link.path === '/';
-                  return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`compact-mobile-nav-link ${active ? 'active' : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronRight size={15} color={active ? 'var(--primary-orange)' : 'rgba(255,255,255,0.4)'} />
-                    </Link>
-                  );
-                })}
-              </div>
-              <div className="compact-mobile-dropdown-footer" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                <Link
-                  to="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-primary"
-                >
-                  Start a Project <ArrowRight size={15} />
-                </Link>
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-outline"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.45rem',
-                    padding: '0.6rem 1rem',
-                    fontSize: '0.85rem'
-                  }}
-                >
-                  <Lock size={14} color="var(--primary-orange)" />
-                  <span>Portal Login</span>
-                </Link>
-              </div>
-            </div>
-          </>
-        )}
-      </header>
+      <PublicNavbar />
 
       {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
       <section style={{
         background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
-        padding: 'clamp(2rem, 4vw, 3.75rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 4vw, 3.5rem)',
+        padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1rem, 3.5vw, 3rem)',
         borderBottom: '1px solid var(--border-color)',
+        width: '100%',
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
           {/* Left Text Column */}
           <div>
             <h1 className="public-hero-title" style={{
@@ -341,8 +122,8 @@ export const LandingPage = () => {
       </section>
 
       {/* 3. HORIZONTAL FEATURE STRIP */}
-      <section style={{ background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', padding: '2rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+      <section style={{ background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', padding: '2rem clamp(1rem, 3.5vw, 3rem)', width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
           {[
             { icon: Briefcase, label: 'Project Management' },
             { icon: Building, label: 'Client Management' },
@@ -362,8 +143,8 @@ export const LandingPage = () => {
       </section>
 
       {/* 4. VERIFIED SERVICES & DIGITAL SOLUTIONS (IMPORTED FROM THEI2S.COM) */}
-      <section id="services" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section id="services" style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem) 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           {/* Section Header */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
@@ -502,8 +283,8 @@ export const LandingPage = () => {
       </section>
 
       {/* 5. READY-MADE WEBSITE STORES & PUBLISHED PLANS (IMPORTED FROM THEI2S.COM) */}
-      <section id="ready-made-stores" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section id="ready-made-stores" style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem) 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           {/* Section Header */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
@@ -742,8 +523,8 @@ export const LandingPage = () => {
       </section>
 
       {/* 6. MAIN BUSINESS MODULE CARDS */}
-      <section id="modules" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="modules" style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem) 3rem', background: 'var(--bg-app)', width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               Core Business Modules
@@ -753,7 +534,7 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.5rem' }}>
             {[
               {
                 icon: Building,
@@ -821,8 +602,8 @@ export const LandingPage = () => {
       </section>
 
       {/* 5. BENEFITS & SECURITY */}
-      <section id="security" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+      <section id="security" style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem) 3rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)', width: '100%' }}>
+        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
             Enterprise Reliability & Zero-Trust Access
           </h2>
@@ -830,7 +611,7 @@ export const LandingPage = () => {
             The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', textAlign: 'left' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.25rem', textAlign: 'left' }}>
             {[
               'Server-enforced role-based access control (RBAC)',
               'Double-entry accounting parity with immutable journal audit trail',
@@ -848,12 +629,13 @@ export const LandingPage = () => {
 
       {/* 6. FINAL CALL TO ACTION */}
       <section style={{
-        padding: '3.5rem 2rem',
+        padding: '3.5rem clamp(1rem, 3.5vw, 3rem)',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center',
+        width: '100%',
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '900px', width: '100%', margin: '0 auto' }}>
           <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, marginBottom: '1rem' }}>
             Ready to Streamline Business Operations?
           </h2>

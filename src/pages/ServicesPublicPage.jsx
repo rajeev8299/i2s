@@ -81,11 +81,11 @@ export const ServicesPublicPage = () => {
       </section>
 
       {/* Services Grid with Detailed Specifications */}
-      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
             gap: '1.5rem'
           }}>
             {filteredServices.map((service) => (

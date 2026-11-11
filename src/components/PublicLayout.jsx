@@ -61,7 +61,7 @@ export const PublicNavbar = () => {
 
   return (
     <header className="public-navbar-header" style={{
-      padding: '1.1rem 2.5rem',
+      padding: '1rem clamp(1rem, 3.5vw, 3rem)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -70,7 +70,8 @@ export const PublicNavbar = () => {
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      boxShadow: 'var(--shadow-xs)'
+      boxShadow: 'var(--shadow-xs)',
+      width: '100%',
     }}>
       {/* Brand Logo & Name */}
       <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', minWidth: 0 }}>
@@ -104,7 +105,7 @@ export const PublicNavbar = () => {
       <nav style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '1.75rem',
+        gap: 'clamp(1rem, 1.8vw, 1.75rem)',
       }} className="hidden-mobile">
         {navLinks.map((link, idx) => {
           const active = isActive(link.path);
@@ -325,9 +326,10 @@ export const PublicFooter = () => {
 
       {/* Main 4-Column Footer Container */}
       <div className="public-footer-container" style={{
-        maxWidth: '1240px',
+        maxWidth: '1480px',
+        width: '100%',
         margin: '0 auto',
-        padding: '3.75rem 2rem 2.75rem',
+        padding: '3.75rem clamp(1rem, 3.5vw, 3rem) 2.75rem',
       }}>
         <div className="public-footer-grid">
           {/* COLUMN 1 — BRAND & ABOUT */}
@@ -531,10 +533,11 @@ export const PublicFooter = () => {
       <div style={{
         borderTop: '1px solid rgba(255, 255, 255, 0.08)',
         background: '#070A10',
-        padding: '1.5rem 2rem',
+        padding: '1.5rem clamp(1rem, 3.5vw, 3rem)',
       }}>
         <div style={{
-          maxWidth: '1240px',
+          maxWidth: '1480px',
+          width: '100%',
           margin: '0 auto',
           display: 'flex',
           alignItems: 'center',

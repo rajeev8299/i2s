@@ -224,11 +224,11 @@ export const CapabilitiesPage = () => {
       </section>
 
       {/* Main Capabilities Grid */}
-      <section style={{ padding: '3.5rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section style={{ padding: '3.5rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
             gap: '1.75rem'
           }}>
             {filteredCapabilities.map((cap) => {
@@ -355,12 +355,13 @@ export const CapabilitiesPage = () => {
 
       {/* Cross-Link Call to Action */}
       <section style={{
-        padding: '3.5rem 2rem',
+        padding: '3.5rem clamp(1rem, 3.5vw, 3rem)',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
-        textAlign: 'center'
+        textAlign: 'center',
+        width: '100%',
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '900px', width: '100%', margin: '0 auto' }}>
           <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, marginBottom: '0.75rem' }}>
             Ready to Build Your Solution?
           </h2>

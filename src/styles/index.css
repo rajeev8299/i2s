@@ -1346,5 +1346,101 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
   }
 }
 
+/* ==========================================================================
+   Full-Width Edge-to-Edge Responsive Container & Layout Architecture
+   ========================================================================== */
+.public-fullwidth-container {
+  width: 100% !important;
+  max-width: 1480px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: clamp(1rem, 3.5vw, 2.5rem);
+  padding-right: clamp(1rem, 3.5vw, 2.5rem);
+  box-sizing: border-box;
+}
+
+.public-section-padded {
+  width: 100%;
+  padding-left: clamp(1rem, 3.5vw, 2.5rem);
+  padding-right: clamp(1rem, 3.5vw, 2.5rem);
+  box-sizing: border-box;
+}
+
+/* Universal fluid typography */
+.public-hero-title {
+  font-size: clamp(2rem, 5.2vw, 3.4rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.public-section-title {
+  font-size: clamp(1.75rem, 3.8vw, 2.5rem) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Universal safe responsive grids */
+.public-cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  width: 100%;
+}
+
+.public-cards-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+  width: 100%;
+}
+
+/* Contact Page Responsive Split Layout */
+.contact-page-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  .contact-page-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Strict Prevention of Horizontal Window Overflow */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  position: relative !important;
+}
+
+/* Media responsiveness */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile responsive touch targets & padding */
+@media (max-width: 640px) {
+  .public-navbar-header {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .btn-primary, .btn-secondary, .btn-outline {
+    min-height: 42px;
+  }
+
+  /* Make sure wide button padding doesn't overflow */
+  .btn-primary {
+    padding-left: 1.15rem !important;
+    padding-right: 1.15rem !important;
+  }
+}
+
+
 
 

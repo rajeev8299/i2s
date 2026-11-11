@@ -81,11 +81,11 @@ export const StorePage = () => {
       </section>
 
       {/* Product Cards Grid */}
-      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
             gap: '1.75rem',
             marginBottom: '2.5rem'
           }}>
@@ -265,7 +265,7 @@ export const StorePage = () => {
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.75rem' }}>
               {I2S_STORE_DEPLOYMENT_TIERS.map((tier, tIdx) => (
                 <div key={tIdx} className="ref-card" style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>

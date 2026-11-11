@@ -55,12 +55,12 @@ export const BlogPage = () => {
       </section>
 
       {/* Main Body: Factual Publication State from Reference Source */}
-      <section style={{ padding: '3.5rem 2rem', background: 'var(--bg-app)', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <section style={{ padding: '3.5rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
         <div style={{
-          maxWidth: '680px',
+          maxWidth: '720px',
           width: '100%',
           textAlign: 'center',
-          padding: '2.5rem 2rem',
+          padding: 'clamp(1.75rem, 4vw, 2.75rem) clamp(1rem, 3vw, 2.5rem)',
           background: 'var(--bg-app)',
           borderRadius: 'var(--radius-xl)',
           border: '1px solid var(--border-color)',

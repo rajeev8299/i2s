@@ -124,13 +124,13 @@ export const ContactPage = () => {
       </section>
 
       {/* Main Grid: Form + Verified Contact Cards */}
-      <section style={{ padding: '3rem 2rem 3.5rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2.5rem', alignItems: 'start' }}>
+      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem) 3.5rem', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+        <div className="contact-page-grid" style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           
           {/* Left: Contact & Project Enquiry Form */}
           <div style={{
             background: 'var(--bg-app)',
-            padding: '2.5rem',
+            padding: 'clamp(1.5rem, 3vw, 2.5rem)',
             borderRadius: 'var(--radius-xl)',
             border: '1px solid var(--border-color)',
             boxShadow: 'var(--shadow-sm)'

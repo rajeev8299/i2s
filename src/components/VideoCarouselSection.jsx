@@ -172,16 +172,17 @@ export const VideoCarouselSection = () => {
       ref={sectionRef}
       id="watch-and-learn"
       style={{
-        padding: '3rem 2rem 2.75rem',
+        padding: '3rem clamp(1rem, 3.5vw, 3rem) 2.75rem',
         background: 'var(--bg-app)',
         borderTop: '1px solid var(--border-color)',
         borderBottom: '1px solid var(--border-color)',
         position: 'relative',
         overflow: 'hidden',
+        width: '100%',
       }}
       aria-label="Watch & Learn — Guidance on Video"
     >
-      <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
         {/* Section Header - Centered */}
         <div style={{
           position: 'relative',

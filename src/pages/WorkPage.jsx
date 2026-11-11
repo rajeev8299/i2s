@@ -77,11 +77,11 @@ export const WorkPage = () => {
       </section>
 
       {/* Case Studies Cards Grid */}
-      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
             gap: '1.75rem'
           }}>
             {filteredItems.map((item) => (
@@ -209,8 +209,8 @@ export const WorkPage = () => {
       </section>
 
       {/* Verified Client Testimonials */}
-      <section style={{ padding: '3.25rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+      <section style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)', width: '100%' }}>
+        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               See Why Our Clients Partner With Us
@@ -220,7 +220,7 @@ export const WorkPage = () => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
             {I2S_TESTIMONIALS.map((t, idx) => (
               <div
                 key={idx}

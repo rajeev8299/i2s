@@ -75,7 +75,7 @@ export const VideosGalleryPage = () => {
       </section>
 
       {/* Filter Tabs & Grid */}
-      <section style={{ padding: '2.5rem 2rem 3.5rem', maxWidth: '1240px', margin: '0 auto', width: '100%' }}>
+      <section style={{ padding: '2.5rem clamp(1rem, 3.5vw, 3rem) 3.5rem', maxWidth: '1480px', margin: '0 auto', width: '100%' }}>
         {/* Category Filters */}
         <div style={{
           display: 'flex',
@@ -113,7 +113,7 @@ export const VideosGalleryPage = () => {
         {/* Video Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
           gap: '2rem',
         }}>
           {filteredVideos.map((video) => (
