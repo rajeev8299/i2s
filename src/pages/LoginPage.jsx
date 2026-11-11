@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../services/api';
-import { Lock, Mail, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck, CheckCircle2, User, Phone, Building } from 'lucide-react';
+import {
+  Lock, Mail, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck,
+  CheckCircle2, User, Phone, Building, Sparkles, UserCheck, Key
+} from 'lucide-react';
+
+const DEMO_ROLES = [
+  { role: 'Super Admin', email: 'superadmin@i2s.com', tag: 'Full Control', desc: 'Managing Director & Executive Governance' },
+  { role: 'Admin', email: 'admin@i2s.com', tag: 'Operations', desc: 'Operations Director & Admin Management' },
+  { role: 'Accounts Manager', email: 'accounts@i2s.com', tag: 'Finance', desc: 'Invoices, Receipts & General Ledger' },
+  { role: 'HR Manager', email: 'hr@i2s.com', tag: 'HR & Payroll', desc: 'Staff Profiles, Attendance & Salaries' },
+  { role: 'Team Leader', email: 'teamlead@i2s.com', tag: 'Projects', desc: 'Project Delivery & Task Reviews' },
+  { role: 'Staff Specialist', email: 'staff@i2s.com', tag: 'Engineering', desc: 'Full Stack Development & Tasks' },
+  { role: 'Intern', email: 'intern@i2s.com', tag: 'Internship', desc: 'Learning Submissions & Daily Tasks' },
+  { role: 'Client Portal', email: 'client@acmecorp.com', tag: 'Client', desc: 'Milestones, Invoices & Service Catalog' },
+];
 
 export const LoginPage = () => {
+  const [searchParams] = useSearchParams();
   const [mode, setMode] = useState('login'); // 'login' or 'register'
   
   // Login State
@@ -13,6 +28,28 @@ export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Quick Demo role selection from URL query or click
+  useEffect(() => {
+    const roleParam = searchParams.get('role');
+    if (roleParam) {
+      const match = DEMO_ROLES.find(r => 
+        r.role.toLowerCase().replace(/\s+/g, '-') === roleParam.toLowerCase() ||
+        r.role.toLowerCase().replace(/\s+/g, '') === roleParam.toLowerCase() ||
+        r.email.toLowerCase().includes(roleParam.toLowerCase())
+      );
+      if (match) {
+        setEmail(match.email);
+        setPassword('Password123!');
+      }
+    }
+  }, [searchParams]);
+
+  const selectDemoRole = (demo) => {
+    setEmail(demo.email);
+    setPassword('Password123!');
+    setError('');
+  };
 
   // Registration State
   const [regData, setRegData] = useState({
@@ -431,6 +468,79 @@ export const LoginPage = () => {
               {loading ? 'Submitting Registration...' : 'Submit Registration Request'} <ArrowRight size={18} />
             </button>
           </form>
+        )}
+
+        {/* Quick Demo Role Switcher for Testing & Verification */}
+        {mode === 'login' && (
+          <div style={{
+            marginTop: '1.75rem',
+            padding: '1.15rem',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '10px',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '0.75rem',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              paddingBottom: '0.5rem',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: 700, color: '#F8FAFC' }}>
+                <Key size={14} color="var(--primary-orange)" />
+                <span>Quick Role Login Selection</span>
+              </div>
+              <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>Click to auto-fill</span>
+            </div>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+              gap: '0.45rem',
+            }}>
+              {DEMO_ROLES.map((d, idx) => {
+                const isSelected = email === d.email;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => selectDemoRole(d)}
+                    style={{
+                      background: isSelected ? 'rgba(255, 90, 0, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                      border: isSelected ? '1px solid var(--primary-orange)' : '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '6px',
+                      padding: '0.45rem 0.6rem',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.2rem',
+                    }}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      color: isSelected ? 'var(--primary-orange)' : '#FFFFFF',
+                    }}>
+                      <span>{d.role}</span>
+                      {isSelected && <CheckCircle2 size={12} color="var(--primary-orange)" />}
+                    </div>
+                    <div style={{ fontSize: '0.68rem', color: '#94A3B8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {d.tag}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ fontSize: '0.7rem', color: '#64748B', marginTop: '0.65rem', textAlign: 'center' }}>
+              Default development password: <code style={{ color: '#E2E8F0', background: 'rgba(0,0,0,0.3)', padding: '0.1rem 0.35rem', borderRadius: '3px' }}>Password123!</code>
+            </div>
+          </div>
         )}
 
         {/* Security badge and return to homepage */}

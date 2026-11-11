@@ -141,7 +141,24 @@ export const PublicNavbar = () => {
       </nav>
 
       {/* Action Buttons & Mobile Hamburger */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+        <Link
+          to="/login"
+          className="btn-outline hidden-mobile"
+          style={{
+            fontSize: '0.85rem',
+            padding: '0.55rem 1rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            textDecoration: 'none',
+            borderRadius: 'var(--radius-sm)'
+          }}
+        >
+          <Lock size={14} color="var(--primary-orange)" />
+          <span>Login</span>
+        </Link>
+
         <Link
           to="/contact"
           className="btn-primary"
@@ -211,13 +228,29 @@ export const PublicNavbar = () => {
                 );
               })}
             </div>
-            <div className="compact-mobile-dropdown-footer">
+            <div className="compact-mobile-dropdown-footer" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               <Link
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="btn-primary"
               >
                 Start a Project <ArrowRight size={15} />
+              </Link>
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-outline"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.45rem',
+                  padding: '0.6rem 1rem',
+                  fontSize: '0.85rem'
+                }}
+              >
+                <Lock size={14} color="var(--primary-orange)" />
+                <span>Portal Login</span>
               </Link>
             </div>
           </div>
