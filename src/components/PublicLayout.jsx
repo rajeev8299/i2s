@@ -275,38 +275,50 @@ export const PublicFooter = () => {
       color: '#FFFFFF',
       borderTop: '1px solid rgba(255,255,255,0.08)'
     }}>
-      {/* Upper Footer: Marquee Services Strip */}
-      <div style={{
-        padding: '1.25rem 2rem',
+      {/* Upper Footer: Continuous Auto-Rotating Infinite Services Marquee Slider */}
+      <div className="services-marquee-wrapper" style={{
+        padding: '1.15rem 0',
         borderBottom: '1px solid rgba(255,255,255,0.08)',
         background: 'rgba(0,0,0,0.3)',
-        overflowX: 'auto',
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        gap: '1.5rem'
+        overflow: 'hidden',
+        position: 'relative',
+        width: '100%',
       }}>
-        {[
-          'Web Development', 'App Development', 'AI Chatbots', 'WhatsApp Bots',
-          'AI Calling Agents', 'LMS Platforms', 'PMS Platforms', 'Social Media',
-          'AI Branding', 'SEO & AI SEO', 'Paid Growth'
-        ].map((item, idx) => (
-          <span
-            key={idx}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#94A3B8'
-            }}
-          >
-            {item}
-            <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--primary-orange)' }} />
-          </span>
-        ))}
+        <div className="services-marquee-track">
+          {[
+            'Web Development', 'App Development', 'AI Chatbots', 'WhatsApp Bots',
+            'AI Calling Agents', 'LMS Platforms', 'PMS Platforms', 'Social Media',
+            'AI Branding', 'SEO & AI SEO', 'Paid Growth'
+          ].concat([
+            'Web Development', 'App Development', 'AI Chatbots', 'WhatsApp Bots',
+            'AI Calling Agents', 'LMS Platforms', 'PMS Platforms', 'Social Media',
+            'AI Branding', 'SEO & AI SEO', 'Paid Growth'
+          ]).concat([
+            'Web Development', 'App Development', 'AI Chatbots', 'WhatsApp Bots',
+            'AI Calling Agents', 'LMS Platforms', 'PMS Platforms', 'Social Media',
+            'AI Branding', 'SEO & AI SEO', 'Paid Growth'
+          ]).map((item, idx) => (
+            <span
+              key={idx}
+              className="services-marquee-item"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '1rem',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#94A3B8',
+                flexShrink: 0,
+                padding: '0 0.75rem',
+              }}
+            >
+              <span>{item}</span>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--primary-orange)', display: 'inline-block' }} />
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Main Footer Links */}

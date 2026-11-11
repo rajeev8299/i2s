@@ -14,6 +14,7 @@ import {
   I2S_STORE_DEPLOYMENT_TIERS,
 } from '../data/servicesData';
 import { VideoCarouselSection } from '../components/VideoCarouselSection';
+import { PublicFooter } from '../components/PublicLayout';
 
 export const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -868,32 +869,8 @@ export const LandingPage = () => {
       {/* 7. WATCH & LEARN — GUIDANCE ON VIDEO CAROUSEL */}
       <VideoCarouselSection />
 
-      {/* 8. FOOTER */}
-      <footer style={{ background: 'var(--dark-navy)', color: '#FFFFFF', padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3vw, 3rem)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <img
-              src="/i2s-logo-light.svg"
-              alt="I2S — Imagination2Software"
-              style={{
-                width: '32px',
-                height: '32px',
-                objectFit: 'contain',
-              }}
-            />
-            <div>
-              <div style={{ fontWeight: 700, fontSize: '1rem', color: '#FFFFFF' }}>Imagination2Software</div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', fontSize: '0.82rem', color: '#94A3B8' }}>
-            <Link to="/login" style={{ color: '#94A3B8' }}>Business Portal Login</Link>
-            <Link to="/privacy" style={{ color: '#94A3B8' }}>Privacy Policy</Link>
-            <Link to="/terms" style={{ color: '#94A3B8' }}>Terms of Service</Link>
-            <span>© 2026 Imagination2Software. All rights reserved.</span>
-          </div>
-        </div>
-      </footer>
+      {/* 8. FOOTER WITH MARQUEE SERVICES SLIDER */}
+      <PublicFooter />
     </div>
   );
 };

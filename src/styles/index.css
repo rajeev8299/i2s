@@ -1191,4 +1191,44 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
   }
 }
 
+/* ==========================================================================
+   Continuous Infinite Auto-Rotating Services Marquee Slider
+   ========================================================================== */
+.services-marquee-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: flex;
+  mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+}
+
+.services-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+  animation: servicesMarqueeScroll 45s linear infinite;
+}
+
+.services-marquee-wrapper:hover .services-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes servicesMarqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-marquee-track {
+    animation: none !important;
+    overflow-x: auto;
+  }
+}
+
 
