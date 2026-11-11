@@ -36,15 +36,27 @@ export const LandingPage = () => {
       <PublicNavbar />
 
       {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
-      <section style={{
+      <section className="public-home-hero" style={{
         background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
-        padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1rem, 3.5vw, 3rem)',
+        padding: 'clamp(3.5rem, 6.5vw, 5.5rem) clamp(1rem, 3.5vw, 3rem)',
         borderBottom: '1px solid var(--border-color)',
         width: '100%',
+        minHeight: 'clamp(520px, 68vh, 680px)',
+        display: 'flex',
+        alignItems: 'center',
+        boxSizing: 'border-box'
       }}>
-        <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
+        <div style={{
+          maxWidth: '1480px',
+          width: '100%',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+          gap: 'clamp(2.5rem, 4.5vw, 4rem)',
+          alignItems: 'center'
+        }}>
           {/* Left Text Column */}
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h1 className="public-hero-title" style={{
               fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
               fontFamily: 'var(--font-heading)',
@@ -58,63 +70,68 @@ export const LandingPage = () => {
             </h1>
 
             <p style={{
-              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+              fontSize: 'clamp(0.95rem, 2vw, 1.15rem)',
               color: 'var(--text-muted)',
-              lineHeight: 1.6,
-              marginBottom: '2rem',
+              lineHeight: 1.65,
+              marginBottom: '2.25rem',
+              maxWidth: '580px'
             }}>
               Manage clients, projects, teams, finance, HR and business operations from one secure, centralized platform built for <strong>Imagination2Software</strong>.
             </p>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link to="/login" className="btn-primary" style={{ padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <Link to="/login" className="btn-primary" style={{ padding: '0.9rem 1.85rem', fontSize: '0.95rem' }}>
                 Enter Enterprise Portal <ArrowRight size={18} />
               </Link>
-              <Link to="/capabilities" className="btn-secondary" style={{ padding: '0.85rem 1.5rem', fontSize: '0.95rem', textDecoration: 'none' }}>
+              <Link to="/capabilities" className="btn-secondary" style={{ padding: '0.9rem 1.6rem', fontSize: '0.95rem', textDecoration: 'none' }}>
                 Explore Capabilities
               </Link>
             </div>
           </div>
 
           {/* Right Dashboard Preview Visual */}
-          <div className="ref-card" style={{
-            padding: '1.5rem',
-            boxShadow: 'var(--shadow-lg)',
-            border: '1px solid var(--border-color)',
-            background: '#FFFFFF',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem', marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+            <div className="ref-card" style={{
+              padding: '1.75rem',
+              boxShadow: 'var(--shadow-lg)',
+              border: '1px solid var(--border-color)',
+              background: '#FFFFFF',
+              width: '100%',
+              maxWidth: '560px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-subtle)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
+                  portal.imagination2software.com
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Active</div>
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-subtle)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
-                portal.imagination2software.com
-              </div>
-              <div style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Active</div>
-            </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--dark-navy)', marginTop: '0.2rem' }}>12 Active</div>
-                <div style={{ fontSize: '0.7rem', color: '#10B981', marginTop: '0.2rem' }}>100% on schedule</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--dark-navy)', marginTop: '0.2rem' }}>12 Active</div>
+                  <div style={{ fontSize: '0.7rem', color: '#10B981', marginTop: '0.2rem' }}>100% on schedule</div>
+                </div>
+                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>BILLED REVENUE</div>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-blue)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Balanced ledger</div>
+                </div>
               </div>
-              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>BILLED REVENUE</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-blue)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Balanced ledger</div>
-              </div>
-            </div>
 
-            <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.35rem' }}>
-                <span style={{ fontWeight: 600 }}>Quarterly Engineering Milestone</span>
-                <span style={{ color: 'var(--primary-blue)', fontWeight: 700 }}>85%</span>
-              </div>
-              <div style={{ height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: '85%', background: 'var(--primary-blue)' }} />
+              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.35rem' }}>
+                  <span style={{ fontWeight: 600 }}>Quarterly Engineering Milestone</span>
+                  <span style={{ color: 'var(--primary-blue)', fontWeight: 700 }}>85%</span>
+                </div>
+                <div style={{ height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: '85%', background: 'var(--primary-blue)' }} />
+                </div>
               </div>
             </div>
           </div>
