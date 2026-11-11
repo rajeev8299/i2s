@@ -313,9 +313,9 @@ export const PublicFooter = () => {
       <div className="public-footer-container" style={{
         maxWidth: '1240px',
         margin: '0 auto',
-        padding: '4rem 2rem 3rem',
+        padding: '3.5rem 2rem 2.5rem',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
         gap: '2.5rem'
       }}>
         {/* Col 1: Brand & Positioning */}
@@ -381,21 +381,7 @@ export const PublicFooter = () => {
           </div>
         </div>
 
-        {/* Col 3: Business Portals */}
-        <div>
-          <h4 style={{ fontSize: '0.9rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#FFFFFF', marginBottom: '1.25rem' }}>
-            Enterprise Portals
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-            <Link to="/login" style={{ fontSize: '0.88rem', color: '#94A3B8', textDecoration: 'none' }}>Super Admin Portal</Link>
-            <Link to="/login" style={{ fontSize: '0.88rem', color: '#94A3B8', textDecoration: 'none' }}>Accounts & Finance</Link>
-            <Link to="/login" style={{ fontSize: '0.88rem', color: '#94A3B8', textDecoration: 'none' }}>HR & Operations</Link>
-            <Link to="/login" style={{ fontSize: '0.88rem', color: '#94A3B8', textDecoration: 'none' }}>Team Leader & Staff</Link>
-            <Link to="/login" style={{ fontSize: '0.88rem', color: '#94A3B8', textDecoration: 'none' }}>Client Order & Progress Portal</Link>
-          </div>
-        </div>
-
-        {/* Col 4: Contact & Location */}
+        {/* Col 3: Contact & Location */}
         <div>
           <h4 style={{ fontSize: '0.9rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#FFFFFF', marginBottom: '1.25rem' }}>
             Direct Contact
