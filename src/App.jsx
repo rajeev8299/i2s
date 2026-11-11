@@ -18,6 +18,7 @@ import { ServicesPublicPage } from './pages/ServicesPublicPage';
 import { WorkPage } from './pages/WorkPage';
 import { StorePage } from './pages/StorePage';
 import { BlogPage } from './pages/BlogPage';
+import { BlogDetailsPage } from './pages/BlogDetailsPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
 import { VideosGalleryPage } from './pages/VideosGalleryPage';
@@ -55,6 +56,8 @@ export const App = () => {
           <Route path="/work" element={<WorkPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+          <Route path="/blog-details/:id" element={<BlogDetailsPage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/videos" element={<VideosGalleryPage />} />
