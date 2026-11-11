@@ -24,30 +24,11 @@ export const ServicesPublicPage = () => {
       {/* Hero Header */}
       <section style={{
         background: 'linear-gradient(180deg, #FFF4ED 0%, var(--bg-app) 100%)',
-        padding: '5rem 2rem 3.5rem',
+        padding: '3.5rem 2rem 2.75rem',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            padding: '0.35rem 0.95rem',
-            background: '#FFFFFF',
-            border: '1px solid #FFEDD5',
-            borderRadius: '9999px',
-            fontSize: '0.8rem',
-            color: 'var(--primary-orange)',
-            marginBottom: '1.25rem',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            boxShadow: '0 2px 6px rgba(255, 90, 0, 0.08)'
-          }}>
-            <Zap size={14} /> Full-Stack Software, AI & Growth Capabilities
-          </div>
-
           <h1 className="public-hero-title" style={{
             fontSize: 'clamp(2.1rem, 5.5vw, 3.2rem)',
             fontFamily: 'var(--font-heading)',

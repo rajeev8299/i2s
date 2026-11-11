@@ -224,29 +224,12 @@ export const LandingPage = () => {
       {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
       <section style={{
         background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
-        padding: 'clamp(2.5rem, 5vw, 5rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 4vw, 4rem)',
+        padding: 'clamp(2rem, 4vw, 3.75rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 4vw, 3.5rem)',
         borderBottom: '1px solid var(--border-color)',
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }}>
           {/* Left Text Column */}
           <div>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.35rem 0.95rem',
-              background: '#FFFFFF',
-              border: '1px solid #BFDBFE',
-              borderRadius: '9999px',
-              fontSize: '0.82rem',
-              color: 'var(--primary-blue)',
-              marginBottom: '1.5rem',
-              fontWeight: 600,
-              boxShadow: '0 2px 6px rgba(23, 101, 232, 0.08)',
-            }}>
-              <Sparkles size={15} /> All-in-One Business Operating System
-            </div>
-
             <h1 className="public-hero-title" style={{
               fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
               fontFamily: 'var(--font-heading)',
