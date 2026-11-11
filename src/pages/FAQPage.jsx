@@ -85,9 +85,9 @@ export const FAQPage = () => {
       </section>
 
       {/* Accessible Accordion Section */}
-      <section style={{ padding: '5rem 2rem 6rem', background: 'var(--bg-app)', flex: 1 }}>
+      <section style={{ padding: '3rem 2rem 3.5rem', background: 'var(--bg-app)', flex: 1 }}>
         <div style={{ maxWidth: '850px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {filteredFaqs.map((faq, idx) => {
               const isOpen = openIndex === idx;
               return (
@@ -182,8 +182,8 @@ export const FAQPage = () => {
 
           {/* Have Another Question Callout */}
           <div className="ref-card" style={{
-            marginTop: '4rem',
-            padding: '2.5rem',
+            marginTop: '2.5rem',
+            padding: '2rem 1.75rem',
             background: 'var(--bg-app)',
             borderRadius: 'var(--radius-lg)',
             border: '1px solid var(--border-color)',

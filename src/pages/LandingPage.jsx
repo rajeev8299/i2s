@@ -328,27 +328,10 @@ export const LandingPage = () => {
       </section>
 
       {/* 4. VERIFIED SERVICES & DIGITAL SOLUTIONS (IMPORTED FROM THEI2S.COM) */}
-      <section id="services" style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
+      <section id="services" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
           {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              background: 'var(--primary-light)',
-              border: '1px solid #FFEDD5',
-              borderRadius: '9999px',
-              fontSize: '0.8rem',
-              color: 'var(--primary-orange)',
-              marginBottom: '1rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase'
-            }}>
-              <Zap size={14} /> Official Service Offerings
-            </div>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               How We Can Help Your Business
             </h2>
@@ -357,7 +340,7 @@ export const LandingPage = () => {
             </p>
 
             {/* Category Filter Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
               {serviceCategories.map((cat) => {
                 const isActive = selectedServiceCategory === cat;
                 return (
@@ -485,28 +468,10 @@ export const LandingPage = () => {
       </section>
 
       {/* 5. READY-MADE WEBSITE STORES & PUBLISHED PLANS (IMPORTED FROM THEI2S.COM) */}
-      <section id="ready-made-stores" style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
+      <section id="ready-made-stores" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
           {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              background: '#FFFFFF',
-              border: '1px solid #FFEDD5',
-              borderRadius: '9999px',
-              fontSize: '0.8rem',
-              color: 'var(--primary-orange)',
-              marginBottom: '1rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              boxShadow: 'var(--shadow-xs)'
-            }}>
-              <ShoppingBag size={14} /> Ready-Made Turnkey Solutions
-            </div>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               Buy A Store, Skip The Queue
             </h2>
@@ -515,7 +480,7 @@ export const LandingPage = () => {
             </p>
 
             {/* Category Filter Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
               {storeCategories.map((cat) => {
                 const isActive = selectedStoreCategory === cat;
                 return (
@@ -546,8 +511,8 @@ export const LandingPage = () => {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-            gap: '1.75rem',
-            marginBottom: '4rem'
+            gap: '1.5rem',
+            marginBottom: '2.5rem'
           }}>
             {filteredProducts.map((product) => {
               const discountPercent = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100);
@@ -743,9 +708,9 @@ export const LandingPage = () => {
       </section>
 
       {/* 6. MAIN BUSINESS MODULE CARDS */}
-      <section id="modules" style={{ padding: '5rem 2rem', background: 'var(--bg-app)' }}>
+      <section id="modules" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               Core Business Modules
             </h2>
@@ -822,12 +787,12 @@ export const LandingPage = () => {
       </section>
 
       {/* 5. BENEFITS & SECURITY */}
-      <section id="security" style={{ padding: '5rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
+      <section id="security" style={{ padding: '3rem 2rem 2.75rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
             Enterprise Reliability & Zero-Trust Access
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
             The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
           </p>
 
@@ -849,7 +814,7 @@ export const LandingPage = () => {
 
       {/* 6. FINAL CALL TO ACTION */}
       <section style={{
-        padding: '5rem 2rem',
+        padding: '3.5rem 2rem',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center',

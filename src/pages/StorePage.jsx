@@ -81,13 +81,13 @@ export const StorePage = () => {
       </section>
 
       {/* Product Cards Grid */}
-      <section style={{ padding: '5rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
+      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '2.5rem',
-            marginBottom: '4.5rem'
+            gap: '1.75rem',
+            marginBottom: '2.5rem'
           }}>
             {filteredProducts.map((product) => {
               const discountPercent = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100);
@@ -253,13 +253,10 @@ export const StorePage = () => {
             background: 'var(--bg-app)',
             borderRadius: 'var(--radius-lg)',
             border: '1px solid var(--border-color)',
-            padding: '3rem 2.5rem',
+            padding: '2.5rem 2rem',
             boxShadow: 'var(--shadow-sm)'
           }}>
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary-orange)', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '0.5rem' }}>
-                [ DEPLOYMENT TIERS ]
-              </span>
+            <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
               <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>
                 How Our Ready-Made Stores Are Delivered
               </h2>

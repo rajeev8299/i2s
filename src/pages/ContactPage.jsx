@@ -124,8 +124,8 @@ export const ContactPage = () => {
       </section>
 
       {/* Main Grid: Form + Verified Contact Cards */}
-      <section style={{ padding: '5rem 2rem 6rem', background: 'var(--bg-app)', flex: 1 }}>
-        <div style={{ maxWidth: '1240px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '3.5rem', alignItems: 'start' }}>
+      <section style={{ padding: '3rem 2rem 3.5rem', background: 'var(--bg-app)', flex: 1 }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2.5rem', alignItems: 'start' }}>
           
           {/* Left: Contact & Project Enquiry Form */}
           <div style={{

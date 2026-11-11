@@ -77,12 +77,12 @@ export const WorkPage = () => {
       </section>
 
       {/* Case Studies Cards Grid */}
-      <section style={{ padding: '5rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
+      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
-            gap: '2.5rem'
+            gap: '1.75rem'
           }}>
             {filteredItems.map((item) => (
               <article
@@ -209,12 +209,9 @@ export const WorkPage = () => {
       </section>
 
       {/* Verified Client Testimonials */}
-      <section style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
+      <section style={{ padding: '3.25rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary-orange)', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '0.5rem' }}>
-              [ CLIENT REVIEWS ]
-            </span>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.4rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               See Why Our Clients Partner With Us
             </h2>
@@ -223,7 +220,7 @@ export const WorkPage = () => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {I2S_TESTIMONIALS.map((t, idx) => (
               <div
                 key={idx}
@@ -272,7 +269,7 @@ export const WorkPage = () => {
 
       {/* CTA Section */}
       <section style={{
-        padding: '5rem 2rem',
+        padding: '3.5rem 2rem',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center'

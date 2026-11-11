@@ -55,12 +55,12 @@ export const BlogPage = () => {
       </section>
 
       {/* Main Body: Factual Publication State from Reference Source */}
-      <section style={{ padding: '6rem 2rem', background: 'var(--bg-app)', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <section style={{ padding: '3.5rem 2rem', background: 'var(--bg-app)', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
           maxWidth: '680px',
           width: '100%',
           textAlign: 'center',
-          padding: '3.5rem 2.5rem',
+          padding: '2.5rem 2rem',
           background: 'var(--bg-app)',
           borderRadius: 'var(--radius-xl)',
           border: '1px solid var(--border-color)',
@@ -68,18 +68,18 @@ export const BlogPage = () => {
         }}>
           {/* Centered Icon */}
           <div style={{
-            width: '80px',
-            height: '80px',
+            width: '70px',
+            height: '70px',
             borderRadius: '50%',
             background: '#FFFFFF',
             border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem',
+            margin: '0 auto 1.25rem',
             boxShadow: 'var(--shadow-xs)'
           }}>
-            <BookOpen size={36} color="var(--primary-orange)" />
+            <BookOpen size={32} color="var(--primary-orange)" />
           </div>
 
           <h2 style={{
@@ -96,9 +96,9 @@ export const BlogPage = () => {
             fontSize: '1rem',
             color: 'var(--text-muted)',
             lineHeight: 1.65,
-            marginBottom: '2rem',
+            marginBottom: '1.5rem',
             maxWidth: '460px',
-            margin: '0 auto 2rem'
+            margin: '0 auto 1.5rem'
           }}>
             {I2S_BLOG_STATUS.statusDescription}
           </p>
@@ -114,14 +114,14 @@ export const BlogPage = () => {
             borderRadius: 'var(--radius-full)',
             fontSize: '0.78rem',
             color: 'var(--text-secondary)',
-            marginBottom: '2.5rem'
+            marginBottom: '1.75rem'
           }}>
             <CheckCircle2 size={14} color="#10B981" />
             <span>Verified with live reference: <a href={I2S_BLOG_STATUS.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-orange)', fontWeight: 600 }}>thei2s.com/blog</a></span>
           </div>
 
           {/* Subscribe for Upcoming Articles */}
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '2rem' }}>
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.75rem' }}>
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
               Want to be notified when our first issue drops?
             </h3>
@@ -167,7 +167,7 @@ export const BlogPage = () => {
 
       {/* CTA Section */}
       <section style={{
-        padding: '4.5rem 2rem',
+        padding: '3.25rem 2rem',
         background: 'var(--dark-navy)',
         color: '#FFFFFF',
         textAlign: 'center'

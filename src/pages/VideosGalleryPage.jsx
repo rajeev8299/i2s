@@ -75,7 +75,7 @@ export const VideosGalleryPage = () => {
       </section>
 
       {/* Filter Tabs & Grid */}
-      <section style={{ padding: '4rem 2rem 6rem', maxWidth: '1240px', margin: '0 auto', width: '100%' }}>
+      <section style={{ padding: '2.5rem 2rem 3.5rem', maxWidth: '1240px', margin: '0 auto', width: '100%' }}>
         {/* Category Filters */}
         <div style={{
           display: 'flex',
@@ -83,7 +83,7 @@ export const VideosGalleryPage = () => {
           alignItems: 'center',
           gap: '0.5rem',
           flexWrap: 'wrap',
-          marginBottom: '3.5rem',
+          marginBottom: '2rem',
         }}>
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;

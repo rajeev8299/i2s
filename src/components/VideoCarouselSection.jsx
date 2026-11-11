@@ -172,7 +172,7 @@ export const VideoCarouselSection = () => {
       ref={sectionRef}
       id="watch-and-learn"
       style={{
-        padding: '5.5rem 2rem 5rem',
+        padding: '3rem 2rem 2.75rem',
         background: 'var(--bg-app)',
         borderTop: '1px solid var(--border-color)',
         borderBottom: '1px solid var(--border-color)',
@@ -185,28 +185,10 @@ export const VideoCarouselSection = () => {
         {/* Section Header - Centered */}
         <div style={{
           position: 'relative',
-          marginBottom: '2.5rem',
+          marginBottom: '1.75rem',
           textAlign: 'center',
         }}>
           <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              background: '#FFFFFF',
-              border: '1px solid #FFEDD5',
-              borderRadius: '9999px',
-              fontSize: '0.8rem',
-              color: 'var(--primary-orange)',
-              marginBottom: '0.85rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              boxShadow: '0 2px 6px rgba(255, 90, 0, 0.08)'
-            }}>
-              <Video size={14} /> Watch & Learn
-            </div>
 
             <h2 style={{
               fontSize: 'clamp(1.9rem, 3.2vw, 2.5rem)',
@@ -508,7 +490,7 @@ export const VideoCarouselSection = () => {
         </div>
 
         {/* Action Button: "Watch All Videos" */}
-        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.75rem' }}>
           <Link
             to="/videos"
             className="btn-primary"
@@ -516,7 +498,7 @@ export const VideoCarouselSection = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
-              padding: '0.85rem 2.2rem',
+              padding: '0.75rem 2rem',
               fontSize: '0.95rem',
               fontWeight: 700,
               borderRadius: 'var(--radius-md)',

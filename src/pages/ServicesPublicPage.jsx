@@ -81,12 +81,12 @@ export const ServicesPublicPage = () => {
       </section>
 
       {/* Services Grid with Detailed Specifications */}
-      <section style={{ padding: '5rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
+      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', flex: 1 }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '2rem'
+            gap: '1.5rem'
           }}>
             {filteredServices.map((service) => (
               <div
@@ -205,7 +205,7 @@ export const ServicesPublicPage = () => {
       </section>
 
       {/* Cross-Link Callout to Ready-Made Stores */}
-      <section style={{ padding: '4rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
+      <section style={{ padding: '2.75rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontSize: '2rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
             Looking for a Pre-Built Solution Instead?

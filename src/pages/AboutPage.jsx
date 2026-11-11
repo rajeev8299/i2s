@@ -77,18 +77,15 @@ export const AboutPage = () => {
       </section>
 
       {/* Mission & Positioning Statement */}
-      <section style={{ padding: '5rem 2rem', background: 'var(--bg-app)' }}>
+      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary-orange)', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '0.75rem' }}>
-            [ WHO WE ARE ]
-          </span>
           <h2 style={{
             fontSize: '2.4rem',
             fontFamily: 'var(--font-heading)',
             fontWeight: 800,
             color: 'var(--dark-navy)',
             lineHeight: 1.35,
-            marginBottom: '2rem'
+            marginBottom: '1.5rem'
           }}>
             {I2S_COMPANY_INFO.mission}
           </h2>
@@ -97,9 +94,9 @@ export const AboutPage = () => {
       </section>
 
       {/* Pillars / Achievements */}
-      <section style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
+      <section style={{ padding: '3.25rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.3rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               A Little About Our Track Record
             </h2>
@@ -108,7 +105,7 @@ export const AboutPage = () => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
             {I2S_COMPANY_INFO.pillars.map((pillar, idx) => (
               <div
                 key={idx}
@@ -147,12 +144,9 @@ export const AboutPage = () => {
       </section>
 
       {/* Working Philosophy: BUILD · AUTOMATE · BRAND · SCALE */}
-      <section style={{ padding: '5.5rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
+      <section style={{ padding: '3.25rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary-orange)', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '0.5rem' }}>
-              [ WHY CHOOSE I2S ]
-            </span>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.3rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
               We Build Products That Scale
             </h2>
@@ -201,9 +195,9 @@ export const AboutPage = () => {
       </section>
 
       {/* Featured Client Roster */}
-      <section style={{ padding: '4rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
+      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: '1.75rem' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: '1.25rem' }}>
             Selected Clients & Ecosystem Partners
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2.5rem', flexWrap: 'wrap' }}>
@@ -231,7 +225,7 @@ export const AboutPage = () => {
 
       {/* Call to Action */}
       <section style={{
-        padding: '5rem 2rem',
+        padding: '3.5rem 2rem',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center'
