@@ -821,77 +821,26 @@ export const LandingPage = () => {
 
       {/* 5. BENEFITS & SECURITY */}
       <section id="security" style={{ padding: '3.25rem 2rem 3rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: '3rem', alignItems: 'center' }}>
-          <div>
-            <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
-              Enterprise Reliability & Zero-Trust Access
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-              The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
-            </p>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '2.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
+            Enterprise Reliability & Zero-Trust Access
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+            The platform enforces 8 granular roles directly at the backend API layer. Clients see only approved milestones; staff cannot read unpermitted payroll records; and financial ledgers stay balanced.
+          </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {[
-                'Server-enforced role-based access control (RBAC)',
-                'Double-entry accounting parity with immutable journal audit trail',
-                'Dedicated client data isolation preventing cross-tenant visibility',
-                'Real on-the-fly streaming PDF invoices generated from PostgreSQL',
-              ].map((text, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#FFFFFF', padding: '0.85rem 1.15rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}>{text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 8 Configured Role Portals Grid */}
-          <div className="ref-card" style={{ padding: '1.75rem', background: '#FFFFFF', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Lock size={16} color="var(--primary-orange)" />
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--dark-navy)' }}>
-                  8 Configured Role Portals
-                </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', textAlign: 'left' }}>
+            {[
+              'Server-enforced role-based access control (RBAC)',
+              'Double-entry accounting parity with immutable journal audit trail',
+              'Dedicated client data isolation preventing cross-tenant visibility',
+              'Real on-the-fly streaming PDF invoices generated from PostgreSQL',
+            ].map((text, idx) => (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#FFFFFF', padding: '1rem 1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
+                <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 500 }}>{text}</span>
               </div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>Zero-Trust Access</span>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
-              {[
-                { label: 'Super Admin', path: '/login?role=super-admin', role: 'Executive & Governance' },
-                { label: 'Admin', path: '/login?role=admin', role: 'Operations & Management' },
-                { label: 'Accounts Manager', path: '/login?role=accounts-manager', role: 'Ledger, Invoices & GST' },
-                { label: 'HR Manager', path: '/login?role=hr-manager', role: 'Staff, Attendance & Payroll' },
-                { label: 'Team Leader', path: '/login?role=team-leader', role: 'Project Oversight & Reviews' },
-                { label: 'Staff Specialist', path: '/login?role=staff-specialist', role: 'Engineering Deliverables' },
-                { label: 'Intern', path: '/login?role=intern', role: 'Learning & Daily Tasks' },
-                { label: 'Client Portal', path: '/login?role=client-portal', role: 'Milestones & Invoices' },
-              ].map((p, idx) => (
-                <Link
-                  key={idx}
-                  to={p.path}
-                  style={{
-                    background: '#F8FAFC',
-                    padding: '0.75rem 0.9rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--border-color)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.2rem',
-                    textDecoration: 'none',
-                    transition: 'all var(--transition-fast)',
-                  }}
-                  className="role-portal-card"
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--dark-navy)' }}>{p.label}</span>
-                    <ArrowRight size={13} color="var(--primary-orange)" />
-                  </div>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{p.role}</span>
-                </Link>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -938,9 +887,9 @@ export const LandingPage = () => {
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', fontSize: '0.82rem', color: '#94A3B8' }}>
-            <Link to="/login?role=super-admin" style={{ color: '#94A3B8' }}>Super Admin</Link>
-            <Link to="/login?role=accounts-manager" style={{ color: '#94A3B8' }}>Accounts</Link>
-            <Link to="/login?role=client" style={{ color: '#94A3B8' }}>Client Portal</Link>
+            <Link to="/login" style={{ color: '#94A3B8' }}>Business Portal Login</Link>
+            <Link to="/privacy" style={{ color: '#94A3B8' }}>Privacy Policy</Link>
+            <Link to="/terms" style={{ color: '#94A3B8' }}>Terms of Service</Link>
             <span>© 2026 Imagination2Software. All rights reserved.</span>
           </div>
         </div>
