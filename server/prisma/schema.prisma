@@ -737,4 +737,47 @@ model GuidanceVideo {
   @@index([isActive, displayOrder])
 }
 
+// -------------------------------------------------------------
+// 14. PUBLIC WEBSITE INQUIRIES & NEWSLETTER
+// -------------------------------------------------------------
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL_SENT
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+model ContactInquiry {
+  id               String        @id @default(uuid())
+  name             String
+  email            String
+  company          String?
+  phone            String?
+  selectedServices String[]
+  budget           String?
+  message          String
+  status           InquiryStatus @default(NEW)
+  ipAddress        String?
+  userAgent        String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  source    String   @default("blog_hero")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+
 

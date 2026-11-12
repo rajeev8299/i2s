@@ -6,6 +6,7 @@ import {
   TrendingUp, Award, Layers, ShieldCheck, Zap
 } from 'lucide-react';
 import { PublicNavbar, PublicFooter } from '../components/PublicLayout';
+import { apiFetch } from '../services/api';
 import {
   BLOG_CATEGORIES,
   BLOG_ARTICLES,
@@ -55,9 +56,17 @@ export const BlogPage = () => {
     setCurrentPage(1);
   };
 
-  const handleNewsletterSubmit = (e) => {
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
-    if (newsletterEmail && newsletterEmail.includes('@')) {
+    if (!newsletterEmail || !newsletterEmail.includes('@')) return;
+    try {
+      await apiFetch('/public/newsletter', {
+        method: 'POST',
+        body: JSON.stringify({ email: newsletterEmail, source: 'blog_briefing' }),
+      });
+      setIsSubscribed(true);
+    } catch (err) {
+      // Fallback display
       setIsSubscribed(true);
     }
   };

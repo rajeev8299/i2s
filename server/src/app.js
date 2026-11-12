@@ -20,6 +20,7 @@ import dailyReportRoutes from './routes/dailyReportRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import videoRoutes from './routes/videoRoutes.js';
+import publicRoutes from './routes/publicRoutes.js';
 
 dotenv.config();
 
@@ -79,6 +80,7 @@ app.use('/api/reports', dailyReportRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api/public', publicRoutes);
 
 import path from 'path';
 import { fileURLToPath } from 'url';

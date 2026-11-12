@@ -5,6 +5,7 @@ import {
   AlertCircle, Sparkles, Send, ShieldCheck
 } from 'lucide-react';
 import { PublicNavbar, PublicFooter } from '../components/PublicLayout';
+import { apiFetch } from '../services/api';
 import {
   I2S_COMPANY_INFO,
   I2S_CONTACT_SERVICES,
@@ -75,13 +76,23 @@ export const ContactPage = () => {
     setLoading(true);
 
     try {
-      // Simulate/post to existing enquiry endpoint or local mock verification
-      // (Preserving real client backend without creating unapproved tables)
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await apiFetch('/public/contact', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          company: company.trim() || null,
+          phone: phone.trim() || null,
+          selectedServices,
+          budget,
+          message: message.trim(),
+          honeypot: honeypot || null,
+        }),
+      });
 
       setSubmitted(true);
     } catch (err) {
-      setErrorMessage('Failed to send your enquiry. Please reach out directly to hello@i2s.in.');
+      setErrorMessage(err.message || 'Failed to send your enquiry. Please reach out directly to hello@i2s.in.');
     } finally {
       setLoading(false);
     }
