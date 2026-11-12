@@ -21,6 +21,9 @@ pg_data/
 *.sqlite
 *.sqlite3
 *.db
+backups/
+server/backups/
+*.json.bak
 
 # Build outputs
 dist/
