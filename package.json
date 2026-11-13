@@ -11,11 +11,13 @@
     "dev": "concurrently \"npm run dev --workspace=server\" \"vite\"",
     "dev:client": "vite",
     "dev:server": "npm run dev --workspace=server",
-    "build": "vite build",
+    "build": "npm run db:generate && vite build",
     "preview": "vite preview",
     "test": "npm run test --workspace=server",
     "db:migrate": "npm run db:migrate --workspace=server",
     "db:seed": "npm run db:seed --workspace=server",
+    "db:generate": "npm run db:generate --workspace=server",
+    "postinstall": "npm run db:generate",
     "install:all": "npm install"
   },
   "dependencies": {

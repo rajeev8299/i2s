@@ -8,15 +8,26 @@ import prisma from '../config/db.js';
 import { authenticate } from '../middleware/auth.js';
 import { logAudit } from '../services/auditService.js';
 
+import os from 'os';
+
 const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const UPLOAD_DIR = path.resolve(__dirname, '../../uploads/avatars');
 
-// Ensure upload directory exists
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// In serverless environments (e.g. Vercel), local filesystem writes outside /tmp fail
+const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const UPLOAD_DIR = isServerless 
+  ? path.join(os.tmpdir(), 'uploads', 'avatars')
+  : path.resolve(__dirname, '../../uploads/avatars');
+
+// Ensure upload directory exists safely
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('Could not initialize local upload directory:', e.message);
 }
 
 // Memory storage for file inspection before persisting
