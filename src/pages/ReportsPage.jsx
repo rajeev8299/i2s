@@ -16,10 +16,13 @@ export const ReportsPage = () => {
 
   const loadReports = async () => {
     try {
+      const isFinanceRole = ['SUPER_ADMIN', 'ADMIN', 'ACCOUNTS_MANAGER'].includes(user?.role);
+      const isHRRole = ['SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'].includes(user?.role);
+
       const [repData, projData, usrData] = await Promise.all([
-        apiFetch('/finance/reports').catch(() => null),
+        isFinanceRole ? apiFetch('/finance/reports').catch(() => null) : Promise.resolve(null),
         apiFetch('/projects').catch(() => ({ projects: [] })),
-        apiFetch('/users').catch(() => ({ users: [] })),
+        isHRRole ? apiFetch('/users').catch(() => ({ users: [] })) : Promise.resolve({ users: [] }),
       ]);
       setFinanceReports(repData);
       setProjects(projData.projects || []);
@@ -142,29 +145,31 @@ export const ReportsPage = () => {
         </div>
 
         {/* Financial Parity & Health */}
-        <div className="ref-card">
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 0.5rem' }}>
-            Financial Health & Trial Balance
-          </h3>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 1.25rem' }}>
-            Balance sheet debit/credit alignment and collection efficiency.
-          </p>
+        {['SUPER_ADMIN', 'ADMIN', 'ACCOUNTS_MANAGER'].includes(user?.role) && (
+          <div className="ref-card">
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 0.5rem' }}>
+              Financial Health & Trial Balance
+            </h3>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 1.25rem' }}>
+              Balance sheet debit/credit alignment and collection efficiency.
+            </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Accounting Method:</span>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Double-entry Accrual</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Fiscal Year:</span>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>2026-2027</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Compliance:</span>
-              <span style={{ fontWeight: 700, color: '#16A34A' }}>GST & TDS Compliant</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Accounting Method:</span>
+                <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Double-entry Accrual</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Fiscal Year:</span>
+                <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>2026-2027</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-app)', borderRadius: 'var(--radius-sm)' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Compliance:</span>
+                <span style={{ fontWeight: 700, color: '#16A34A' }}>GST & TDS Compliant</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

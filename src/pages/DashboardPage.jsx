@@ -16,8 +16,8 @@ export const DashboardPage = () => {
     pendingTasks: 0,
     totalClients: 0,
     totalEmployees: 0,
-    billedRevenue: 580000,
-    receivedPayments: 300000,
+    billedRevenue: 0,
+    receivedPayments: 0,
   });
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentTasks, setRecentTasks] = useState([]);
@@ -43,13 +43,17 @@ export const DashboardPage = () => {
 
   const loadData = async () => {
     try {
-      const [projData, taskData, uData, cData, nData, lData] = await Promise.all([
+      const isFinancePrivileged = ['SUPER_ADMIN', 'ADMIN', 'ACCOUNTS_MANAGER'].includes(user?.role);
+      const isHRUser = ['SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'].includes(user?.role);
+
+      const [projData, taskData, uData, cData, nData, lData, invData] = await Promise.all([
         apiFetch('/projects').catch(() => ({ projects: [] })),
         apiFetch('/projects/tasks').catch(() => ({ tasks: [] })),
-        ['SUPER_ADMIN', 'ADMIN', 'HR_MANAGER'].includes(user?.role) ? apiFetch('/users').catch(() => ({ users: [] })) : { users: [] },
+        isHRUser ? apiFetch('/users').catch(() => ({ users: [] })) : { users: [] },
         ['SUPER_ADMIN', 'ADMIN', 'ACCOUNTS_MANAGER'].includes(user?.role) ? apiFetch('/clients').catch(() => ({ clients: [] })) : { clients: [] },
         user?.role !== 'CLIENT' ? apiFetch('/notifications/my-notices').catch(() => ({ notices: [] })) : { notices: [] },
         user?.role === 'ADMIN' ? apiFetch('/hr/leave').catch(() => ({ leaveRequests: [] })) : { leaveRequests: [] },
+        isFinancePrivileged ? apiFetch('/finance/invoices').catch(() => ({ invoices: [] })) : { invoices: [] },
       ]);
 
       const projects = projData.projects || [];
@@ -58,6 +62,19 @@ export const DashboardPage = () => {
       const clientsList = cData.clients || [];
       const noticesList = nData.notices || [];
       const leaveList = lData.leaveRequests || [];
+      const invoicesList = invData.invoices || [];
+
+      // Calculate live billed and collected amounts
+      let totalBilled = 0;
+      let totalCollected = 0;
+      invoicesList.forEach((inv) => {
+        totalBilled += parseFloat(inv.totalAmount || 0);
+        if (Array.isArray(inv.payments)) {
+          inv.payments.forEach((p) => {
+            totalCollected += parseFloat(p.amount || 0);
+          });
+        }
+      });
 
       setStats({
         activeProjects: projects.length,
@@ -65,8 +82,8 @@ export const DashboardPage = () => {
         pendingTasks: tasks.filter(t => t.status !== 'COMPLETED').length,
         totalClients: clientsList.length,
         totalEmployees: usersList.length,
-        billedRevenue: 580000,
-        receivedPayments: 300000,
+        billedRevenue: totalBilled,
+        receivedPayments: totalCollected,
       });
 
       setRecentUsers(usersList.slice(0, 5));

@@ -81,7 +81,7 @@ export const SettingsPage = () => {
             <Lock size={20} /> Strict RBAC Enforced
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            Argon2 Password Hashing &bull; Audit Trails
+            bcrypt Password Hashing &bull; Audit Trails
           </div>
         </div>
       </div>
