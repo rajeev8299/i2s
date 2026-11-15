@@ -28,7 +28,7 @@ export const FAQPage = () => {
       {/* Hero Section */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.75rem 2rem 3rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) 2rem clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
@@ -50,7 +50,7 @@ export const FAQPage = () => {
             color: 'var(--text-secondary)',
             lineHeight: 1.65,
             maxWidth: '680px',
-            margin: '0 auto 2.5rem'
+            margin: '0 auto 1.75rem'
           }}>
             Everything you need to know before starting your software, AI automation, or growth journey with I2S.
           </p>
@@ -85,7 +85,7 @@ export const FAQPage = () => {
       </section>
 
       {/* Accessible Accordion Section */}
-      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem) 3.5rem', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
         <div style={{ maxWidth: '900px', width: '100%', margin: '0 auto' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {filteredFaqs.map((faq, idx) => {

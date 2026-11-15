@@ -15,6 +15,7 @@ import {
 } from '../data/servicesData';
 import { VideoCarouselSection } from '../components/VideoCarouselSection';
 import { PublicNavbar, PublicFooter } from '../components/PublicLayout';
+import { HeroServicesWheel } from '../components/HeroServicesWheel';
 
 export const LandingPage = () => {
   const [selectedServiceCategory, setSelectedServiceCategory] = useState('All');
@@ -35,105 +36,226 @@ export const LandingPage = () => {
       {/* 1. PROFESSIONAL NAVBAR */}
       <PublicNavbar />
 
-      {/* 2. HERO SECTION — Pale Lime / Soft Yellow-Green matching Reference */}
+      {/* 2. HERO SECTION — EXACT REFERENCE-BASED IMPLEMENTATION */}
       <section className="public-home-hero" style={{
-        background: 'linear-gradient(180deg, #F0F5B8 0%, #F5F7D8 100%)',
-        padding: 'clamp(3.5rem, 6.5vw, 5.5rem) clamp(1rem, 3.5vw, 3rem)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, #F5F7D8 50%, #FAFCE8 100%)',
+        padding: 'clamp(1.25rem, 2.8vw, 2.5rem) clamp(1rem, 3.5vw, 3rem) clamp(2.25rem, 3.5vw, 3.25rem)',
         borderBottom: '1px solid var(--border-color)',
         width: '100%',
-        minHeight: 'clamp(520px, 68vh, 680px)',
+        minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
         boxSizing: 'border-box'
       }}>
+        {/* Decorative background ambient soft curves */}
+        <div style={{
+          position: 'absolute',
+          top: '-15%',
+          right: '-8%',
+          width: '550px',
+          height: '550px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255, 101, 0, 0.08) 0%, rgba(240, 245, 184, 0.4) 50%, transparent 75%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-20%',
+          left: '-10%',
+          width: '600px',
+          height: '600px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(245, 247, 216, 0.3) 50%, transparent 75%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
         <div style={{
           maxWidth: '1480px',
           width: '100%',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-          gap: 'clamp(2.5rem, 4.5vw, 4rem)',
-          alignItems: 'center'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
+          gap: 'clamp(2rem, 3.8vw, 3.5rem)',
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 1
         }}>
-          {/* Left Text Column */}
+          {/* Left Hero Content */}
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            {/* Small Eyebrow Badge */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              background: '#FFFFFF',
+              border: '1px solid var(--border-color)',
+              color: 'var(--primary-orange)',
+              padding: '0.38rem 1rem',
+              borderRadius: '999px',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              letterSpacing: '0.02em',
+              marginBottom: '1.25rem',
+              width: 'fit-content',
+              boxShadow: '0 2px 6px rgba(17, 17, 17, 0.04)'
+            }}>
+              <Sparkles size={14} color="var(--primary-orange)" />
+              <span>All-in-One Digital Solutions by I2S</span>
+            </div>
+
+            {/* Main Heading with Orange Highlight */}
             <h1 className="public-hero-title" style={{
-              fontSize: 'clamp(2.1rem, 5.5vw, 3.4rem)',
+              fontSize: 'clamp(2.2rem, 5.2vw, 3.5rem)',
               fontFamily: 'var(--font-heading)',
               fontWeight: 800,
               lineHeight: 1.15,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.025em',
               color: 'var(--dark-navy)',
               marginBottom: '1.25rem',
             }}>
-              One Platform. Complete Business Control.
+              Complete Digital Growth for <span style={{ color: 'var(--primary-orange)' }}>Your Business</span>
             </h1>
 
+            {/* Description */}
             <p style={{
-              fontSize: 'clamp(0.95rem, 2vw, 1.15rem)',
+              fontSize: 'clamp(0.98rem, 2vw, 1.15rem)',
               color: 'var(--text-secondary)',
               lineHeight: 1.65,
-              marginBottom: '2.25rem',
+              marginBottom: '2rem',
               maxWidth: '580px'
             }}>
-              Manage clients, projects, teams, finance, HR and business operations from one secure, centralized platform built for <strong>Imagination2Software</strong>.
+              From website & app development to marketing, branding and automation — I2S delivers end-to-end digital solutions to build, grow and scale your business.
             </p>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Link to="/login" className="btn-primary" style={{ padding: '0.9rem 1.85rem', fontSize: '0.95rem' }}>
-                Enter Enterprise Portal <ArrowRight size={18} />
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '2.5rem' }}>
+              <Link
+                to="/contact"
+                className="btn-primary"
+                style={{
+                  padding: '0.9rem 1.85rem',
+                  fontSize: '0.96rem',
+                  borderRadius: 'var(--radius-sm)',
+                  boxShadow: '0 6px 18px rgba(255, 101, 0, 0.35)',
+                  textDecoration: 'none'
+                }}
+              >
+                Get Started with I2S <ArrowRight size={18} />
               </Link>
-              <Link to="/capabilities" className="btn-secondary" style={{ padding: '0.9rem 1.6rem', fontSize: '0.95rem', textDecoration: 'none' }}>
-                Explore Capabilities
-              </Link>
+              <a
+                href="#services"
+                className="btn-secondary"
+                style={{
+                  padding: '0.9rem 1.65rem',
+                  fontSize: '0.96rem',
+                  textDecoration: 'none',
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#FFFFFF',
+                  color: 'var(--text-main)',
+                  border: '1px solid var(--border-color)',
+                  boxShadow: '0 2px 8px rgba(17, 17, 17, 0.04)'
+                }}
+              >
+                Explore Services
+              </a>
+            </div>
+
+            {/* Business Statistics with Thin Orange Dividers */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 'clamp(1rem, 2vw, 1.75rem)',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid rgba(225, 229, 201, 0.9)',
+            }}>
+              {/* Stat 1 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 101, 0, 0.12)',
+                  color: 'var(--primary-orange)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Rocket size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--dark-navy)', lineHeight: 1.1 }}>
+                    150+
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                    Projects Delivered
+                  </div>
+                </div>
+              </div>
+
+              {/* Vertical Divider */}
+              <div style={{ width: '1px', height: '36px', background: 'rgba(255, 101, 0, 0.35)' }} className="hidden-mobile" />
+
+              {/* Stat 2 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 101, 0, 0.12)',
+                  color: 'var(--primary-orange)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Users size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--dark-navy)', lineHeight: 1.1 }}>
+                    50+
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                    Happy Clients
+                  </div>
+                </div>
+              </div>
+
+              {/* Vertical Divider */}
+              <div style={{ width: '1px', height: '36px', background: 'rgba(255, 101, 0, 0.35)' }} className="hidden-mobile" />
+
+              {/* Stat 3 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 101, 0, 0.12)',
+                  color: 'var(--primary-orange)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Award size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--dark-navy)', lineHeight: 1.1 }}>
+                    5+
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                    Years Experience
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Dashboard Preview Visual */}
+          {/* Right-Side Circular Services Infographic Wheel */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-            <div className="ref-card" style={{
-              padding: '1.75rem',
-              boxShadow: '0 12px 32px rgba(17, 17, 17, 0.08), 0 2px 8px rgba(17, 17, 17, 0.04)',
-              border: '1px solid var(--border-color)',
-              background: '#FFFFFF',
-              width: '100%',
-              maxWidth: '560px'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', gap: '0.4rem' }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', background: 'var(--bg-card-secondary)', border: '1px solid var(--border-color)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
-                  portal.imagination2software.com
-                </div>
-                <div style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Active</div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-                <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--dark-navy)', marginTop: '0.2rem' }}>12 Active</div>
-                  <div style={{ fontSize: '0.7rem', color: '#10B981', marginTop: '0.2rem' }}>100% on schedule</div>
-                </div>
-                <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontWeight: 600 }}>BILLED REVENUE</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-orange)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>Balanced ledger</div>
-                </div>
-              </div>
-
-              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.35rem' }}>
-                  <span style={{ fontWeight: 600, color: 'var(--dark-navy)' }}>Quarterly Engineering Milestone</span>
-                  <span style={{ color: 'var(--primary-orange)', fontWeight: 700 }}>85%</span>
-                </div>
-                <div style={{ height: '6px', background: 'var(--bg-app-alt)', borderRadius: '999px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: '85%', background: 'var(--primary-orange)' }} />
-                </div>
-              </div>
-            </div>
+            <HeroServicesWheel />
           </div>
         </div>
       </section>

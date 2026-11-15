@@ -78,7 +78,7 @@ export const BlogPage = () => {
       {/* 1. HERO SECTION */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.75rem clamp(1rem, 3.5vw, 3rem) 2.5rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) clamp(1rem, 3.5vw, 3rem) clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
@@ -120,7 +120,7 @@ export const BlogPage = () => {
             color: 'var(--text-secondary)',
             lineHeight: 1.65,
             maxWidth: '750px',
-            margin: '0 auto 2.25rem'
+            margin: '0 auto 1.75rem'
           }}>
             Explore technology trends, software development insights, AI innovations and practical digital strategies from the I2S team.
           </p>
@@ -807,7 +807,7 @@ export const BlogPage = () => {
             color: '#B8B8B8',
             lineHeight: 1.6,
             maxWidth: '640px',
-            margin: '0 auto 2.25rem'
+            margin: '0 auto 1.75rem'
           }}>
             Subscribe to our bi-weekly engineering newsletter. We curate the latest in AI, full-stack frameworks, cloud infrastructure, and software scalability.
           </p>

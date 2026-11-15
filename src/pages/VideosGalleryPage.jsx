@@ -52,7 +52,7 @@ export const VideosGalleryPage = () => {
       {/* Hero Header */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.5rem 2rem 2.75rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) 2rem clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center',
       }}>

@@ -15,7 +15,7 @@ export const AboutPage = () => {
       {/* Hero / Introduction */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.5rem 2rem 3rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) 2rem clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
@@ -37,7 +37,7 @@ export const AboutPage = () => {
             color: 'var(--text-secondary)',
             lineHeight: 1.65,
             maxWidth: '750px',
-            margin: '0 auto 2.5rem'
+            margin: '0 auto 1.75rem'
           }}>
             {I2S_COMPANY_INFO.subheading}
           </p>
@@ -78,7 +78,7 @@ export const AboutPage = () => {
       </section>
 
       {/* Mission & Positioning Statement */}
-      <section style={{ padding: '3rem 2rem', background: 'var(--bg-app)' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) 2rem', background: 'var(--bg-app)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{
             fontSize: '2.4rem',
@@ -95,7 +95,7 @@ export const AboutPage = () => {
       </section>
 
       {/* Pillars / Achievements */}
-      <section style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
         <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.3rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
@@ -145,7 +145,7 @@ export const AboutPage = () => {
       </section>
 
       {/* Working Philosophy: BUILD · AUTOMATE · BRAND · SCALE */}
-      <section style={{ padding: '3.25rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
         <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2.3rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
@@ -196,7 +196,7 @@ export const AboutPage = () => {
       </section>
 
       {/* Featured Client Roster */}
-      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', borderBottom: '1px solid var(--border-color)', width: '100%' }}>
         <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: '1.25rem' }}>
             Selected Clients & Ecosystem Partners
@@ -226,7 +226,7 @@ export const AboutPage = () => {
 
       {/* Call to Action */}
       <section style={{
-        padding: '3.5rem clamp(1rem, 3.5vw, 3rem)',
+        padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center',

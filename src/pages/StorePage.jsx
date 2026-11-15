@@ -24,7 +24,7 @@ export const StorePage = () => {
       {/* Hero Header */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.5rem 2rem 2.75rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) 2rem clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
@@ -46,7 +46,7 @@ export const StorePage = () => {
             color: 'var(--text-secondary)',
             lineHeight: 1.65,
             maxWidth: '750px',
-            margin: '0 auto 2.5rem'
+            margin: '0 auto 1.75rem'
           }}>
             Don't want to wait for a custom build? Buy a ready-made store off the shelf. We'll deploy it for you — or hand it over to your team. Live in days, not months.
           </p>
@@ -81,7 +81,7 @@ export const StorePage = () => {
       </section>
 
       {/* Product Cards Grid */}
-      <section style={{ padding: '3rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
         <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',

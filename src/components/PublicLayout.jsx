@@ -329,7 +329,7 @@ export const PublicFooter = () => {
         maxWidth: '1480px',
         width: '100%',
         margin: '0 auto',
-        padding: '3.75rem clamp(1rem, 3.5vw, 3rem) 2.75rem',
+        padding: 'clamp(2.25rem, 3.5vw, 3rem) clamp(1rem, 3.5vw, 3rem) clamp(1.75rem, 2.5vw, 2.25rem)',
       }}>
         <div className="public-footer-grid">
           {/* COLUMN 1 — BRAND & ABOUT */}

@@ -166,7 +166,7 @@ export const CapabilitiesPage = () => {
       {/* Hero Header */}
       <section style={{
         background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
-        padding: '3.75rem 2rem 3rem',
+        padding: 'clamp(2rem, 3.8vw, 3rem) 2rem clamp(1.75rem, 3.2vw, 2.5rem)',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
       }}>
@@ -188,7 +188,7 @@ export const CapabilitiesPage = () => {
             color: 'var(--text-secondary)',
             lineHeight: 1.65,
             maxWidth: '700px',
-            margin: '0 auto 2.25rem'
+            margin: '0 auto 1.75rem'
           }}>
             From custom software engineering and AI autonomous systems to turnkey store deployments and full-funnel growth engines — discover everything I2S delivers.
           </p>
@@ -224,7 +224,7 @@ export const CapabilitiesPage = () => {
       </section>
 
       {/* Main Capabilities Grid */}
-      <section style={{ padding: '3.5rem clamp(1rem, 3.5vw, 3rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
+      <section style={{ padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)', background: 'var(--bg-app)', flex: 1, width: '100%' }}>
         <div style={{ maxWidth: '1480px', width: '100%', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
@@ -355,7 +355,7 @@ export const CapabilitiesPage = () => {
 
       {/* Cross-Link Call to Action */}
       <section style={{
-        padding: '3.5rem clamp(1rem, 3.5vw, 3rem)',
+        padding: 'clamp(2rem, 3.5vw, 2.75rem) clamp(1rem, 3.5vw, 2.5rem)',
         background: 'linear-gradient(135deg, #111111 0%, #FF5A00 100%)',
         color: '#FFFFFF',
         textAlign: 'center',
