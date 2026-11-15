@@ -27,7 +27,7 @@ export const FAQPage = () => {
 
       {/* Hero Section */}
       <section style={{
-        background: 'linear-gradient(180deg, #FFF4ED 0%, var(--bg-app) 100%)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
         padding: '3.75rem 2rem 3rem',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'

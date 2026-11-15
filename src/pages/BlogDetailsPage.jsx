@@ -46,7 +46,7 @@ export const BlogDetailsPage = () => {
 
       {/* Header Breadcrumb & Category Bar */}
       <div style={{
-        background: 'linear-gradient(180deg, #FFF4ED 0%, var(--bg-app) 100%)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
         borderBottom: '1px solid var(--border-color)',
         padding: '2.5rem clamp(1rem, 3.5vw, 3rem) 2rem'
       }}>
@@ -460,7 +460,7 @@ export const BlogDetailsPage = () => {
       {/* Related Articles Section */}
       {relatedArticles && relatedArticles.length > 0 && (
         <section style={{
-          background: 'linear-gradient(180deg, var(--bg-app) 0%, #FFF4ED 100%)',
+          background: 'linear-gradient(180deg, var(--bg-app) 0%, var(--bg-app-alt) 100%)',
           borderTop: '1px solid var(--border-color)',
           padding: '4rem clamp(1rem, 3.5vw, 3rem)'
         }}>

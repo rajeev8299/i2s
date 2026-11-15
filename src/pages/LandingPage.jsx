@@ -35,9 +35,9 @@ export const LandingPage = () => {
       {/* 1. PROFESSIONAL NAVBAR */}
       <PublicNavbar />
 
-      {/* 2. HERO SECTION — Light Blue Gradient Background matching Reference */}
+      {/* 2. HERO SECTION — Pale Lime / Soft Yellow-Green matching Reference */}
       <section className="public-home-hero" style={{
-        background: 'linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 100%)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, #F5F7D8 100%)',
         padding: 'clamp(3.5rem, 6.5vw, 5.5rem) clamp(1rem, 3.5vw, 3rem)',
         borderBottom: '1px solid var(--border-color)',
         width: '100%',
@@ -71,7 +71,7 @@ export const LandingPage = () => {
 
             <p style={{
               fontSize: 'clamp(0.95rem, 2vw, 1.15rem)',
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               lineHeight: 1.65,
               marginBottom: '2.25rem',
               maxWidth: '580px'
@@ -93,7 +93,7 @@ export const LandingPage = () => {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
             <div className="ref-card" style={{
               padding: '1.75rem',
-              boxShadow: 'var(--shadow-lg)',
+              boxShadow: '0 12px 32px rgba(17, 17, 17, 0.08), 0 2px 8px rgba(17, 17, 17, 0.04)',
               border: '1px solid var(--border-color)',
               background: '#FFFFFF',
               width: '100%',
@@ -105,32 +105,32 @@ export const LandingPage = () => {
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-subtle)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', background: 'var(--bg-card-secondary)', border: '1px solid var(--border-color)', padding: '0.2rem 0.85rem', borderRadius: '4px' }}>
                   portal.imagination2software.com
                 </div>
                 <div style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Active</div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
+                <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontWeight: 600 }}>PROJECTS ACTIVE</div>
                   <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--dark-navy)', marginTop: '0.2rem' }}>12 Active</div>
                   <div style={{ fontSize: '0.7rem', color: '#10B981', marginTop: '0.2rem' }}>100% on schedule</div>
                 </div>
-                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>BILLED REVENUE</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-blue)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Balanced ledger</div>
+                <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontWeight: 600 }}>BILLED REVENUE</div>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-orange)', marginTop: '0.2rem' }}>Rs. 18.5L</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>Balanced ledger</div>
                 </div>
               </div>
 
-              <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-xs)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.35rem' }}>
-                  <span style={{ fontWeight: 600 }}>Quarterly Engineering Milestone</span>
-                  <span style={{ color: 'var(--primary-blue)', fontWeight: 700 }}>85%</span>
+                  <span style={{ fontWeight: 600, color: 'var(--dark-navy)' }}>Quarterly Engineering Milestone</span>
+                  <span style={{ color: 'var(--primary-orange)', fontWeight: 700 }}>85%</span>
                 </div>
-                <div style={{ height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: '85%', background: 'var(--primary-blue)' }} />
+                <div style={{ height: '6px', background: 'var(--bg-app-alt)', borderRadius: '999px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: '85%', background: 'var(--primary-orange)' }} />
                 </div>
               </div>
             </div>

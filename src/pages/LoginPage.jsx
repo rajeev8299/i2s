@@ -6,7 +6,7 @@ import { Lock, Mail, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck, CheckCir
 
 export const LoginPage = () => {
   const [mode, setMode] = useState('login'); // 'login' or 'register'
-  
+
   // Login State
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -83,7 +83,7 @@ export const LoginPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(180deg, #F8FAFC 0%, #EEF2F6 50%, var(--bg-app) 100%)',
+      background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 50%, var(--bg-app) 100%)',
       padding: 'clamp(1.5rem, 3vw, 2.5rem) 1rem',
     }}>
       <div style={{
@@ -129,7 +129,7 @@ export const LoginPage = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          background: '#F1F5F9',
+          background: 'var(--bg-card-secondary)',
           padding: '4px',
           borderRadius: 'var(--radius-md)',
           marginBottom: '1.5rem',

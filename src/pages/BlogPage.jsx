@@ -77,7 +77,7 @@ export const BlogPage = () => {
 
       {/* 1. HERO SECTION */}
       <section style={{
-        background: 'linear-gradient(180deg, #FFF4ED 0%, var(--bg-app) 100%)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
         padding: '3.75rem clamp(1rem, 3.5vw, 3rem) 2.5rem',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'
@@ -878,7 +878,7 @@ export const BlogPage = () => {
       {/* 8. FINAL PROJECT CTA */}
       <section style={{
         padding: '4.5rem clamp(1rem, 3.5vw, 3rem)',
-        background: 'linear-gradient(180deg, var(--bg-app) 0%, #FFF4ED 100%)',
+        background: 'linear-gradient(180deg, var(--bg-app) 0%, var(--bg-app-alt) 100%)',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '780px', margin: '0 auto' }}>

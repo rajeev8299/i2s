@@ -14,7 +14,7 @@ export const AboutPage = () => {
 
       {/* Hero / Introduction */}
       <section style={{
-        background: 'linear-gradient(180deg, #FFF4ED 0%, var(--bg-app) 100%)',
+        background: 'linear-gradient(180deg, #F0F5B8 0%, var(--bg-app-alt) 100%)',
         padding: '3.5rem 2rem 3rem',
         borderBottom: '1px solid var(--border-color)',
         textAlign: 'center'

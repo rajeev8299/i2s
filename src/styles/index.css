@@ -2,49 +2,51 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-heading: 'Outfit', sans-serif;
 
-  /* I2S Official Brand Theme Palette (Orange, Black, White, #F8F7EF) */
-  --primary-orange: #FF5A00;
-  --secondary-orange: #FF6A00;
+  /* I2S Official Reference Brand Theme Palette (Pale Lime, Orange, Black, White) */
+  --primary-orange: #FF6500;
+  --secondary-orange: #E95700;
   --primary-black: #111111;
-  --dark-bg: #151515;
-  --dark-surface: #1E1E1E;
+  --dark-bg: #111111;
+  --dark-surface: #181818;
   --dark-border: rgba(255, 255, 255, 0.1);
 
   /* Canonical Brand Aliases */
-  --primary: #FF5A00;
-  --primary-hover: #E04E00;
-  --primary-active: #C84300;
-  --primary-light: #FFF2EC;
-  --primary-glow: rgba(255, 90, 0, 0.28);
+  --primary: #FF6500;
+  --primary-hover: #E95700;
+  --primary-active: #CC4C00;
+  --primary-light: #F8F9EE;
+  --primary-glow: rgba(255, 101, 0, 0.28);
 
   /* Legacy & Semantic Bindings mapped directly to I2S Official Theme */
-  --primary-blue: #FF5A00;
-  --primary-blue-hover: #E04E00;
-  --primary-blue-light: #FFF2EC;
+  --primary-blue: #FF6500;
+  --primary-blue-hover: #E95700;
+  --primary-blue-light: #F8F9EE;
 
   --dark-navy: #111111;
   --dark-navy-surface: #181818;
   --dark-navy-border: rgba(255, 255, 255, 0.09);
 
-  /* Surface & Background Colors */
-  --bg-app: #DBD5D0;
+  /* Surface & Background Colors — Reference Pale Lime / Soft Yellow-Green */
+  --bg-app: #F0F5B8;
+  --bg-app-alt: #F5F7D8;
   --bg-card: #FFFFFF;
-  --bg-subtle: #F0F2F6;
-  --bg-subtle-hover: #E5E9F0;
-  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-card-secondary: #F8F9EE;
+  --bg-subtle: #F8F9EE;
+  --bg-subtle-hover: #ECEFD5;
+  --bg-glass: rgba(255, 255, 255, 0.92);
 
   /* Typography Colors */
   --text-main: #111111;
   --text-primary: #111111;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-dim: #94A3B8;
+  --text-secondary: #555555;
+  --text-muted: #6B7280;
+  --text-dim: #9CA3AF;
   --text-inverse: #FFFFFF;
 
-  /* Borders & Dividers */
-  --border-color: #E2E8F0;
-  --border-subtle: #ECEEF2;
-  --border-focus: #FF5A00;
+  /* Borders & Dividers — Soft Warm Border */
+  --border-color: #E1E5C9;
+  --border-subtle: #E8ECCE;
+  --border-focus: #FF6500;
 
   /* Status Colors */
   --success: #10B981;
@@ -365,14 +367,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--bg-subtle);
-  border-color: #CBD5E1;
+  background: var(--bg-card-secondary, #F8F9EE);
+  border-color: #D4DAB6;
   color: var(--dark-navy);
   transform: translateY(-1px);
 }
 
 .btn-secondary:active:not(:disabled) {
-  background: #E2E8F0;
+  background: var(--bg-subtle-hover, #ECEFD5);
   transform: translateY(0);
 }
 
