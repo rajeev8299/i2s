@@ -142,7 +142,7 @@ export const PublicNavbar = () => {
       </nav>
 
       {/* Action Buttons & Mobile Hamburger */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+      <div className="public-navbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
         <Link
           to="/login"
           className="btn-outline hidden-mobile"
@@ -162,17 +162,20 @@ export const PublicNavbar = () => {
 
         <Link
           to="/contact"
-          className="btn-primary"
+          className="btn-primary public-header-cta"
           style={{
             fontSize: '0.85rem',
-            padding: '0.6rem 1.25rem',
+            padding: '0.55rem 1.15rem',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.35rem',
-            textDecoration: 'none'
+            textDecoration: 'none',
+            whiteSpace: 'nowrap'
           }}
         >
-          Start a Project <ArrowRight size={16} />
+          <span className="cta-text-full">Start a Project</span>
+          <span className="cta-text-short">Start</span>
+          <ArrowRight size={15} />
         </Link>
 
         {/* Mobile Menu Toggle Button */}
@@ -185,17 +188,18 @@ export const PublicNavbar = () => {
             background: 'none',
             border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-sm)',
-            padding: '0.5rem',
+            padding: '0.45rem',
             cursor: 'pointer',
             display: 'none',
             alignItems: 'center',
             justifyContent: 'center',
             color: 'var(--text-main)',
-            minHeight: '40px',
-            minWidth: '40px'
+            minHeight: '38px',
+            minWidth: '38px',
+            flexShrink: 0
           }}
         >
-          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
         </button>
       </div>
 

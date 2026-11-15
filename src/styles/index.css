@@ -1040,6 +1040,21 @@ button:not(.btn-icon):not(.badge), .btn-primary, .btn-secondary, .btn-outline, .
 .brand-text-desktop {
   display: inline;
 }
+.cta-text-full {
+  display: inline;
+}
+.cta-text-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .cta-text-full {
+    display: none !important;
+  }
+  .cta-text-short {
+    display: inline !important;
+  }
+}
 
 @media (max-width: 900px) {
   .hidden-mobile {
@@ -1454,17 +1469,27 @@ img, video, iframe, svg {
 /* Mobile responsive touch targets & padding */
 @media (max-width: 640px) {
   .public-navbar-header {
-    padding: 0.85rem 1rem !important;
+    padding: 0.65rem 0.85rem !important;
+  }
+
+  .public-header-cta {
+    min-height: 38px !important;
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.82rem !important;
   }
 
   .btn-primary, .btn-secondary, .btn-outline {
-    min-height: 42px;
+    min-height: 40px;
   }
+}
 
-  /* Make sure wide button padding doesn't overflow */
-  .btn-primary {
-    padding-left: 1.15rem !important;
-    padding-right: 1.15rem !important;
+@media (max-width: 360px) {
+  .public-navbar-header {
+    padding: 0.55rem 0.65rem !important;
+  }
+  .public-header-cta {
+    padding: 0.4rem 0.65rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
